@@ -25,17 +25,17 @@ with st.sidebar:
     modulo = st.selectbox("Escolha o Setor:", [
         "🏠 Início", 
         "🛠️ Manutenção", 
+        "🤝 Comercial",
         "📅 Escalas de Trabalho",
         "💰 Financeiro",
         "📊 Relatórios",
         "👤 Gestão de Usuários"
     ])
 
-# --- 3. PÁGINA INICIAL (DASHBOARD) ---
+# --- 3. PÁGINA INICIAL ---
 if modulo == "🏠 Início":
     st.title("Painel de Gestão Integrada")
     st.subheader("Visão Geral da Operação")
-    
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric(label="Stands Ativos", value="3", delta="Jazz, Live, Principal")
@@ -44,40 +44,12 @@ if modulo == "🏠 Início":
     with col3:
         st.metric(label="Manutenções Hoje", value="Ver Planilha", delta_color="off")
 
-    st.divider()
-    st.markdown("### Informativos Recentes")
-    st.info("Utilize o menu lateral para navegar entre os departamentos da Omega & Raphson.")
-
-# --- 4. MÓDULO DE MANUTENÇÃO ---
-elif modulo == "🛠️ Manutenção":
-    st.subheader("🛠️ Controle de Manutenção")
-    if CSV_URL:
-        try:
-            df = pd.read_csv(CSV_URL)
-            st.dataframe(df, use_container_width=True)
-            st.success("Dados carregados da Planilha Google.")
-        except:
-            st.error("Erro ao acessar a planilha. Verifique a publicação na web.")
-
-# --- 5. GESTÃO DE USUÁRIOS ---
+# --- 4. GESTÃO DE USUÁRIOS (CADASTRO, SENHA E EXCLUSÃO) ---
 elif modulo == "👤 Gestão de Usuários":
     st.subheader("👤 Cadastro e Gestão de Usuários")
     
-    with st.form("novo_usuario", clear_on_submit=True):
-        st.write("Preencha os dados para solicitar acesso:")
-        c1, c2 = st.columns(2)
-        with c1:
-            nome_novo = st.text_input("Nome Completo")
-            email_novo = st.text_input("E-mail Corporativo")
-        with c2:
-            setor_novo = st.selectbox("Setor", ["Engenharia", "Manutenção", "Financeiro", "Diretoria"])
-            acesso_novo = st.select_slider("Nível de Acesso", options=["Leitura", "Editor", "Admin"])
-        
-        enviar = st.form_submit_button("Registrar Usuário")
-        if enviar:
-            if nome_novo and email_novo:
-                st.success(f"Usuário {nome_novo} pré-cadastrado! (Aguardando aprovação do Admin)")
-            else:
-                st.error("Por favor, preencha todos os campos obrigatórios.")
-
-# --- 6. OUTROS SET
+    # Criamos 3 abas para organizar as funções
+    tab1, tab2, tab3 = st.tabs(["🆕 Novo Cadastro", "🔑 Alterar Senha", "❌ Excluir Usuário"])
+    
+    with tab1:
+        with st.form("novo_usuario", clear_on_submit=
