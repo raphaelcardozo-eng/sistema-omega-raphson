@@ -8,7 +8,6 @@ st.set_page_config(page_title="Gestão Omega & Raphson", layout="wide", page_ico
 # --- 1. CONFIGURAÇÃO DO LINK DA PLANILHA ---
 URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1GjNaksY3_N2AxVvMdVtr2L-0Zk2DXT3luZUwbdNFpeA/edit?gid=0#gid=0"
 
-# Limpeza do link para leitura em CSV
 if "docs.google.com" in URL_PLANILHA:
     CSV_URL = URL_PLANILHA.split("/edit")[0] + "/export?format=csv"
 else:
@@ -25,17 +24,27 @@ with st.sidebar:
     st.divider()
     modulo = st.selectbox("Escolha o Setor:", ["🏠 Início", "🛠️ Manutenção", "📊 Relatórios"])
 
-# --- 3. PÁGINA INICIAL ---
+# --- 3. PÁGINA INICIAL (DASHBOARD DE GESTÃO) ---
 if modulo == "🏠 Início":
-    st.title("Painel de Controle Omega & Raphson")
-    st.markdown(f"""
-    ### Bem-vindo ao Sistema Unificado
-    Este painel está conectado diretamente à sua Planilha Google.
+    st.title("Painel de Gestão Integrada")
+    st.subheader("Visão Geral da Operação")
     
-    * **Status do Banco de Dados:** {"✅ Conectado" if CSV_URL else "❌ Link não configurado"}
-    * **Equipe Ativa:** Jazz, Live, Principal.
-    """)
-    st.info("Utilize o menu lateral para navegar entre os setores.")
+    # Criando os Cards de Métricas (Dashboard)
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric(label="Stands Ativos", value="3", delta="Jazz, Live, Principal")
+    
+    with col2:
+        st.metric(label="Status da Operação", value="Normal", delta="0 Alertas")
+        
+    with col3:
+        st.metric(label="Manutenções Pendentes", value="Ver Planilha", delta_color="off")
+
+    st.divider()
+    
+    st.markdown("### Informativos Recentes")
+    st.info("Utilize o menu lateral para registrar manutenções ou visualizar relatórios detalhados.")
 
 # --- 4. MÓDULO DE MANUTENÇÃO ---
 elif modulo == "🛠️ Manutenção":
@@ -43,15 +52,14 @@ elif modulo == "🛠️ Manutenção":
     if CSV_URL:
         try:
             df = pd.read_csv(CSV_URL)
-            st.write("### Dados da Planilha")
+            st.write("### Visualização de Dados")
             st.dataframe(df, use_container_width=True)
-            st.success("Dados atualizados em tempo real!")
-        except Exception as e:
-            st.error("Erro ao ler a planilha. Verifique se ela foi 'Publicada na Web'.")
+        except:
+            st.error("Erro ao carregar os dados. Verifique a publicação da planilha.")
     else:
-        st.warning("Link da planilha não configurado corretamente.")
+        st.warning("Configuração de banco de dados pendente.")
 
 # --- 5. RELATÓRIOS ---
 elif modulo == "📊 Relatórios":
     st.subheader("Análise de Produtividade")
-    st.write("Em desenvolvimento.")
+    st.info("Os gráficos de desempenho serão gerados automaticamente conforme o preenchimento da planilha.")
