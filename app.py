@@ -12,152 +12,117 @@ if 'autenticado' not in st.session_state:
     st.session_state['autenticado'] = False
 if 'nivel' not in st.session_state:
     st.session_state['nivel'] = "Leitor"
+if 'user_logado' not in st.session_state:
+    st.session_state['user_logado'] = ""
 
-def login(u, s):
-    if u == "admin" and s == "1234":
+def realizar_login(u, s):
+    # Base temporária de usuários
+    usuarios_validos = {
+        "admin": {"senha": "1234", "nivel": "Admin"},
+        "editor": {"senha": "1234", "nivel": "Editor"},
+        "raphaelcardozo@raphsonengenharia.com.br": {"senha": "1234", "nivel": "Admin"}
+    }
+    
+    u_clean = u.strip().lower()
+    if u_clean in usuarios_validos and s == usuarios_validos[u_clean]["senha"]:
         st.session_state['autenticado'] = True
-        st.session_state['nivel'] = "Admin"
-    elif u == "editor" and s == "1234":
-        st.session_state['autenticado'] = True
-        st.session_state['nivel'] = "Editor"
+        st.session_state['nivel'] = usuarios_validos[u_clean]["nivel"]
+        st.session_state['user_logado'] = u_clean
+        st.rerun()
     else:
-        st.error("Credenciais inválidas.")
+        st.error("Usuário ou senha incorretos.")
 
-def logout():
+def realizar_logout():
     st.session_state['autenticado'] = False
     st.rerun()
 
-# --- 2. TELA DE LOGIN ---
+# --- 2. TELA DE ENTRADA ---
 if not st.session_state['autenticado']:
-    st.title("🏗️ Sistema Integrado Omega & Raphson")
+    # Responsividade das Logos
+    col_l1, col_l2, col_l3, col_l4 = st.columns([1, 2, 2, 1])
+    
+    with col_l2:
+        try:
+            logo_raphson = Image.open("LOGO RAPHSON FUNDO TRANSPARENTE.png")
+            st.image(logo_raphson, use_container_width=True)
+        except:
+            st.write("Logo Raphson")
+            
+    with col_l3:
+        try:
+            logo_omega = Image.open("omega inc.png")
+            st.image(logo_omega, use_container_width=True)
+        except:
+            st.write("Logo Omega")
+
+    st.markdown("<h1 style='text-align: center;'>Sistema Integrado Omega & Raphson</h1>", unsafe_allow_html=True)
+    
     t_login, t_reset = st.tabs(["🔐 Acesso", "🔑 Esqueci a Senha"])
     
     with t_login:
-        with st.form("form_login"):
-            u_input = st.text_input("Usuário")
+        with st.form("login_form"):
+            u_input = st.text_input("Usuário (E-mail)")
             s_input = st.text_input("Senha", type="password")
-            if st.form_submit_button("Entrar"):
-                login(u_input, s_input)
+            if st.form_submit_button("Entrar", use_container_width=True):
+                realizar_login(u_input, s_input)
                 
     with t_reset:
         st.subheader("Recuperação de Acesso")
-        email_rec = st.text_input("E-mail Cadastrado")
-        nova_s = st.text_input("Nova Senha", type="password")
-        confirma_s = st.text_input("Confirme a Nova Senha", type="password")
-        if st.button("Redefinir Senha"):
-            if nova_s == confirma_s and nova_s != "":
-                st.success("Senha alterada com sucesso! Faça login para acessar.")
-            else:
-                st.error("As senhas não coincidem.")
+        email_rec = st.text_input("Digite seu e-mail cadastrado")
+        if st.button("Enviar link de redefinição", use_container_width=True):
+            st.success(f"Instruções enviadas para {email_rec}")
     st.stop()
 
-# --- 3. BARRA LATERAL (SIDEBAR) ---
+# --- 3. BARRA LATERAL (PÓS-LOGIN) ---
 with st.sidebar:
-    try:
-        image = Image.open("logo_empresas.png")
-        st.image(image, use_container_width=True)
-    except:
-        st.title("🏢 OMEGA & RAPHSON")
-    
-    st.write(f"👤 **Nível:** {st.session_state['nivel']}")
-    if st.button("🚪 Sair"):
-        logout()
+    # Exibe logos menores no menu lateral
+    c_s1, c_s2 = st.columns(2)
+    with c_s1:
+        st.image("LOGO RAPHSON FUNDO TRANSPARENTE.png", use_container_width=True)
+    with c_s2:
+        st.image("omega inc.png", use_container_width=True)
+        
+    st.write(f"👤 **Logado:** {st.session_state['user_logado']}")
+    if st.button("🚪 Sair", use_container_width=True):
+        realizar_logout()
     
     st.divider()
-    modulo = st.selectbox("Navegação:", [
-        "🏠 Dashboard", 
-        "📅 Escala de Trabalho", 
-        "👤 Gestão e Cadastros", 
-        "🛠️ Manutenção", 
-        "🤝 Comercial"
-    ])
+    modulo = st.selectbox("Navegação:", ["🏠 Dashboard", "📅 Escala de Trabalho", "👤 Gestão e Cadastros", "🛠️ Manutenção", "🤝 Comercial"])
 
 # --- 4. DASHBOARD ---
 if modulo == "🏠 Dashboard":
     st.title("Painel de Gestão Integrada")
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Stands Ativos", "3", "Jazz, Live, Principal")
-    c2.metric("Status Global", "Operacional")
-    c3.metric("Alertas", "0")
+    st.info("Bem-vindo ao sistema unificado.")
 
-# --- 5. ESCALA DE TRABALHO (CALENDÁRIO DINÂMICO) ---
+# --- 5. ESCALA DE TRABALHO ---
 elif modulo == "📅 Escala de Trabalho":
-    st.title("📅 Escala Mensal")
+    st.title("📅 Calendário de Escalas")
     hoje = datetime.now()
-    ano, mes = hoje.year, hoje.month
-    
-    st.subheader(f"Competência: {calendar.month_name[mes]} / {ano}")
-    
-    cal = calendar.monthcalendar(ano, mes)
-    dias_semana = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
+    cal = calendar.monthcalendar(hoje.year, hoje.month)
     
     cols_h = st.columns(7)
-    for i, d in enumerate(dias_semana):
-        cols_h[i].write(f"**{d}**")
+    dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
+    for i, d in enumerate(dias): cols_h[i].write(f"**{d}**")
         
     for semana in cal:
         cols = st.columns(7)
         for i, dia in enumerate(semana):
-            if dia == 0:
-                cols[i].write(" ")
-            else:
-                if cols[i].button(str(dia), key=f"dia_{dia}", use_container_width=True):
-                    st.info(f"Escala do dia {dia}/{mes}: Sem registros.")
+            if dia != 0:
+                if cols[i].button(str(dia), key=f"d_{dia}", use_container_width=True):
+                    st.toast(f"Dia {dia} selecionado.")
 
-    if st.session_state['nivel'] in ["Admin", "Editor"]:
-        st.divider()
-        st.subheader("🛠️ Gestão da Escala")
-        with st.form("gestao_escala"):
-            c_e1, c_e2 = st.columns(2)
-            c_e1.date_input("Data")
-            c_e1.selectbox("Usuário", ["Raphael Cardozo", "Técnico Silva"])
-            c_e2.selectbox("Stand", ["Jazz", "Live", "Principal"])
-            if st.form_submit_button("Confirmar Escala"):
-                st.success("Escala registrada!")
-
-# --- 6. GESTÃO E CADASTROS (ABAS SEGREGADAS) ---
+# --- 6. GESTÃO E CADASTROS ---
 elif modulo == "👤 Gestão e Cadastros":
     if st.session_state['nivel'] in ["Admin", "Editor"]:
-        st.title("👤 Central de Cadastros")
-        tab_u, tab_s, tab_i = st.tabs(["👥 Usuários", "Store/Stands", "📦 Inventário"])
+        st.title("👤 Administração")
+        tab_u, tab_s, tab_i = st.tabs(["👥 Usuários", "🏢 Stands", "📦 Inventário"])
         
         with tab_u:
-            st.write("### Usuários Ativos")
-            df_users = pd.DataFrame({
+            st.write("### Base de Usuários")
+            st.table(pd.DataFrame({
                 "Nome": ["Raphael Cardozo", "Técnico Silva"],
-                "Alçada": ["Admin", "Editor"],
-                "Setor": ["Diretoria", "Manutenção"]
-            })
-            st.table(df_users)
-            
-            with st.expander("➕ Novo Cadastro / Exclusão"):
-                with st.form("cad_user"):
-                    st.text_input("Nome")
-                    st.text_input("E-mail")
-                    st.selectbox("Nível", ["Leitor", "Editor", "Admin"])
-                    st.password_input("Senha")
-                    if st.form_submit_button("Salvar"):
-                        st.success("Usuário processado!")
-                
-                st.divider()
-                st.write("### Excluir Usuário")
-                email_del = st.text_input("E-mail para excluir")
-                if st.button("Confirmar Exclusão"):
-                    st.warning(f"Usuário {email_del} removido.")
-
-        with tab_s:
-            st.subheader("Gestão de Stands")
-            st.write("Lista: Jazz, Live, Principal.")
-
-        with tab_i:
-            st.subheader("Controle de Inventário")
-            st.info("Espaço para materiais e ferramentas.")
+                "E-mail": ["raphaelcardozo@raphsonengenharia.com.br", "silva@omega.com"],
+                "Nível": ["Admin", "Editor"]
+            }))
     else:
-        st.error("Acesso restrito a Administradores e Editores.")
-
-# --- OUTROS SETORES ---
-elif modulo == "🛠️ Manutenção":
-    st.title("🛠️ Manutenção")
-
-elif modulo == "🤝 Comercial":
-    st.title("🤝 Comercial")
+        st.error("Acesso restrito.")
