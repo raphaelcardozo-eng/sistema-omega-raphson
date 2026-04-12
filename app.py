@@ -22,44 +22,67 @@ with st.sidebar:
         st.title("🏢 OMEGA & RAPHSON")
     
     st.divider()
-    modulo = st.selectbox("Escolha o Setor:", ["🏠 Início", "🛠️ Manutenção", "📊 Relatórios"])
+    # Adicionado todos os setores planejados
+    modulo = st.selectbox("Escolha o Setor:", [
+        "🏠 Início", 
+        "🛠️ Manutenção", 
+        "📅 Escalas de Trabalho",
+        "💰 Financeiro",
+        "📊 Relatórios",
+        "👤 Gestão de Usuários"
+    ])
 
-# --- 3. PÁGINA INICIAL (DASHBOARD DE GESTÃO) ---
+# --- 3. PÁGINA INICIAL (DASHBOARD) ---
 if modulo == "🏠 Início":
     st.title("Painel de Gestão Integrada")
     st.subheader("Visão Geral da Operação")
     
-    # Criando os Cards de Métricas (Dashboard)
     col1, col2, col3 = st.columns(3)
-    
     with col1:
         st.metric(label="Stands Ativos", value="3", delta="Jazz, Live, Principal")
-    
     with col2:
         st.metric(label="Status da Operação", value="Normal", delta="0 Alertas")
-        
     with col3:
-        st.metric(label="Manutenções Pendentes", value="Ver Planilha", delta_color="off")
+        st.metric(label="Manutenções Hoje", value="2", delta="Pendentes")
 
     st.divider()
-    
-    st.markdown("### Informativos Recentes")
-    st.info("Utilize o menu lateral para registrar manutenções ou visualizar relatórios detalhados.")
+    st.info("Utilize o menu lateral para navegar entre os departamentos.")
 
 # --- 4. MÓDULO DE MANUTENÇÃO ---
 elif modulo == "🛠️ Manutenção":
-    st.subheader("Registro de Atividades de Manutenção")
+    st.subheader("🛠️ Controle de Manutenção")
     if CSV_URL:
         try:
             df = pd.read_csv(CSV_URL)
-            st.write("### Visualização de Dados")
             st.dataframe(df, use_container_width=True)
         except:
-            st.error("Erro ao carregar os dados. Verifique a publicação da planilha.")
-    else:
-        st.warning("Configuração de banco de dados pendente.")
+            st.error("Erro ao carregar banco de dados.")
 
-# --- 5. RELATÓRIOS ---
-elif modulo == "📊 Relatórios":
-    st.subheader("Análise de Produtividade")
-    st.info("Os gráficos de desempenho serão gerados automaticamente conforme o preenchimento da planilha.")
+# --- 5. GESTÃO DE USUÁRIOS (NOVO) ---
+elif modulo == "👤 Gestão de Usuários":
+    st.subheader("👤 Cadastro de Novos Usuários")
+    st.write("Adicione membros da equipe para acesso ao sistema.")
+    
+    with st.form("form_usuarios", clear_on_submit=True):
+        col_u1, col_u2 = st.columns(2)
+        with col_u1:
+            nome = st.text_input("Nome Completo")
+            email = st.text_input("E-mail corporativo")
+        with col_u2:
+            setor = st.selectbox("Departamento", ["Engenharia", "Operacional", "Financeiro", "Diretoria"])
+            nivel = st.radio("Nível de Acesso", ["Visualização", "Editor", "Administrador"], horizontal=True)
+        
+        btn_user = st.form_submit_button("Cadastrar Usuário")
+        
+        if btn_user:
+            if nome and email:
+                st.success(f"Solicitação de cadastro para {nome} enviada com sucesso!")
+            else:
+                st.warning("Por favor, preencha o nome e o e-mail.")
+
+# --- 6. ESCALAS / FINANCEIRO / RELATÓRIOS (ESTRUTURA PRONTA) ---
+elif modulo == "📅 Escalas de Trabalho":
+    st.subheader("📅 Gestão de Escalas")
+    st.info("Módulo em integração com o calendário de campo.")
+
+elif modulo
