@@ -6,9 +6,6 @@ import calendar
 import os
 import base64
 
-# ============================================================
-# 1. CONFIGURAÇÃO DA PÁGINA
-# ============================================================
 st.set_page_config(
     page_title="Gestão Integrada Omega & Raphson",
     layout="wide",
@@ -16,9 +13,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ============================================================
-# 2. CSS
-# ============================================================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -139,12 +133,12 @@ hr { border: none; border-top: 1px solid #e2e8f0; margin: 1.25rem 0; }
 """, unsafe_allow_html=True)
 
 # ============================================================
-# 3. SESSION STATE
+# SESSION STATE
 # ============================================================
 defaults = {
-    'autenticado':  False,
-    'user_logado':  '',
-    'nivel':        'Leitor',
+    'autenticado': False,
+    'user_logado': '',
+    'nivel': 'Leitor',
     'nome_usuario': '',
     'man_form_key': 0,
 }
@@ -153,30 +147,30 @@ for k, v in defaults.items():
         st.session_state[k] = v
 
 # ============================================================
-# 4. BANCO DE DADOS
+# BANCO DE DADOS
 # ============================================================
 ARQUIVOS = {
-    'usuarios':   'db_usuarios.csv',
+    'usuarios': 'db_usuarios.csv',
     'manutencao': 'db_manutencao.csv',
-    'comercial':  'db_comercial.csv',
-    'escala':     'db_escala.csv',
+    'comercial': 'db_comercial.csv',
+    'escala': 'db_escala.csv',
     'financeiro': 'db_financeiro.csv',
-    'marketing':  'db_marketing.csv',
-    'compras':    'db_compras.csv',
-    'stands':     'db_stands.csv',
+    'marketing': 'db_marketing.csv',
+    'compras': 'db_compras.csv',
+    'stands': 'db_stands.csv',
     'inventario': 'db_inventario.csv',
 }
 COLUNAS = {
-    'usuarios':   ['ID', 'Nome', 'Email', 'Senha', 'Setor', 'Funcao', 'Nivel', 'Ativo'],
+    'usuarios': ['ID', 'Nome', 'Email', 'Senha', 'Setor', 'Funcao', 'Nivel', 'Ativo'],
     'manutencao': ['ID', 'Data', 'Stand', 'Descricao', 'Responsavel', 'Urgencia',
                    'Status', 'Prazo', 'FotoAntes', 'FotoDepois', 'PedidoCompras', 'Obs'],
-    'comercial':  ['ID', 'Data', 'Cliente', 'Contato', 'Stand', 'Produto', 'Etapa', 'Responsavel', 'Obs'],
-    'escala':     ['ID', 'Data', 'DiaSemana', 'Colaborador', 'Setor', 'Stand', 'Turno', 'Status'],
+    'comercial': ['ID', 'Data', 'Cliente', 'Contato', 'Stand', 'Produto', 'Etapa', 'Responsavel', 'Obs'],
+    'escala': ['ID', 'Data', 'DiaSemana', 'Colaborador', 'Setor', 'Stand', 'Turno', 'Status'],
     'financeiro': ['ID', 'Data', 'Tipo', 'Categoria', 'Descricao', 'Valor', 'Responsavel'],
-    'marketing':  ['ID', 'Data', 'Campanha', 'Tipo', 'Responsavel', 'Stand', 'Status', 'Prazo'],
-    'compras':    ['ID', 'Data', 'Item', 'Quantidade', 'Unidade', 'Solicitante',
-                   'Setor', 'Urgencia', 'Status', 'OrigemChamadoID'],
-    'stands':     ['ID', 'Nome', 'Endereco', 'Status', 'Responsavel'],
+    'marketing': ['ID', 'Data', 'Campanha', 'Tipo', 'Responsavel', 'Stand', 'Status', 'Prazo'],
+    'compras': ['ID', 'Data', 'Item', 'Quantidade', 'Unidade', 'Solicitante',
+                'Setor', 'Urgencia', 'Status', 'OrigemChamadoID'],
+    'stands': ['ID', 'Nome', 'Endereco', 'Status', 'Responsavel'],
     'inventario': ['ID', 'Item', 'Categoria', 'Quantidade', 'Unidade', 'Stand', 'Estado', 'Propriedade'],
 }
 
@@ -228,11 +222,10 @@ def decode_img(b64str):
             return None
     return None
 
-# ============================================================
-# 5. SEEDS
-# ============================================================
 
-
+# ============================================================
+# SEEDS
+# ============================================================
 def garantir_admin():
     df = carregar('usuarios')
     if df.empty or not (df['Email'].str.lower() == 'raphaelcardozo@raphsonengenharia.com.br').any():
@@ -249,8 +242,8 @@ def garantir_stands():
     if df.empty:
         dados = [
             [1, 'Stand Principal', 'Endereco Principal', 'Ativo', 'Raphael Cardozo'],
-            [2, 'Stand Jazz',      'Endereco Jazz',      'Ativo', 'A definir'],
-            [3, 'Stand Live',      'Endereco Live',      'Ativo', 'A definir'],
+            [2, 'Stand Jazz', 'Endereco Jazz', 'Ativo', 'A definir'],
+            [3, 'Stand Live', 'Endereco Live', 'Ativo', 'A definir'],
         ]
         salvar(pd.DataFrame(dados, columns=COLUNAS['stands']), 'stands')
 
@@ -258,11 +251,10 @@ def garantir_stands():
 garantir_admin()
 garantir_stands()
 
-# ============================================================
-# 6. AUTENTICACAO
-# ============================================================
 
-
+# ============================================================
+# AUTENTICACAO
+# ============================================================
 def realizar_login(email, senha):
     df = carregar('usuarios')
     ok = df[
@@ -273,10 +265,10 @@ def realizar_login(email, senha):
     if not ok.empty:
         row = ok.iloc[0]
         st.session_state.update({
-            'autenticado':  True,
-            'user_logado':  row['Email'],
+            'autenticado': True,
+            'user_logado': row['Email'],
             'nome_usuario': row['Nome'],
-            'nivel':        row['Nivel']
+            'nivel': row['Nivel']
         })
         st.rerun()
     else:
@@ -289,7 +281,7 @@ def realizar_logout():
 
 
 # ============================================================
-# 7. TELA DE LOGIN
+# TELA DE LOGIN
 # ============================================================
 if not st.session_state['autenticado']:
     st.markdown("<br><br>", unsafe_allow_html=True)
@@ -322,10 +314,8 @@ if not st.session_state['autenticado']:
 
         with tab_login:
             with st.form("form_login", clear_on_submit=False):
-                email_in = st.text_input(
-                    "E-mail corporativo", placeholder="seu@email.com.br")
-                senha_in = st.text_input(
-                    "Senha", type="password", placeholder="senha")
+                email_in = st.text_input("E-mail corporativo", placeholder="seu@email.com.br")
+                senha_in = st.text_input("Senha", type="password", placeholder="senha")
                 st.markdown("<br>", unsafe_allow_html=True)
                 if st.form_submit_button("ACESSAR O PAINEL", use_container_width=True):
                     if email_in and senha_in:
@@ -335,11 +325,9 @@ if not st.session_state['autenticado']:
 
         with tab_reset:
             st.markdown("<br>", unsafe_allow_html=True)
-            email_rst = st.text_input("E-mail cadastrado",  key="rst_email")
-            nova_senha = st.text_input(
-                "Nova senha",  type="password", key="rst_nova")
-            conf_senha = st.text_input(
-                "Confirme",    type="password", key="rst_conf")
+            email_rst = st.text_input("E-mail cadastrado", key="rst_email")
+            nova_senha = st.text_input("Nova senha", type="password", key="rst_nova")
+            conf_senha = st.text_input("Confirme", type="password", key="rst_conf")
             if st.button("Redefinir Senha", use_container_width=True):
                 if not email_rst:
                     st.warning("Informe o e-mail.")
@@ -349,8 +337,7 @@ if not st.session_state['autenticado']:
                     st.warning("Digite a nova senha.")
                 else:
                     df_u = carregar('usuarios')
-                    mask = df_u['Email'].str.lower(
-                    ) == email_rst.strip().lower()
+                    mask = df_u['Email'].str.lower() == email_rst.strip().lower()
                     if mask.any():
                         df_u.loc[mask, 'Senha'] = nova_senha
                         salvar(df_u, 'usuarios')
@@ -367,8 +354,9 @@ if not st.session_state['autenticado']:
     )
     st.stop()
 
+
 # ============================================================
-# 8. SIDEBAR
+# SIDEBAR
 # ============================================================
 NIVEL = st.session_state['nivel']
 NOME = st.session_state['nome_usuario']
@@ -384,15 +372,9 @@ with st.sidebar:
         )
 
     st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown("<span class='menu-label'>Navegacao</span>",
-                unsafe_allow_html=True)
+    st.markdown("<span class='menu-label'>Navegacao</span>", unsafe_allow_html=True)
 
-    opcoes = [
-        "Dashboard",
-        "Escala de Trabalho",
-        "Manutencao",
-        "Comercial"
-    ]
+    opcoes = ["Dashboard", "Escala de Trabalho", "Manutencao", "Comercial"]
     if NIVEL in ['Admin', 'Editor']:
         opcoes += ["Financeiro", "Marketing", "Compras"]
     if NIVEL == 'Admin':
@@ -413,11 +395,10 @@ with st.sidebar:
     if st.button("Sair do Sistema", use_container_width=True):
         realizar_logout()
 
-# ============================================================
-# 9. HELPER — CABECALHO DE PAGINA
-# ============================================================
 
-
+# ============================================================
+# HELPER CABECALHO
+# ============================================================
 def page_header(icon, title, subtitle=""):
     sub_html = ""
     if subtitle:
@@ -435,7 +416,7 @@ def page_header(icon, title, subtitle=""):
 
 
 # ============================================================
-# 10. DASHBOARD
+# DASHBOARD
 # ============================================================
 if modulo == "Dashboard":
     page_header("📊", "Painel de Gestao Integrada", "Bem-vindo, " + NOME + "!")
@@ -446,20 +427,16 @@ if modulo == "Dashboard":
     df_sta = carregar('stands')
     df_usr = carregar('usuarios')
 
-    stands_ativos = len(
-        df_sta[df_sta['Status'] == 'Ativo']) if not df_sta.empty else 0
-    man_pendentes = len(
-        df_man[df_man['Status'] == 'Pendente']) if not df_man.empty else 0
-    escalas_hoje = len(df_esc[df_esc['Data'] == str(
-        date.today())]) if not df_esc.empty else 0
-    usuarios_atv = len(df_usr[df_usr['Ativo'] == 'Sim']
-                       ) if not df_usr.empty else 0
+    stands_ativos = len(df_sta[df_sta['Status'] == 'Ativo']) if not df_sta.empty else 0
+    man_pendentes = len(df_man[df_man['Status'] == 'Pendente']) if not df_man.empty else 0
+    escalas_hoje = len(df_esc[df_esc['Data'] == str(date.today())]) if not df_esc.empty else 0
+    usuarios_atv = len(df_usr[df_usr['Ativo'] == 'Sim']) if not df_usr.empty else 0
 
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Stands Ativos",         stands_ativos)
+    c1.metric("Stands Ativos", stands_ativos)
     c2.metric("Manutencoes Pendentes", man_pendentes)
-    c3.metric("Escalas Hoje",          escalas_hoje)
-    c4.metric("Usuarios Ativos",       usuarios_atv)
+    c3.metric("Escalas Hoje", escalas_hoje)
+    c4.metric("Usuarios Ativos", usuarios_atv)
 
     st.markdown("<br>", unsafe_allow_html=True)
     ca, cb = st.columns(2)
@@ -468,10 +445,8 @@ if modulo == "Dashboard":
         st.markdown("<div class='custom-card'>", unsafe_allow_html=True)
         st.markdown("#### Ultimas Manutencoes")
         if not df_man.empty:
-            st.dataframe(
-                df_man[['ID', 'Data', 'Stand', 'Descricao', 'Status']].tail(5),
-                use_container_width=True, hide_index=True
-            )
+            st.dataframe(df_man[['ID', 'Data', 'Stand', 'Descricao', 'Status']].tail(5),
+                         use_container_width=True, hide_index=True)
         else:
             st.info("Nenhuma manutencao registrada.")
         st.markdown("</div>", unsafe_allow_html=True)
@@ -480,16 +455,15 @@ if modulo == "Dashboard":
         st.markdown("<div class='custom-card'>", unsafe_allow_html=True)
         st.markdown("#### Ultimas Negociacoes")
         if not df_com.empty:
-            st.dataframe(
-                df_com[['ID', 'Data', 'Cliente', 'Stand', 'Etapa']].tail(5),
-                use_container_width=True, hide_index=True
-            )
+            st.dataframe(df_com[['ID', 'Data', 'Cliente', 'Stand', 'Etapa']].tail(5),
+                         use_container_width=True, hide_index=True)
         else:
             st.info("Nenhuma negociacao registrada.")
         st.markdown("</div>", unsafe_allow_html=True)
 
+
 # ============================================================
-# 11. ESCALA DE TRABALHO
+# ESCALA DE TRABALHO
 # ============================================================
 elif modulo == "Escala de Trabalho":
     hoje = datetime.now()
@@ -517,10 +491,8 @@ elif modulo == "Escala de Trabalho":
             if dia == 0:
                 cols[i].write("")
             else:
-                data_str = str(hoje.year) + "-" + \
-                    str(hoje.month).zfill(2) + "-" + str(dia).zfill(2)
-                tem_escala = (not df_esc.empty and (
-                    df_esc['Data'] == data_str).any())
+                data_str = str(hoje.year) + "-" + str(hoje.month).zfill(2) + "-" + str(dia).zfill(2)
+                tem_escala = (not df_esc.empty and (df_esc['Data'] == data_str).any())
                 label = str(dia) + (" 📌" if tem_escala else "")
                 if cols[i].button(label, key="cal_" + str(dia), use_container_width=True):
                     dia_sel = data_str
@@ -528,14 +500,11 @@ elif modulo == "Escala de Trabalho":
     st.markdown("</div>", unsafe_allow_html=True)
 
     if dia_sel:
-        esc_dia = df_esc[df_esc['Data'] ==
-                         dia_sel] if not df_esc.empty else pd.DataFrame()
+        esc_dia = df_esc[df_esc['Data'] == dia_sel] if not df_esc.empty else pd.DataFrame()
         if not esc_dia.empty:
             st.success("Escala de " + dia_sel)
-            st.dataframe(
-                esc_dia[['Colaborador', 'Setor', 'Stand', 'Turno', 'Status']],
-                use_container_width=True, hide_index=True
-            )
+            st.dataframe(esc_dia[['Colaborador', 'Setor', 'Stand', 'Turno', 'Status']],
+                         use_container_width=True, hide_index=True)
         else:
             st.info("Sem escala para " + dia_sel)
 
@@ -552,745 +521,5 @@ elif modulo == "Escala de Trabalho":
                 "Manutencao", "Comercial", "Financeiro", "Marketing", "Compras", "Diretoria"
             ])
             c4, c5, c6 = st.columns(3)
-            stand_esc = c4.selectbox(
-                "Stand / Local", stands_list + ["Escritorio Central"])
-            turno = c5.selectbox(
-                "Turno", ["Manha", "Tarde", "Integral", "Noite"])
-            status_e = c6.selectbox(
-                "Status", ["Confirmado", "Pendente", "Folga", "Ausencia"])
+            stand
 
-            if st.form_submit_button("Registrar Escala", use_container_width=True):
-                dia_nome = nomes[data_esc.weekday()]
-                nova = pd.DataFrame([[
-                    proximo_id(df_esc), str(data_esc), dia_nome,
-                    colab, setor_esc, stand_esc, turno, status_e
-                ]], columns=COLUNAS['escala'])
-                df_esc = pd.concat([df_esc, nova], ignore_index=True)
-                salvar(df_esc, 'escala')
-                st.success(colab + " escalado em " +
-                           stand_esc + " em " + str(data_esc))
-                st.rerun()
-
-        if not df_esc.empty:
-            with st.expander("Ver / Remover Escalas"):
-                st.dataframe(df_esc, use_container_width=True, hide_index=True)
-                id_del = st.number_input(
-                    "ID para remover:", min_value=1, step=1, key="del_esc")
-                if st.button("Remover", key="btn_del_esc"):
-                    df_esc = df_esc[df_esc['ID'] != id_del]
-                    salvar(df_esc, 'escala')
-                    st.success("Removido!")
-                    st.rerun()
-
-# ============================================================
-# 12. MANUTENCAO
-# ============================================================
-elif modulo == "Manutencao":
-    page_header("🛠️", "Gestao de Manutencao",
-                "Ordens de servico, acompanhamento tecnico e historico dos stands")
-
-    df_man = carregar('manutencao')
-    stands_list = get_stands()
-
-    tab1, tab2, tab3 = st.tabs(
-        ["Painel de OS", "Abrir Chamado", "Atualizar OS"])
-
-    with tab1:
-        if df_man.empty:
-            st.info("Nenhuma ordem de servico registrada.")
-        else:
-            cf1, cf2, cf3 = st.columns(3)
-            f_stand = cf1.multiselect(
-                "Stand:", stands_list, default=stands_list)
-            f_status = cf2.multiselect(
-                "Status:",
-                ["Pendente", "Em Andamento", "Aguardando Material",
-                    "Concluido", "Cancelado"],
-                default=["Pendente", "Em Andamento", "Aguardando Material"]
-            )
-            f_urg = cf3.multiselect(
-                "Urgencia:", ["Alta", "Media", "Baixa"], default=["Alta", "Media", "Baixa"]
-            )
-            df_vis = df_man[
-                df_man['Stand'].isin(f_stand) &
-                df_man['Status'].isin(f_status) &
-                df_man['Urgencia'].isin(f_urg)
-            ]
-
-            for _, row in df_vis.iterrows():
-                urg_str = str(row.get('Urgencia', ''))
-                if urg_str == "Alta":
-                    urg_class = "os-card-alta"
-                elif urg_str == "Media":
-                    urg_class = "os-card-media"
-                else:
-                    urg_class = "os-card-baixa"
-
-                status_str = str(row.get('Status', ''))
-                badge_map = {
-                    "Pendente":            "badge-pendente",
-                    "Em Andamento":        "badge-andamento",
-                    "Aguardando Material": "badge-material",
-                    "Concluido":           "badge-concluido",
-                    "Cancelado":           "badge-cancelado",
-                }
-                badge_cls = badge_map.get(status_str, "")
-
-                prazo_val = str(row.get('Prazo', ''))
-                prazo_txt = ""
-                if prazo_val not in ['', 'nan']:
-                    prazo_txt = " | Prazo: " + prazo_val
-
-                pedido_val = str(row.get('PedidoCompras', ''))
-                pedido_txt = ""
-                if pedido_val not in ['', 'nan']:
-                    pedido_txt = (
-                        "<div style='margin-top:6px;font-size:0.8rem;color:#7c3aed;'>"
-                        "Pedido Compras: " + pedido_val + "</div>"
-                    )
-
-                obs_val = str(row.get('Obs', ''))
-                obs_txt = ""
-                if obs_val not in ['', 'nan']:
-                    obs_txt = (
-                        "<div style='margin-top:4px;font-size:0.8rem;color:#64748b;'>"
-                        "Obs: " + obs_val + "</div>"
-                    )
-
-                desc_str = str(row.get('Descricao', ''))[:180]
-                id_str = str(int(row['ID']))
-
-                st.markdown(
-                    "<div class='os-card " + urg_class + "'>"
-                    "<div style='display:flex;justify-content:space-between;"
-                    "align-items:center;flex-wrap:wrap;gap:8px;'>"
-                    "<div>"
-                    "<span style='font-weight:800;font-size:1rem;color:#0f172a;'>OS #" + id_str + "</span>"
-                    " <span class='status-badge " + badge_cls + "'>" + status_str + "</span>"
-                    " <span style='font-size:0.8rem;color:#64748b;'>Urgencia: " + urg_str + "</span>"
-                    "</div>"
-                    "<span style='font-size:0.8rem;color:#94a3b8;'>"
-                    "Data: " + str(row.get('Data', '')) + prazo_txt + "</span>"
-                    "</div>"
-                    "<div style='margin-top:8px;font-size:0.85rem;color:#334155;'>"
-                    "Stand: <b>" + str(row.get('Stand', '')) + "</b>"
-                    " | Responsavel: " + str(row.get('Responsavel', '')) +
-                    "</div>"
-                    "<div style='margin-top:6px;font-size:0.88rem;color:#475569;'>"
-                    + desc_str +
-                    "</div>"
-                    + pedido_txt + obs_txt +
-                    "</div>",
-                    unsafe_allow_html=True
-                )
-
-                foto_antes = decode_img(str(row.get('FotoAntes', '')))
-                foto_depois = decode_img(str(row.get('FotoDepois', '')))
-                if foto_antes or foto_depois:
-                    col_f1, col_f2 = st.columns(2)
-                    if foto_antes:
-                        with col_f1:
-                            st.markdown(
-                                "<p class='foto-label'>Foto Antes</p>", unsafe_allow_html=True)
-                            st.image(foto_antes, use_container_width=True)
-                    if foto_depois:
-                        with col_f2:
-                            st.markdown(
-                                "<p class='foto-label'>Foto Depois</p>", unsafe_allow_html=True)
-                            st.image(foto_depois, use_container_width=True)
-
-    with tab2:
-        if NIVEL in ['Admin', 'Editor']:
-            colaboradores = get_usuarios_ativos()
-            form_key = "form_man_" + str(st.session_state['man_form_key'])
-
-            with st.form(form_key, clear_on_submit=True):
-                st.markdown("#### Dados da Ocorrencia")
-                c1, c2, c3 = st.columns(3)
-                stand_m = c1.selectbox("Stand:", stands_list)
-                resp_m = c2.selectbox("Responsavel:", colaboradores)
-                urg_m = c3.select_slider(
-                    "Urgencia:", ["Baixa", "Media", "Alta"])
-                desc_m = st.text_area("Descricao detalhada do problema:", height=120,
-                                      placeholder="Descreva o problema...")
-                st.markdown("#### Foto do Problema (Antes)")
-                foto_antes_up = st.file_uploader(
-                    "Anexar foto",
-                    type=["jpg", "jpeg", "png", "webp"],
-                    key="foto_antes_" + str(st.session_state['man_form_key'])
-                )
-                if st.form_submit_button("Abrir Ordem de Servico", use_container_width=True):
-                    if desc_m.strip():
-                        df_man = carregar('manutencao')
-                        nova = pd.DataFrame([[
-                            proximo_id(df_man),
-                            datetime.now().strftime("%d/%m/%Y %H:%M"),
-                            stand_m, desc_m, resp_m, urg_m,
-                            "Pendente", "", encode_img(
-                                foto_antes_up), "", "", ""
-                        ]], columns=COLUNAS['manutencao'])
-                        df_man = pd.concat([df_man, nova], ignore_index=True)
-                        salvar(df_man, 'manutencao')
-                        st.session_state['man_form_key'] += 1
-                        st.success(
-                            "OS aberta! Formulario limpo para novo chamado.")
-                        st.rerun()
-                    else:
-                        st.warning(
-                            "Descreva o problema antes de abrir o chamado.")
-        else:
-            st.warning("Apenas Editores e Admins podem abrir chamados.")
-
-    with tab3:
-        if NIVEL in ['Admin', 'Editor']:
-            df_man = carregar('manutencao')
-            if df_man.empty:
-                st.info("Nenhuma OS registrada.")
-            else:
-                ids_abertos = df_man[
-                    ~df_man['Status'].isin(['Concluido', 'Cancelado'])
-                ]['ID'].tolist()
-
-                if not ids_abertos:
-                    st.success("Todas as OS estao concluidas ou canceladas!")
-                else:
-                    def fmt_os(x):
-                        row_sel = df_man[df_man['ID'] == x]
-                        if row_sel.empty:
-                            return str(x)
-                        stand_v = str(row_sel['Stand'].values[0])
-                        desc_v = str(row_sel['Descricao'].values[0])[:50]
-                        return "OS #" + str(x) + " - " + stand_v + " | " + desc_v + "..."
-
-                    id_sel = st.selectbox(
-                        "Selecione a OS:", ids_abertos, format_func=fmt_os)
-                    os_row = df_man[df_man['ID'] == id_sel].iloc[0]
-
-                    st.markdown(
-                        "<div class='custom-card'>"
-                        "<b>OS #" + str(int(os_row['ID'])) + "</b> | "
-                        "Stand: " + str(os_row.get('Stand', '')) + " | "
-                        "Responsavel: " +
-                        str(os_row.get('Responsavel', '')) + " | "
-                        "Urgencia: " + str(os_row.get('Urgencia', '')) + " | "
-                        "Abertura: " + str(os_row.get('Data', '')) +
-                        "<br><br>"
-                        "<span style='color:#475569;'>" +
-                        str(os_row.get('Descricao', '')) + "</span>"
-                        "</div>",
-                        unsafe_allow_html=True
-                    )
-
-                    with st.form("form_upd_os"):
-                        status_opcoes = [
-                            "Pendente", "Em Andamento",
-                            "Aguardando Material", "Concluido", "Cancelado"
-                        ]
-                        status_atual = str(os_row.get('Status', 'Pendente'))
-                        idx_status = status_opcoes.index(
-                            status_atual) if status_atual in status_opcoes else 0
-
-                        c1, c2 = st.columns(2)
-                        novo_status = c1.selectbox(
-                            "Novo Status:", status_opcoes, index=idx_status)
-                        prazo_os = c2.date_input(
-                            "Prazo de Conclusao:", value=date.today())
-
-                        obs_os = st.text_area(
-                            "Observacoes / Atualizacao:",
-                            placeholder="Descreva o que foi feito ou o motivo...",
-                            height=100
-                        )
-
-                        st.markdown("---")
-                        st.markdown("#### Solicitar Material ao Compras")
-                        col_m1, col_m2, col_m3 = st.columns(3)
-                        solicitar_mat = col_m1.checkbox(
-                            "Enviar pedido de material")
-                        material_desc = col_m2.text_input(
-                            "Material necessario:")
-                        material_qtd = col_m3.number_input(
-                            "Quantidade:", min_value=1, step=1)
-
-                        st.markdown("---")
-                        st.markdown("#### Registrar Fotos")
-                        col_f1, col_f2 = st.columns(2)
-                        foto_antes_upd = col_f1.file_uploader(
-                            "Foto Antes (atualizar)",
-                            type=["jpg", "jpeg", "png", "webp"],
-                            key="upd_antes"
-                        )
-                        foto_depois_upd = col_f2.file_uploader(
-                            "Foto Depois",
-                            type=["jpg", "jpeg", "png", "webp"],
-                            key="upd_depois"
-                        )
-
-                        if st.form_submit_button("Salvar Atualizacao", use_container_width=True):
-                            df_man = carregar('manutencao')
-                            idx = df_man[df_man['ID'] == id_sel].index[0]
-                            df_man.at[idx, 'Status'] = novo_status
-                            df_man.at[idx, 'Prazo'] = str(prazo_os)
-                            df_man.at[idx, 'Obs'] = obs_os
-
-                            if foto_antes_upd:
-                                df_man.at[idx, 'FotoAntes'] = encode_img(
-                                    foto_antes_upd)
-                            if foto_depois_upd:
-                                df_man.at[idx, 'FotoDepois'] = encode_img(
-                                    foto_depois_upd)
-
-                            pedido_ref = ''
-                            if solicitar_mat and material_desc.strip():
-                                df_cmp = carregar('compras')
-                                novo_id_cmp = proximo_id(df_cmp)
-                                pedido_ref = "#" + \
-                                    str(novo_id_cmp) + " - " + material_desc
-                                nova_cmp = pd.DataFrame([[
-                                    novo_id_cmp,
-                                    datetime.now().strftime("%d/%m/%Y"),
-                                    material_desc, material_qtd, "Un",
-                                    str(os_row.get('Responsavel', '')),
-                                    "Manutencao",
-                                    str(os_row.get('Urgencia', 'Media')),
-                                    "Pendente",
-                                    "OS #" + str(id_sel)
-                                ]], columns=COLUNAS['compras'])
-                                df_cmp = pd.concat(
-                                    [df_cmp, nova_cmp], ignore_index=True)
-                                salvar(df_cmp, 'compras')
-                                df_man.at[idx, 'PedidoCompras'] = pedido_ref
-
-                            salvar(df_man, 'manutencao')
-                            msg = "OS #" + \
-                                str(id_sel) + " atualizada para '" + \
-                                novo_status + "'!"
-                            if pedido_ref:
-                                msg += " Pedido " + pedido_ref + " enviado ao Compras."
-                            st.success(msg)
-                            st.rerun()
-        else:
-            st.warning("Apenas Editores e Admins podem atualizar OS.")
-
-# ============================================================
-# 13. COMERCIAL
-# ============================================================
-elif modulo == "Comercial":
-    page_header("🤝", "Gestao Comercial",
-                "Leads, negociacoes e pipeline de vendas")
-
-    df_com = carregar('comercial')
-    stands_list = get_stands()
-    tab1, tab2 = st.tabs(["Pipeline", "Novo Lead"])
-
-    with tab1:
-        if df_com.empty:
-            st.info("Nenhuma negociacao registrada.")
-        else:
-            f_etapa = st.multiselect(
-                "Etapa:",
-                ["Prospeccao", "Proposta", "Negociacao", "Fechado", "Perdido"],
-                default=["Prospeccao", "Proposta", "Negociacao"]
-            )
-            df_vis = df_com[df_com['Etapa'].isin(
-                f_etapa)] if f_etapa else df_com
-            st.dataframe(df_vis, use_container_width=True, hide_index=True)
-
-            if NIVEL in ['Admin', 'Editor'] and not df_com.empty:
-                st.markdown("---")
-                cx1, cx2 = st.columns(2)
-                id_c = cx1.selectbox("ID:", df_com['ID'].tolist())
-                et_n = cx2.selectbox(
-                    "Etapa:", ["Prospeccao", "Proposta",
-                               "Negociacao", "Fechado", "Perdido"],
-                    key="etapa_upd"
-                )
-                if st.button("Atualizar Etapa"):
-                    df_com.loc[df_com['ID'] == id_c, 'Etapa'] = et_n
-                    salvar(df_com, 'comercial')
-                    st.success("Atualizado!")
-                    st.rerun()
-
-    with tab2:
-        if NIVEL in ['Admin', 'Editor']:
-            colaboradores = get_usuarios_ativos()
-            with st.form("form_com", clear_on_submit=True):
-                c1, c2 = st.columns(2)
-                cliente = c1.text_input("Cliente / Empresa")
-                contato = c2.text_input("WhatsApp / E-mail")
-                c3, c4, c5 = st.columns(3)
-                stand_c = c3.selectbox("Stand:", stands_list)
-                produto = c4.text_input("Produto / Servico")
-                etapa_c = c5.selectbox(
-                    "Etapa:", ["Prospeccao", "Proposta",
-                               "Negociacao", "Fechado", "Perdido"]
-                )
-                resp_c = st.selectbox("Responsavel:", colaboradores)
-                obs_c = st.text_area("Observacoes:")
-                if st.form_submit_button("Registrar", use_container_width=True):
-                    if cliente.strip():
-                        nova = pd.DataFrame([[
-                            proximo_id(df_com),
-                            datetime.now().strftime("%d/%m/%Y"),
-                            cliente, contato, stand_c, produto, etapa_c, resp_c, obs_c
-                        ]], columns=COLUNAS['comercial'])
-                        df_com = pd.concat([df_com, nova], ignore_index=True)
-                        salvar(df_com, 'comercial')
-                        st.success("Lead '" + cliente + "' registrado!")
-                        st.rerun()
-                    else:
-                        st.warning("Informe o nome do cliente.")
-        else:
-            st.warning("Apenas Editores e Admins podem registrar.")
-
-# ============================================================
-# 14. FINANCEIRO
-# ============================================================
-elif modulo == "Financeiro":
-    page_header("💰", "Controle Financeiro",
-                "Lancamentos, entradas, saidas e saldo")
-
-    df_fin = carregar('financeiro')
-    tab1, tab2 = st.tabs(["Resumo", "Novo Lancamento"])
-
-    with tab1:
-        if df_fin.empty:
-            st.info("Nenhum lancamento registrado.")
-        else:
-            total_e = df_fin[df_fin['Tipo'] ==
-                             'Entrada']['Valor'].astype(float).sum()
-            total_s = df_fin[df_fin['Tipo'] ==
-                             'Saida']['Valor'].astype(float).sum()
-            saldo = total_e - total_s
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Entradas", "R$ " + "{:,.2f}".format(total_e))
-            c2.metric("Saidas",   "R$ " + "{:,.2f}".format(total_s))
-            c3.metric("Saldo",    "R$ " + "{:,.2f}".format(saldo))
-            st.dataframe(df_fin, use_container_width=True, hide_index=True)
-
-    with tab2:
-        with st.form("form_fin", clear_on_submit=True):
-            c1, c2, c3 = st.columns(3)
-            tipo_f = c1.selectbox("Tipo:", ["Entrada", "Saida"])
-            cat_f = c2.selectbox("Categoria:", [
-                "Fornecedor", "Salario", "Material", "Receita", "Imposto", "Outros"
-            ])
-            val_f = c3.number_input(
-                "Valor (R$):", min_value=0.0, step=0.01, format="%.2f")
-            desc_f = st.text_input("Descricao")
-            resp_f = st.text_input("Responsavel")
-            if st.form_submit_button("Registrar Lancamento", use_container_width=True):
-                nova = pd.DataFrame([[
-                    proximo_id(df_fin),
-                    datetime.now().strftime("%d/%m/%Y"),
-                    tipo_f, cat_f, desc_f, val_f, resp_f
-                ]], columns=COLUNAS['financeiro'])
-                df_fin = pd.concat([df_fin, nova], ignore_index=True)
-                salvar(df_fin, 'financeiro')
-                st.success("Lancamento registrado!")
-                st.rerun()
-
-# ============================================================
-# 15. MARKETING
-# ============================================================
-elif modulo == "Marketing":
-    page_header("📣", "Gestao de Marketing",
-                "Campanhas, acoes e materiais de comunicacao")
-
-    df_mkt = carregar('marketing')
-    stands_list = get_stands()
-    tab1, tab2 = st.tabs(["Campanhas", "Nova Acao"])
-
-    with tab1:
-        if df_mkt.empty:
-            st.info("Nenhuma campanha registrada.")
-        else:
-            st.dataframe(df_mkt, use_container_width=True, hide_index=True)
-
-    with tab2:
-        colaboradores = get_usuarios_ativos()
-        with st.form("form_mkt", clear_on_submit=True):
-            c1, c2 = st.columns(2)
-            camp = c1.text_input("Campanha / Acao")
-            tipo_m = c2.selectbox("Tipo:", [
-                "Banner", "Post Redes Sociais", "E-mail Marketing", "Evento", "Outro"
-            ])
-            c3, c4, c5 = st.columns(3)
-            resp_m = c3.selectbox("Responsavel:", colaboradores)
-            stand_m = c4.selectbox(
-                "Stand:", stands_list + ["Todos", "Digital"])
-            prazo_m = c5.date_input("Prazo:")
-            if st.form_submit_button("Registrar Campanha", use_container_width=True):
-                if camp.strip():
-                    nova = pd.DataFrame([[
-                        proximo_id(df_mkt),
-                        datetime.now().strftime("%d/%m/%Y"),
-                        camp, tipo_m, resp_m, stand_m, "Em Andamento", str(
-                            prazo_m)
-                    ]], columns=COLUNAS['marketing'])
-                    df_mkt = pd.concat([df_mkt, nova], ignore_index=True)
-                    salvar(df_mkt, 'marketing')
-                    st.success("Campanha registrada!")
-                    st.rerun()
-                else:
-                    st.warning("Informe o nome da campanha.")
-
-# ============================================================
-# 16. COMPRAS
-# ============================================================
-elif modulo == "Compras":
-    page_header("🛒", "Gestao de Compras",
-                "Pedidos, cotacoes e controle de materiais")
-
-    df_cmp = carregar('compras')
-    tab1, tab2 = st.tabs(["Pedidos", "Novo Pedido"])
-
-    with tab1:
-        if df_cmp.empty:
-            st.info("Nenhum pedido registrado.")
-        else:
-            f_st = st.multiselect(
-                "Status:",
-                ["Pendente", "Em Cotacao", "Aprovado", "Entregue", "Cancelado"],
-                default=["Pendente", "Em Cotacao"]
-            )
-            df_vis = df_cmp[df_cmp['Status'].isin(f_st)] if f_st else df_cmp
-            st.dataframe(df_vis, use_container_width=True, hide_index=True)
-
-            if NIVEL in ['Admin', 'Editor']:
-                c1, c2 = st.columns(2)
-                id_cp = c1.selectbox("ID:", df_cmp['ID'].tolist())
-                st_cp = c2.selectbox("Novo Status:", [
-                    "Pendente", "Em Cotacao", "Aprovado", "Entregue", "Cancelado"
-                ])
-                if st.button("Atualizar"):
-                    df_cmp.loc[df_cmp['ID'] == id_cp, 'Status'] = st_cp
-                    salvar(df_cmp, 'compras')
-                    st.success("Atualizado!")
-                    st.rerun()
-
-    with tab2:
-        with st.form("form_cmp", clear_on_submit=True):
-            c1, c2, c3 = st.columns(3)
-            item_c = c1.text_input("Item / Material")
-            qtd_c = c2.number_input("Quantidade:", min_value=1, step=1)
-            unid_c = c3.selectbox(
-                "Unidade:", ["Un", "Kg", "Lt", "M", "M2", "Caixa", "Pacote"])
-            c4, c5, c6 = st.columns(3)
-            solic_c = c4.text_input("Solicitante")
-            setor_c = c5.selectbox("Setor:", [
-                "Manutencao", "Obra", "Escritorio", "Marketing", "Comercial"
-            ])
-            urg_c = c6.select_slider("Urgencia:", ["Baixa", "Media", "Alta"])
-            if st.form_submit_button("Enviar Pedido", use_container_width=True):
-                if item_c.strip() and solic_c.strip():
-                    nova = pd.DataFrame([[
-                        proximo_id(df_cmp),
-                        datetime.now().strftime("%d/%m/%Y"),
-                        item_c, qtd_c, unid_c, solic_c, setor_c, urg_c, "Pendente", ""
-                    ]], columns=COLUNAS['compras'])
-                    df_cmp = pd.concat([df_cmp, nova], ignore_index=True)
-                    salvar(df_cmp, 'compras')
-                    st.success("Pedido enviado!")
-                    st.rerun()
-                else:
-                    st.warning("Informe item e solicitante.")
-
-# ============================================================
-# 17. CADASTROS E CONFIGURACOES
-# ============================================================
-elif modulo == "Cadastros e Config":
-    page_header("⚙️", "Cadastros e Configuracoes",
-                "Usuarios, stands e inventario")
-
-    tab_usr, tab_std, tab_inv = st.tabs(["Usuarios", "Stands", "Inventario"])
-
-    # ── USUARIOS ──────────────────────────────────────────
-    with tab_usr:
-        df_usr = carregar('usuarios')
-        st.markdown("#### Usuarios Cadastrados")
-
-        cols_show = ['ID', 'Nome', 'Email',
-                     'Setor', 'Funcao', 'Nivel', 'Ativo']
-        cols_exist = [c for c in cols_show if c in df_usr.columns]
-        st.dataframe(df_usr[cols_exist],
-                     use_container_width=True, hide_index=True)
-
-        s1, s2, s3 = st.tabs(["Novo Usuario", "Alterar Senha", "Desativar"])
-
-        with s1:
-            with st.form("form_new_usr", clear_on_submit=True):
-                c1, c2 = st.columns(2)
-                nome_u = c1.text_input("Nome Completo")
-                email_u = c2.text_input("E-mail Corporativo")
-                c3, c4, c5 = st.columns(3)
-                senha_u = c3.text_input("Senha Inicial", type="password")
-                setor_u = c4.selectbox("Setor:", [
-                    "Diretoria", "Engenharia", "Manutencao",
-                    "Comercial", "Financeiro", "Marketing", "Compras"
-                ])
-                nivel_u = c5.select_slider(
-                    "Nivel de Acesso:", ["Leitor", "Editor", "Admin"])
-                funcao_u = st.text_input("Funcao / Cargo")
-                if st.form_submit_button("Cadastrar Usuario", use_container_width=True):
-                    if nome_u and email_u and senha_u and funcao_u:
-                        df2 = carregar('usuarios')
-                        if (df2['Email'].str.lower() == email_u.strip().lower()).any():
-                            st.error("E-mail ja cadastrado.")
-                        else:
-                            nova = pd.DataFrame([[
-                                proximo_id(df2), nome_u, email_u.strip(),
-                                senha_u, setor_u, funcao_u, nivel_u, "Sim"
-                            ]], columns=COLUNAS['usuarios'])
-                            df2 = pd.concat([df2, nova], ignore_index=True)
-                            salvar(df2, 'usuarios')
-                            st.success("Usuario '" + nome_u + "' cadastrado!")
-                            st.rerun()
-                    else:
-                        st.warning("Preencha todos os campos obrigatorios.")
-
-        with s2:
-            with st.form("form_senha", clear_on_submit=True):
-                email_a = st.text_input("E-mail do usuario")
-                nova_s = st.text_input("Nova senha",  type="password")
-                conf_s = st.text_input("Confirme",    type="password")
-                if st.form_submit_button("Alterar Senha", use_container_width=True):
-                    if not nova_s:
-                        st.warning("Digite a nova senha.")
-                    elif nova_s != conf_s:
-                        st.error("As senhas nao coincidem.")
-                    else:
-                        df2 = carregar('usuarios')
-                        mask = df2['Email'].str.lower(
-                        ) == email_a.strip().lower()
-                        if mask.any():
-                            df2.loc[mask, 'Senha'] = nova_s
-                            salvar(df2, 'usuarios')
-                            st.success("Senha alterada com sucesso!")
-                        else:
-                            st.error("Usuario nao encontrado.")
-
-                        with s3:
-            st.markdown("#### Desativar Usuario")
-            with st.form("form_del_usr", clear_on_submit=True):
-                st.warning("Esta acao revoga o acesso do usuario ao sistema.")
-                email_d = st.text_input("E-mail do usuario a desativar")
-                conf_d = st.checkbox(
-                    "Confirmo que desejo desativar este usuario.")
-                if st.form_submit_button("Desativar Usuario", use_container_width=True):
-                    if not conf_d:
-                        st.warning("Marque a caixa de confirmacao.")
-                    elif not email_d:
-                        st.warning("Informe o e-mail.")
-                    else:
-                        df2 = carregar('usuarios')
-                        mask = df2['Email'].str.lower(
-                        ) == email_d.strip().lower()
-                        if mask.any():
-                            df2.loc[mask, 'Ativo'] = 'Nao'
-                            salvar(df2, 'usuarios')
-                            st.success("Usuario desativado com sucesso.")
-                            st.rerun()
-                        else:
-                            st.error("Usuario nao encontrado.")
-    with tab_std:
-        df_std = carregar('stands')
-        st.markdown("#### Stands Cadastrados")
-        st.dataframe(df_std, use_container_width=True, hide_index=True)
-
-        sa, sb = st.tabs(["Novo Stand", "Editar Status"])
-
-        with sa:
-            with st.form("form_std", clear_on_submit=True):
-                c1, c2 = st.columns(2)
-                nome_s = c1.text_input("Nome do Stand")
-                end_s = c2.text_input("Endereco / Localizacao")
-                resp_s = st.text_input("Responsavel pelo Stand")
-                if st.form_submit_button("Cadastrar Stand", use_container_width=True):
-                    if nome_s.strip():
-                        df_std2 = carregar('stands')
-                        nova = pd.DataFrame([[
-                            proximo_id(df_std2),
-                            nome_s.strip(), end_s, "Ativo", resp_s
-                        ]], columns=COLUNAS['stands'])
-                        df_std2 = pd.concat([df_std2, nova], ignore_index=True)
-                        salvar(df_std2, 'stands')
-                        st.success("Stand " + nome_s + " cadastrado!")
-                        st.rerun()
-                    else:
-                        st.warning("Informe o nome do stand.")
-
-        with sb:
-            df_std2 = carregar('stands')
-            if not df_std2.empty:
-                c1, c2 = st.columns(2)
-
-                def fmt_stand(x):
-                    r = df_std2[df_std2['ID'] == x]
-                    if r.empty:
-                        return str(x)
-                    return str(x) + " - " + str(r['Nome'].values[0])
-                id_s = c1.selectbox(
-                    "Stand:", df_std2['ID'].tolist(), format_func=fmt_stand)
-                nst_s = c2.selectbox(
-                    "Novo Status:", ["Ativo", "Inativo", "Em Manutencao"])
-                if st.button("Atualizar Status do Stand"):
-                    df_std2.loc[df_std2['ID'] == id_s, 'Status'] = nst_s
-                    salvar(df_std2, 'stands')
-                    st.success("Stand atualizado!")
-                    st.rerun()
-            else:
-                st.info("Nenhum stand cadastrado.")
-
-    with tab_inv:
-        df_inv = carregar('inventario')
-        stands_list = get_stands()
-
-        st.markdown("#### Inventario de Materiais e Equipamentos")
-        if not df_inv.empty:
-            st.dataframe(df_inv, use_container_width=True, hide_index=True)
-        else:
-            st.info("Inventario vazio.")
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        with st.form("form_inv", clear_on_submit=True):
-            c1, c2, c3 = st.columns(3)
-            item_i = c1.text_input("Item / Equipamento")
-            cat_i = c2.selectbox("Categoria:", [
-                "Ferramenta", "Equipamento", "Material", "EPI", "Mobiliario", "Outro"
-            ])
-            qtd_i = c3.number_input("Quantidade:", min_value=0, step=1)
-
-            c4, c5, c6 = st.columns(3)
-            unid_i = c4.selectbox("Unidade:", [
-                "Un", "Kg", "Lt", "M", "Par", "Conjunto", "Caixa"
-            ])
-            stand_i = c5.selectbox("Stand / Local:", [
-                "Almoxarifado", "Escritorio"
-            ] + stands_list)
-            stat_i = c6.selectbox("Estado:", [
-                "Disponivel", "Em Uso", "Em Manutencao", "Descartado"
-            ])
-
-            prop_i = st.selectbox("Propriedade:", [
-                "Raphson",
-                "Omega",
-                "Raphson x Omega",
-                "Raphson x Omega x 4V"
-            ])
-
-            if st.form_submit_button("Registrar Item", use_container_width=True):
-                if item_i.strip():
-                    df_inv2 = carregar('inventario')
-                    nova = pd.DataFrame([[
-                        proximo_id(df_inv2),
-                        item_i.strip(), cat_i, qtd_i,
-                        unid_i, stand_i, stat_i, prop_i
-                    ]], columns=COLUNAS['inventario'])
-                    df_inv2 = pd.concat([df_inv2, nova], ignore_index=True)
-                    salvar(df_inv2, 'inventario')
-                    st.success(item_i + " registrado no inventario!")
-                    st.rerun()
-                else:
-                    st.warning("Informe o nome do item.")
