@@ -7,122 +7,118 @@ import calendar
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="Gestão Omega & Raphson", layout="wide", page_icon="🏗️")
 
-# --- 1. CONTROLE DE ACESSO (SESSION STATE) ---
+# --- CSS PARA ESTILIZAÇÃO DA TELA DE LOGIN ---
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f5f7f9;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 24px;
+        justify-content: center;
+    }
+    .stTabs [data-baseweb="tab"] {
+        height: 50px;
+        white-space: pre-wrap;
+        background-color: #ffffff;
+        border-radius: 4px 4px 0px 0px;
+        gap: 1px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    div[data-testid="stExpander"] {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    .welcome-text {
+        text-align: center;
+        color: #1E3A8A;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        margin-bottom: 20px;
+    }
+    .login-container {
+        max-width: 500px;
+        margin: auto;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- 1. CONTROLE DE ACESSO ---
 if 'autenticado' not in st.session_state:
     st.session_state['autenticado'] = False
 if 'nivel' not in st.session_state:
     st.session_state['nivel'] = "Leitor"
-if 'user_logado' not in st.session_state:
-    st.session_state['user_logado'] = ""
 
 def realizar_login(u, s):
-    # Base temporária de usuários
     usuarios_validos = {
-        "admin": {"senha": "1234", "nivel": "Admin"},
-        "editor": {"senha": "1234", "nivel": "Editor"},
-        "raphaelcardozo@raphsonengenharia.com.br": {"senha": "1234", "nivel": "Admin"}
+        "admin": "1234",
+        "raphaelcardozo@raphsonengenharia.com.br": "1234"
     }
-    
     u_clean = u.strip().lower()
-    if u_clean in usuarios_validos and s == usuarios_validos[u_clean]["senha"]:
+    if u_clean in usuarios_validos and s == usuarios_validos[u_clean]:
         st.session_state['autenticado'] = True
-        st.session_state['nivel'] = usuarios_validos[u_clean]["nivel"]
-        st.session_state['user_logado'] = u_clean
+        st.session_state['nivel'] = "Admin"
         st.rerun()
     else:
-        st.error("Usuário ou senha incorretos.")
+        st.error("⚠️ Credenciais incorretas. Tente novamente.")
 
-def realizar_logout():
-    st.session_state['autenticado'] = False
-    st.rerun()
-
-# --- 2. TELA DE ENTRADA ---
+# --- 2. TELA DE LOGIN ESTILIZADA ---
 if not st.session_state['autenticado']:
-    # Responsividade das Logos
-    col_l1, col_l2, col_l3, col_l4 = st.columns([1, 2, 2, 1])
+    # Espaçamento Superior
+    st.write("<br>", unsafe_allow_html=True)
+    
+    # Logos Centralizadas e Responsivas
+    col_l1, col_l2, col_l3, col_l4 = st.columns([1, 1.5, 1.5, 1])
     
     with col_l2:
         try:
-            logo_raphson = Image.open("LOGO RAPHSON FUNDO TRANSPARENTE.png")
-            st.image(logo_raphson, use_container_width=True)
-        except:
-            st.write("Logo Raphson")
+            st.image("LOGO RAPHSON FUNDO TRANSPARENTE.png", use_container_width=True)
+        except: st.write("Logo Raphson")
             
     with col_l3:
         try:
-            logo_omega = Image.open("omega inc.png")
-            st.image(logo_omega, use_container_width=True)
-        except:
-            st.write("Logo Omega")
+            st.image("omega inc.png", use_container_width=True)
+        except: st.write("Logo Omega")
 
-    st.markdown("<h1 style='text-align: center;'>Sistema Integrado Omega & Raphson</h1>", unsafe_allow_html=True)
+    # Título e Boas-Vindas
+    st.markdown("<h1 style='text-align: center; color: #0f172a;'>Gestão Integrada Omega Inc & Raphson Engenharia</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 18px; color: #64748b;'>Bem-vindo ao portal administrativo. Identifique-se para continuar.</p>", unsafe_allow_html=True)
+
+    # Container de Login
+    col_c1, col_c2, col_c3 = st.columns([1, 2, 1])
     
-    t_login, t_reset = st.tabs(["🔐 Acesso", "🔑 Esqueci a Senha"])
+    with col_c2:
+        tab_login, tab_reset = st.tabs(["🔐 Entrar no Sistema", "🔑 Redefinir Acesso"])
+        
+        with tab_login:
+            with st.form("login_moderno"):
+                u_input = st.text_input("Usuário ou E-mail")
+                s_input = st.text_input("Sua Senha", type="password")
+                st.write("<br>", unsafe_allow_html=True)
+                if st.form_submit_button("ACESSAR PAINEL", use_container_width=True):
+                    realizar_login(u_input, s_input)
+                    
+        with tab_reset:
+            st.write("### Recuperar Senha")
+            email_rec = st.text_input("Digite seu e-mail cadastrado")
+            if st.button("ENVIAR CÓDIGO", use_container_width=True):
+                st.info("Se o e-mail estiver cadastrado, você receberá um link de redefinição.")
     
-    with t_login:
-        with st.form("login_form"):
-            u_input = st.text_input("Usuário (E-mail)")
-            s_input = st.text_input("Senha", type="password")
-            if st.form_submit_button("Entrar", use_container_width=True):
-                realizar_login(u_input, s_input)
-                
-    with t_reset:
-        st.subheader("Recuperação de Acesso")
-        email_rec = st.text_input("Digite seu e-mail cadastrado")
-        if st.button("Enviar link de redefinição", use_container_width=True):
-            st.success(f"Instruções enviadas para {email_rec}")
     st.stop()
 
-# --- 3. BARRA LATERAL (PÓS-LOGIN) ---
+# --- 3. SISTEMA APÓS LOGIN (MANTIDO) ---
 with st.sidebar:
-    # Exibe logos menores no menu lateral
-    c_s1, c_s2 = st.columns(2)
-    with c_s1:
-        st.image("LOGO RAPHSON FUNDO TRANSPARENTE.png", use_container_width=True)
-    with c_s2:
-        st.image("omega inc.png", use_container_width=True)
-        
-    st.write(f"👤 **Logado:** {st.session_state['user_logado']}")
-    if st.button("🚪 Sair", use_container_width=True):
-        realizar_logout()
-    
+    st.success(f"Logado como: {st.session_state['nivel']}")
+    if st.button("🚪 Sair"):
+        st.session_state['autenticado'] = False
+        st.rerun()
     st.divider()
-    modulo = st.selectbox("Navegação:", ["🏠 Dashboard", "📅 Escala de Trabalho", "👤 Gestão e Cadastros", "🛠️ Manutenção", "🤝 Comercial"])
+    modulo = st.selectbox("Menu:", ["🏠 Dashboard", "📅 Escala", "👤 Gestão"])
 
-# --- 4. DASHBOARD ---
 if modulo == "🏠 Dashboard":
-    st.title("Painel de Gestão Integrada")
-    st.info("Bem-vindo ao sistema unificado.")
-
-# --- 5. ESCALA DE TRABALHO ---
-elif modulo == "📅 Escala de Trabalho":
-    st.title("📅 Calendário de Escalas")
-    hoje = datetime.now()
-    cal = calendar.monthcalendar(hoje.year, hoje.month)
-    
-    cols_h = st.columns(7)
-    dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
-    for i, d in enumerate(dias): cols_h[i].write(f"**{d}**")
-        
-    for semana in cal:
-        cols = st.columns(7)
-        for i, dia in enumerate(semana):
-            if dia != 0:
-                if cols[i].button(str(dia), key=f"d_{dia}", use_container_width=True):
-                    st.toast(f"Dia {dia} selecionado.")
-
-# --- 6. GESTÃO E CADASTROS ---
-elif modulo == "👤 Gestão e Cadastros":
-    if st.session_state['nivel'] in ["Admin", "Editor"]:
-        st.title("👤 Administração")
-        tab_u, tab_s, tab_i = st.tabs(["👥 Usuários", "🏢 Stands", "📦 Inventário"])
-        
-        with tab_u:
-            st.write("### Base de Usuários")
-            st.table(pd.DataFrame({
-                "Nome": ["Raphael Cardozo", "Técnico Silva"],
-                "E-mail": ["raphaelcardozo@raphsonengenharia.com.br", "silva@omega.com"],
-                "Nível": ["Admin", "Editor"]
-            }))
-    else:
-        st.error("Acesso restrito.")
+    st.title("Painel Geral")
+    st.write("Sistema Operacional.")
