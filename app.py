@@ -35,7 +35,10 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 { color: #f1f5f9 !important; }
-[data-testid="stSidebar"] hr { border-color: rgba(255,255,255,0.08) !important; margin: 0.75rem 0; }
+[data-testid="stSidebar"] hr {
+    border-color: rgba(255,255,255,0.08) !important;
+    margin: 0.75rem 0;
+}
 [data-testid="stSidebar"] .stSelectbox > div > div {
     background: rgba(255,255,255,0.07) !important;
     border: 1px solid rgba(255,255,255,0.12) !important;
@@ -82,8 +85,18 @@ h3 { color: #334155 !important; font-weight: 600 !important; font-size: 1.05rem 
     box-shadow: 0 8px 32px rgba(30,58,138,0.25);
 }
 .page-header-icon { font-size: 2.2rem; line-height: 1; }
-.page-header-title { color: #ffffff !important; font-size: 1.6rem !important; font-weight: 800 !important; margin: 0 !important; letter-spacing: -0.02em; }
-.page-header-sub { color: rgba(255,255,255,0.72) !important; font-size: 0.88rem; margin-top: 2px; }
+.page-header-title {
+    color: #ffffff !important;
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
+    letter-spacing: -0.02em;
+}
+.page-header-sub {
+    color: rgba(255,255,255,0.72) !important;
+    font-size: 0.88rem;
+    margin-top: 2px;
+}
 
 [data-testid="stMetric"] {
     background: #ffffff !important;
@@ -94,9 +107,22 @@ h3 { color: #334155 !important; font-weight: 600 !important; font-size: 1.05rem 
     border-top: 4px solid #3b82f6 !important;
     transition: transform 0.2s, box-shadow 0.2s;
 }
-[data-testid="stMetric"]:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(59,130,246,0.15) !important; }
-[data-testid="stMetricLabel"] { font-size: 0.78rem !important; font-weight: 600 !important; color: #64748b !important; text-transform: uppercase; letter-spacing: 0.05em; }
-[data-testid="stMetricValue"] { font-size: 2rem !important; font-weight: 800 !important; color: #0f172a !important; }
+[data-testid="stMetric"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(59,130,246,0.15) !important;
+}
+[data-testid="stMetricLabel"] {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: #64748b !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+[data-testid="stMetricValue"] {
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+}
 
 [data-testid="stForm"] {
     background: #ffffff;
@@ -126,7 +152,10 @@ h3 { color: #334155 !important; font-weight: 600 !important; font-size: 1.05rem 
     transition: all 0.2s !important;
     border: none !important;
 }
-.stButton > button:hover { transform: translateY(-2px) !important; box-shadow: 0 6px 20px rgba(37,99,235,0.35) !important; }
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(37,99,235,0.35) !important;
+}
 
 [data-testid="stTabs"] [data-baseweb="tab-list"] {
     background: #f1f5f9;
@@ -155,9 +184,16 @@ h3 { color: #334155 !important; font-weight: 600 !important; font-size: 1.05rem 
     border: 1px solid #e2e8f0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-[data-testid="stAlert"] { border-radius: 12px !important; border: none !important; font-weight: 500; }
-[data-testid="stExpander"] { background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0 !important; }
-
+[data-testid="stAlert"] {
+    border-radius: 12px !important;
+    border: none !important;
+    font-weight: 500;
+}
+[data-testid="stExpander"] {
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0 !important;
+}
 hr { border: none; border-top: 1px solid #e2e8f0; margin: 1.25rem 0; }
 
 .custom-card {
@@ -195,9 +231,26 @@ hr { border: none; border-top: 1px solid #e2e8f0; margin: 1.25rem 0; }
 .badge-concluido { background: #dcfce7; color: #166534; }
 .badge-cancelado { background: #fee2e2; color: #991b1b; }
 
-.login-title { text-align: center; color: #0f172a !important; font-size: 1.5rem !important; font-weight: 800 !important; }
-.login-sub { text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 1.5rem; }
-.foto-label { font-size: 0.78rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+.login-title {
+    text-align: center;
+    color: #0f172a !important;
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+}
+.login-sub {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+.foto-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
 
 @media (max-width: 768px) {
     .block-container { padding: 1rem 1rem 2rem !important; }
@@ -242,15 +295,16 @@ COLUNAS = {
     'usuarios':   ['ID','Nome','Email','Senha','Setor','Funcao','Nivel','Ativo'],
     'manutencao': ['ID','Data','Stand','Descricao','Responsavel','Urgencia',
                    'Status','Prazo','FotoAntes','FotoDepois','PedidoCompras','Obs'],
-    'comercial':  ['ID','Data','Cliente','Contato','Stand','Produto','Etapa','Responsavel','Obs'],
+    'comercial':  ['ID','Data','Cliente','Contato','Stand','Produto',
+                   'Etapa','Responsavel','Obs'],
     'escala':     ['ID','Data','DiaSemana','Colaborador','Setor','Stand','Turno','Status'],
     'financeiro': ['ID','Data','Tipo','Categoria','Descricao','Valor','Responsavel'],
     'marketing':  ['ID','Data','Campanha','Tipo','Responsavel','Stand','Status','Prazo'],
-    'compras':    ['ID','Data','Item','Quantidade','Unidade','Solicitante','Setor',
-                   'Urgencia','Status','OrigemChamadoID'],
+    'compras':    ['ID','Data','Item','Quantidade','Unidade','Solicitante',
+                   'Setor','Urgencia','Status','OrigemChamadoID'],
     'stands':     ['ID','Nome','Endereco','Status','Responsavel'],
-    'inventario': ['ID','Item','Categoria','Quantidade','Unidade','Stand',
-                   'Estado','Propriedade'],
+    'inventario': ['ID','Item','Categoria','Quantidade','Unidade',
+                   'Stand','Estado','Propriedade'],
 }
 
 def carregar(modulo):
@@ -299,7 +353,9 @@ def decode_img(b64str):
 # ============================================================
 def garantir_admin():
     df = carregar('usuarios')
-    if df.empty or not (df['Email'].str.lower() == 'raphaelcardozo@raphsonengenharia.com.br').any():
+    if df.empty or not (
+        df['Email'].str.lower() == 'raphaelcardozo@raphsonengenharia.com.br'
+    ).any():
         novo = pd.DataFrame([[
             1, 'Raphael Cardozo',
             'raphaelcardozo@raphsonengenharia.com.br',
@@ -369,7 +425,8 @@ if not st.session_state['autenticado']:
     with cc2:
         st.markdown("""
             <div style='background:#fff;border-radius:20px;padding:2.5rem 2rem;
-                        box-shadow:0 20px 60px rgba(0,0,0,0.10);border:1px solid #e2e8f0;'>
+                        box-shadow:0 20px 60px rgba(0,0,0,0.10);
+                        border:1px solid #e2e8f0;'>
         """, unsafe_allow_html=True)
 
         st.markdown(
@@ -383,10 +440,20 @@ if not st.session_state['autenticado']:
 
         with tab_login:
             with st.form("form_login", clear_on_submit=False):
-                email_in = st.text_input("📧  E-mail corporativo", placeholder="seu@email.com.br")
-                senha_in = st.text_input("🔒  Senha", type="password", placeholder="••••••••")
+                email_in = st.text_input(
+                    "📧  E-mail corporativo",
+                    placeholder="seu@email.com.br"
+                )
+                senha_in = st.text_input(
+                    "🔒  Senha",
+                    type="password",
+                    placeholder="••••••••"
+                )
                 st.markdown("<br>", unsafe_allow_html=True)
-                if st.form_submit_button("ACESSAR O PAINEL →", use_container_width=True):
+                if st.form_submit_button(
+                    "ACESSAR O PAINEL →",
+                    use_container_width=True
+                ):
                     if email_in and senha_in:
                         realizar_login(email_in, senha_in)
                     else:
@@ -395,8 +462,8 @@ if not st.session_state['autenticado']:
         with tab_reset:
             st.markdown("<br>", unsafe_allow_html=True)
             email_rst  = st.text_input("E-mail cadastrado",  key="rst_email")
-            nova_senha = st.text_input("Nova senha",          type="password", key="rst_nova")
-            conf_senha = st.text_input("Confirme a senha",    type="password", key="rst_conf")
+            nova_senha = st.text_input("Nova senha",  type="password", key="rst_nova")
+            conf_senha = st.text_input("Confirme",    type="password", key="rst_conf")
             if st.button("Redefinir Senha", use_container_width=True):
                 if not email_rst:
                     st.warning("Informe o e-mail.")
@@ -490,10 +557,10 @@ if modulo == "🏠  Dashboard":
     df_sta = carregar('stands')
     df_usr = carregar('usuarios')
 
-    stands_ativos = len(df_sta[df_sta['Status'] == 'Ativo'])          if not df_sta.empty else 0
-    man_pendentes = len(df_man[df_man['Status'] == 'Pendente'])        if not df_man.empty else 0
-    escalas_hoje  = len(df_esc[df_esc['Data'] == str(date.today())])  if not df_esc.empty else 0
-    usuarios_atv  = len(df_usr[df_usr['Ativo'] == 'Sim'])              if not df_usr.empty else 0
+    stands_ativos = len(df_sta[df_sta['Status'] == 'Ativo'])         if not df_sta.empty else 0
+    man_pendentes = len(df_man[df_man['Status'] == 'Pendente'])       if not df_man.empty else 0
+    escalas_hoje  = len(df_esc[df_esc['Data'] == str(date.today())]) if not df_esc.empty else 0
+    usuarios_atv  = len(df_usr[df_usr['Ativo'] == 'Sim'])             if not df_usr.empty else 0
 
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("🏪 Stands Ativos",         stands_ativos)
@@ -503,6 +570,7 @@ if modulo == "🏠  Dashboard":
 
     st.markdown("<br>", unsafe_allow_html=True)
     ca, cb = st.columns(2)
+
     with ca:
         st.markdown("<div class='custom-card'>", unsafe_allow_html=True)
         st.markdown("#### 🛠️ Últimas Manutenções")
@@ -535,9 +603,10 @@ elif modulo == "📅  Escala de Trabalho":
     page_header("📅", "Escala de Trabalho",
                 f"{calendar.month_name[hoje.month]} / {hoje.year}")
 
-    df_esc = carregar('escala')
-    cal    = calendar.monthcalendar(hoje.year, hoje.month)
-    nomes  = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"]
+    df_esc      = carregar('escala')
+    cal         = calendar.monthcalendar(hoje.year, hoje.month)
+    nomes       = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"]
+    stands_list = get_stands()
 
     st.markdown("<div class='custom-card'>", unsafe_allow_html=True)
     cab = st.columns(7)
@@ -556,7 +625,10 @@ elif modulo == "📅  Escala de Trabalho":
                 cols[i].write("")
             else:
                 data_str   = f"{hoje.year}-{hoje.month:02d}-{dia:02d}"
-                tem_escala = (not df_esc.empty and (df_esc['Data'] == data_str).any())
+                tem_escala = (
+                    not df_esc.empty and
+                    (df_esc['Data'] == data_str).any()
+                )
                 if cols[i].button(
                     str(dia) + ("📌" if tem_escala else ""),
                     key=f"cal_{dia}",
@@ -567,7 +639,11 @@ elif modulo == "📅  Escala de Trabalho":
     st.markdown("</div>", unsafe_allow_html=True)
 
     if dia_sel:
-        esc_dia = df_esc[df_esc['Data'] == dia_sel] if not df_esc.empty else pd.DataFrame()
+        esc_dia = (
+            df_esc[df_esc['Data'] == dia_sel]
+            if not df_esc.empty
+            else pd.DataFrame()
+        )
         if not esc_dia.empty:
             st.success(f"📋 Escala de {dia_sel}:")
             st.dataframe(
@@ -581,14 +657,14 @@ elif modulo == "📅  Escala de Trabalho":
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("#### ➕ Gerenciar Escala")
         colaboradores = get_usuarios_ativos()
-        stands_list   = get_stands()
 
         with st.form("form_escala"):
             c1, c2, c3 = st.columns(3)
             data_esc  = c1.date_input("Data", value=date.today())
             colab     = c2.selectbox("Colaborador", colaboradores)
             setor_esc = c3.selectbox("Setor", [
-                "Manutenção","Comercial","Financeiro","Marketing","Compras","Diretoria"
+                "Manutenção","Comercial","Financeiro",
+                "Marketing","Compras","Diretoria"
             ])
             c4, c5, c6 = st.columns(3)
             stand_esc = c4.selectbox("Stand / Local", stands_list + ["Escritório Central"])
@@ -609,7 +685,9 @@ elif modulo == "📅  Escala de Trabalho":
         if not df_esc.empty:
             with st.expander("📋 Ver / Remover Escalas"):
                 st.dataframe(df_esc, use_container_width=True, hide_index=True)
-                id_del = st.number_input("ID para remover:", min_value=1, step=1, key="del_esc")
+                id_del = st.number_input(
+                    "ID para remover:", min_value=1, step=1, key="del_esc"
+                )
                 if st.button("🗑️ Remover", key="btn_del_esc"):
                     df_esc = df_esc[df_esc['ID'] != id_del]
                     salvar(df_esc, 'escala')
@@ -645,8 +723,10 @@ elif modulo == "🛠️  Manutenção":
                 default=["Pendente","Em Andamento","Aguardando Material"]
             )
             f_urg = cf3.multiselect(
-                "Urgência:", ["Alta","Média","Baixa"], default=["Alta","Média","Baixa"]
+                "Urgência:", ["Alta","Média","Baixa"],
+                default=["Alta","Média","Baixa"]
             )
+
             df_vis = df_man[
                 df_man['Stand'].isin(f_stand) &
                 df_man['Status'].isin(f_status) &
@@ -654,34 +734,68 @@ elif modulo == "🛠️  Manutenção":
             ]
 
             for _, row in df_vis.iterrows():
-                urg_class = {"Alta":"os-card-alta","Média":"os-card-media","Baixa":"os-card-baixa"}.get(str(row.get('Urgencia','')), "")
+                urg_class = {
+                    "Alta":  "os-card-alta",
+                    "Média": "os-card-media",
+                    "Baixa": "os-card-baixa"
+                }.get(str(row.get('Urgencia', '')), "")
+
                 badge_map = {
-                    "Pendente":"badge-pendente","Em Andamento":"badge-andamento",
-                    "Aguardando Material":"badge-material",
-                    "Concluído":"badge-concluido","Cancelado":"badge-cancelado"
+                    "Pendente":            "badge-pendente",
+                    "Em Andamento":        "badge-andamento",
+                    "Aguardando Material": "badge-material",
+                    "Concluído":           "badge-concluido",
+                    "Cancelado":           "badge-cancelado",
                 }
-                badge_cls = badge_map.get(str(row.get('Status','')), "")
-                prazo_txt = f"&nbsp;|&nbsp;⏰ Prazo: {row.get('Prazo','')}" if str(row.get('Prazo','')) not in ['','nan'] else ''
-                pedido_txt = f"<div style='margin-top:6px;font-size:0.8rem;color:#7c3aed;'>📦 Pedido Compras: {row.get('PedidoCompras','')}</div>" if str(row.get('PedidoCompras','')) not in ['','nan'] else ''
-                obs_txt = f"<div style='margin-top:4px;font-size:0.8rem;color:#64748b;'>💬 {row.get('Obs','')}</div>" if str(row.get('Obs','')) not in ['','nan'] else ''
+                badge_cls = badge_map.get(str(row.get('Status', '')), "")
+
+                prazo_txt = (
+                    f"&nbsp;|&nbsp;⏰ Prazo: {row.get('Prazo','')}"
+                    if str(row.get('Prazo', '')) not in ['', 'nan'] else ''
+                )
+                pedido_txt = (
+                    f"<div style='margin-top:6px;font-size:0.8rem;color:#7c3aed;'>"
+                    f"📦 Pedido Compras: {row.get('PedidoCompras','')}</div>"
+                    if str(row.get('PedidoCompras', '')) not in ['', 'nan'] else ''
+                )
+                obs_txt = (
+                    f"<div style='margin-top:4px;font-size:0.8rem;color:#64748b;'>"
+                    f"💬 {row.get('Obs','')}</div>"
+                    if str(row.get('Obs', '')) not in ['', 'nan'] else ''
+                )
 
                 st.markdown(f"""
                     <div class='os-card {urg_class}'>
-                        <div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;'>
+                        <div style='display:flex;justify-content:space-between;
+                                    align-items:center;flex-wrap:wrap;gap:8px;'>
                             <div>
-                                <span style='font-weight:800;font-size:1rem;color:#0f172a;'>OS #{int(row['ID'])}</span>
-                                &nbsp;<span class='status-badge {badge_cls}'>{row.get('Status','')}</span>
-                                &nbsp;<span style='font-size:0.8rem;color:#64748b;'>⚡ {row.get('Urgencia','')}</span>
+                                <span style='font-weight:800;font-size:1rem;
+                                             color:#0f172a;'>OS #{int(row['ID'])}</span>
+                                &nbsp;
+                                <span class='status-badge {badge_cls}'>
+                                    {row.get('Status','')}
+                                </span>
+                                &nbsp;
+                                <span style='font-size:0.8rem;color:#64748b;'>
+                                    ⚡ {row.get('Urgencia','')}
+                                </span>
                             </div>
-                            <span style='font-size:0.8rem;color:#94a3b8;'>📅 {row.get('Data','')}{prazo_txt}</span>
+                            <span style='font-size:0.8rem;color:#94a3b8;'>
+                                📅 {row.get('Data','')}{prazo_txt}
+                            </span>
                         </div>
                         <div style='margin-top:8px;'>
                             <span style='font-size:0.85rem;color:#334155;'>
-                                🏪 <b>{row.get('Stand','')}</b> &nbsp;|&nbsp; 👷 {row.get('Responsavel','')}
+                                🏪 <b>{row.get('Stand','')}</b>
+                                &nbsp;|&nbsp;
+                                👷 {row.get('Responsavel','')}
                             </span>
                         </div>
-                        <div style='margin-top:6px;font-size:0.88rem;color:#475569;'>{str(row.get('Descricao',''))[:180]}</div>
-                        {pedido_txt}{obs_txt}
+                        <div style='margin-top:6px;font-size:0.88rem;color:#475569;'>
+                            {str(row.get('Descricao',''))[:180]}
+                        </div>
+                        {pedido_txt}
+                        {obs_txt}
                     </div>
                 """, unsafe_allow_html=True)
 
@@ -691,11 +805,17 @@ elif modulo == "🛠️  Manutenção":
                     col_f1, col_f2 = st.columns(2)
                     if foto_antes:
                         with col_f1:
-                            st.markdown("<p class='foto-label'>📷 Foto Antes</p>", unsafe_allow_html=True)
+                            st.markdown(
+                                "<p class='foto-label'>📷 Foto Antes</p>",
+                                unsafe_allow_html=True
+                            )
                             st.image(foto_antes, use_container_width=True)
                     if foto_depois:
                         with col_f2:
-                            st.markdown("<p class='foto-label'>📷 Foto Depois</p>", unsafe_allow_html=True)
+                            st.markdown(
+                                "<p class='foto-label'>📷 Foto Depois</p>",
+                                unsafe_allow_html=True
+                            )
                             st.image(foto_depois, use_container_width=True)
 
     # ── TAB 2: ABRIR CHAMADO ───────────────────────────────
@@ -712,7 +832,7 @@ elif modulo == "🛠️  Manutenção":
                 urg_m   = c3.select_slider("Urgência:", ["Baixa","Média","Alta"])
                 desc_m  = st.text_area(
                     "📝 Descrição detalhada do problema:", height=120,
-                    placeholder="Descreva o problema com o máximo de detalhes possível..."
+                    placeholder="Descreva o problema com o máximo de detalhes..."
                 )
                 st.markdown("#### 📷 Foto do Problema (Antes)")
                 foto_antes_up = st.file_uploader(
@@ -720,8 +840,9 @@ elif modulo == "🛠️  Manutenção":
                     type=["jpg","jpeg","png","webp"],
                     key=f"foto_antes_{st.session_state['man_form_key']}"
                 )
-
-                if st.form_submit_button("🚀 Abrir Ordem de Serviço", use_container_width=True):
+                if st.form_submit_button(
+                    "🚀 Abrir Ordem de Serviço", use_container_width=True
+                ):
                     if desc_m.strip():
                         df_man = carregar('manutencao')
                         nova = pd.DataFrame([[
@@ -747,7 +868,10 @@ elif modulo == "🛠️  Manutenção":
             if df_man.empty:
                 st.info("Nenhuma OS registrada.")
             else:
-                ids_abertos = df_man[~df_man['Status'].isin(['Concluído','Cancelado'])]['ID'].tolist()
+                ids_abertos = df_man[
+                    ~df_man['Status'].isin(['Concluído','Cancelado'])
+                ]['ID'].tolist()
+
                 if not ids_abertos:
                     st.success("🎉 Todas as OS estão concluídas ou canceladas!")
                 else:
@@ -770,16 +894,349 @@ elif modulo == "🛠️  Manutenção":
                             ⚡ {os_row.get('Urgencia','')} &nbsp;|&nbsp;
                             📅 Abertura: {os_row.get('Data','')}
                             <br><br>
-                            <span style='color:#475569'>{os_row.get('Descricao','')}</span>
+                            <span style='color:#475569;'>
+                                {os_row.get('Descricao','')}
+                            </span>
                         </div>
                     """, unsafe_allow_html=True)
 
                     with st.form("form_upd_os"):
-                        status_opcoes = ["Pendente","Em Andamento","Aguardando Material","Concluído","Cancelado"]
-                        status_atual  = str(os_row.get('Status','Pendente'))
-                        idx_status    = status_opcoes.index(status_atual) if status_atual in status_opcoes else 0
+                        status_opcoes = [
+                            "Pendente","Em Andamento",
+                            "Aguardando Material","Concluído","Cancelado"
+                        ]
+                        status_atual = str(os_row.get('Status', 'Pendente'))
+                        idx_status   = (
+                            status_opcoes.index(status_atual)
+                            if status_atual in status_opcoes else 0
+                        )
 
                         c1, c2 = st.columns(2)
-                        novo_status = c1.selectbox("Novo Status:", status_opcoes, index=idx_status)
-                        pra
+                        novo_status = c1.selectbox(
+                            "Novo Status:", status_opcoes, index=idx_status
+                        )
+                        prazo_os = c2.date_input(
+                            "Prazo de Conclusão:", value=date.today()
+                        )
+
+                        obs_os = st.text_area(
+                            "💬 Observações / Atualização:",
+                            placeholder="Descreva o que foi feito ou o motivo...",
+                            height=100
+                        )
+
+                        st.markdown("---")
+                        st.markdown("#### 📦 Solicitar Material ao Compras")
+                        col_m1, col_m2, col_m3 = st.columns(3)
+                        solicitar_mat = col_m1.checkbox(
+                            "Enviar pedido de material"
+                        )
+                        material_desc = col_m2.text_input(
+                            "Material necessário:",
+                            disabled=not solicitar_mat
+                        )
+                        material_qtd = col_m3.number_input(
+                            "Quantidade:", min_value=1, step=1,
+                            disabled=not solicitar_mat
+                        )
+
+                        st.markdown("---")
+                        st.markdown("#### 📷 Registrar Fotos")
+                        col_f1, col_f2 = st.columns(2)
+                        foto_antes_upd = col_f1.file_uploader(
+                            "📷 Foto Antes (atualizar)",
+                            type=["jpg","jpeg","png","webp"],
+                            key="upd_antes"
+                        )
+                        foto_depois_upd = col_f2.file_uploader(
+                            "📷 Foto Depois",
+                            type=["jpg","jpeg","png","webp"],
+                            key="upd_depois"
+                        )
+
+                        if st.form_submit_button(
+                            "💾 Salvar Atualização", use_container_width=True
+                        ):
+                            df_man = carregar('manutencao')
+                            idx   = df_man[df_man['ID'] == id_sel].index[0]
+
+                            df_man.at[idx, 'Status'] = novo_status
+                            df_man.at[idx, 'Prazo']  = str(prazo_os)
+                            df_man.at[idx, 'Obs']    = obs_os
+
+                            if foto_antes_upd:
+                                df_man.at[idx, 'FotoAntes'] = encode_img(foto_antes_upd)
+                            if foto_depois_upd:
+                                df_man.at[idx, 'FotoDepois'] = encode_img(foto_depois_upd)
+
+                            pedido_ref = ''
+                            if solicitar_mat and material_desc.strip():
+                                df_cmp      = carregar('compras')
+                                novo_id_cmp = proximo_id(df_cmp)
+                                pedido_ref  = f"#{novo_id_cmp} — {material_desc}"
+                                nova_cmp = pd.DataFrame([[
+                                    novo_id_cmp,
+                                    datetime.now().strftime("%d/%m/%Y"),
+                                    material_desc, material_qtd, "Un",
+                                    os_row.get('Responsavel', ''),
+                                    "Manutenção",
+                                    os_row.get('Urgencia', 'Média'),
+                                    "Pendente",
+                                    f"OS #{id_sel}"
+                                ]], columns=COLUNAS['compras'])
+                                df_cmp = pd.concat([df_cmp, nova_cmp], ignore_index=True)
+                                salvar(df_cmp, 'compras')
+                                df_man.at[idx, 'PedidoCompras'] = pedido_ref
+
+                            salvar(df_man, 'manutencao')
+                            msg = f"✅ OS #{id_sel} atualizada para '{novo_status}'!"
+                            if pedido_ref:
+                                msg += f" Pedido {pedido_ref} enviado ao Compras."
+                            st.success(msg)
+                            st.rerun()
+        else:
+            st.warning("Apenas Editores e Admins podem atualizar OS.")
+
+# ============================================================
+# 13. COMERCIAL
+# ============================================================
+elif modulo == "🤝  Comercial":
+    page_header("🤝", "Gestão Comercial",
+                "Leads, negociações e pipeline de vendas")
+
+    df_com      = carregar('comercial')
+    stands_list = get_stands()
+    tab1, tab2  = st.tabs(["📋  Pipeline", "➕  Novo Lead"])
+
+    with tab1:
+        if df_com.empty:
+            st.info("Nenhuma negociação registrada.")
+        else:
+            f_etapa = st.multiselect(
+                "Etapa:",
+                ["Prospecção","Proposta","Negociação","Fechado","Perdido"],
+                default=["Prospecção","Proposta","Negociação"]
+            )
+            df_vis = df_com[df_com['Etapa'].isin(f_etapa)] if f_etapa else df_com
+            st.dataframe(df_vis, use_container_width=True, hide_index=True)
+
+            if NIVEL in ['Admin','Editor'] and not df_com.empty:
+                st.markdown("---")
+                cx1, cx2 = st.columns(2)
+                id_c = cx1.selectbox("ID:", df_com['ID'].tolist())
+                et_n = cx2.selectbox(
+                    "Etapa:",
+                    ["Prospecção","Proposta","Negociação","Fechado","Perdido"],
+                    key="etapa_upd"
+                )
+                if st.button("✅ Atualizar Etapa"):
+                    df_com.loc[df_com['ID'] == id_c, 'Etapa'] = et_n
+                    salvar(df_com, 'comercial')
+                    st.success("Atualizado!")
+                    st.rerun()
+
+    with tab2:
+        if NIVEL in ['Admin','Editor']:
+            colaboradores = get_usuarios_ativos()
+            with st.form("form_com", clear_on_submit=True):
+                c1, c2 = st.columns(2)
+                cliente = c1.text_input("Cliente / Empresa")
+                contato = c2.text_input("WhatsApp / E-mail")
+                c3, c4, c5 = st.columns(3)
+                stand_c = c3.selectbox("Stand:", stands_list)
+                produto = c4.text_input("Produto / Serviço")
+                etapa_c = c5.selectbox(
+                    "Etapa:",
+                    ["Prospecção","Proposta","Negociação","Fechado","Perdido"]
+                )
+                resp_c = st.selectbox("Responsável:", colaboradores)
+                obs_c  = st.text_area("Observações:")
+                if st.form_submit_button("💼 Registrar", use_container_width=True):
+                    if cliente.strip():
+                        nova = pd.DataFrame([[
+                            proximo_id(df_com),
+                            datetime.now().strftime("%d/%m/%Y"),
+                            cliente, contato, stand_c, produto, etapa_c, resp_c, obs_c
+                        ]], columns=COLUNAS['comercial'])
+                        df_com = pd.concat([df_com, nova], ignore_index=True)
+                        salvar(df_com, 'comercial')
+                        st.success(f"✅ Lead '{cliente}' registrado!")
+                        st.rerun()
+                    else:
+                        st.warning("Informe o nome do cliente.")
+        else:
+            st.warning("Apenas Editores e Admins podem registrar.")
+
+# ============================================================
+# 14. FINANCEIRO
+# ============================================================
+elif modulo == "💰  Financeiro":
+    page_header("💰", "Controle Financeiro",
+                "Lançamentos, entradas, saídas e saldo")
+
+    df_fin     = carregar('financeiro')
+    tab1, tab2 = st.tabs(["📊  Resumo", "➕  Novo Lançamento"])
+
+    with tab1:
+        if df_fin.empty:
+            st.info("Nenhum lançamento registrado.")
+        else:
+            total_e = df_fin[df_fin['Tipo'] == 'Entrada']['Valor'].astype(float).sum()
+            total_s = df_fin[df_fin['Tipo'] == 'Saída']['Valor'].astype(float).sum()
+            saldo   = total_e - total_s
+            c1, c2, c3 = st.columns(3)
+            c1.metric("💚 Entradas", f"R$ {total_e:,.2f}")
+            c2.metric("🔴 Saídas",   f"R$ {total_s:,.2f}")
+            c3.metric("🔵 Saldo",    f"R$ {saldo:,.2f}")
+            st.dataframe(df_fin, use_container_width=True, hide_index=True)
+
+    with tab2:
+        with st.form("form_fin", clear_on_submit=True):
+            c1, c2, c3 = st.columns(3)
+            tipo_f = c1.selectbox("Tipo:", ["Entrada","Saída"])
+            cat_f  = c2.selectbox("Categoria:", [
+                "Fornecedor","Salário","Material","Receita","Imposto","Outros"
+            ])
+            val_f  = c3.number_input(
+                "Valor (R$):", min_value=0.0, step=0.01, format="%.2f"
+            )
+            desc_f = st.text_input("Descrição")
+            resp_f = st.text_input("Responsável")
+            if st.form_submit_button(
+                "💾 Registrar Lançamento", use_container_width=True
+            ):
+                nova = pd.DataFrame([[
+                    proximo_id(df_fin),
+                    datetime.now().strftime("%d/%m/%Y"),
+                    tipo_f, cat_f, desc_f, val_f, resp_f
+                ]], columns=COLUNAS['financeiro'])
+                df_fin = pd.concat([df_fin, nova], ignore_index=True)
+                salvar(df_fin, 'financeiro')
+                st.success("✅ Lançamento registrado!")
+                st.rerun()
+
+# ============================================================
+# 15. MARKETING
+# ============================================================
+elif modulo == "📣  Marketing":
+    page_header("📣", "Gestão de Marketing",
+                "Campanhas, ações e materiais de comunicação")
+
+    df_mkt      = carregar('marketing')
+    stands_list = get_stands()
+    tab1, tab2  = st.tabs(["📋  Campanhas", "➕  Nova Ação"])
+
+    with tab1:
+        if df_mkt.empty:
+            st.info("Nenhuma campanha registrada.")
+        else:
+            st.dataframe(df_mkt, use_container_width=True, hide_index=True)
+
+    with tab2:
+        colaboradores = get_usuarios_ativos()
+        with st.form("form_mkt", clear_on_submit=True):
+            c1, c2 = st.columns(2)
+            camp   = c1.text_input("Campanha / Ação")
+            tipo_m = c2.selectbox("Tipo:", [
+                "Banner","Post Redes Sociais","E-mail Marketing","Evento","Outro"
+            ])
+            c3, c4, c5 = st.columns(3)
+            resp_m  = c3.selectbox("Responsável:", colaboradores)
+            stand_m = c4.selectbox("Stand:", stands_list + ["Todos","Digital"])
+            prazo_m = c5.date_input("Prazo:")
+            if st.form_submit_button(
+                "📣 Registrar Campanha", use_container_width=True
+            ):
+                if camp.strip():
+                    nova = pd.DataFrame([[
+                        proximo_id(df_mkt),
+                        datetime.now().strftime("%d/%m/%Y"),
+                        camp, tipo_m, resp_m, stand_m, "Em Andamento", str(prazo_m)
+                    ]], columns=COLUNAS['marketing'])
+                    df_mkt = pd.concat([df_mkt, nova], ignore_index=True)
+                    salvar(df_mkt, 'marketing')
+                    st.success("✅ Campanha registrada!")
+                    st.rerun()
+                else:
+                    st.warning("Informe o nome da campanha.")
+
+# ============================================================
+# 16. COMPRAS
+# ============================================================
+elif modulo == "🛒  Compras":
+    page_header("🛒", "Gestão de Compras",
+                "Pedidos, cotações e controle de materiais")
+
+    df_cmp     = carregar('compras')
+    tab1, tab2 = st.tabs(["📋  Pedidos", "➕  Novo Pedido"])
+
+    with tab1:
+        if df_cmp.empty:
+            st.info("Nenhum pedido registrado.")
+        else:
+            f_st = st.multiselect(
+                "Status:",
+                ["Pendente","Em Cotação","Aprovado","Entregue","Cancelado"],
+                default=["Pendente","Em Cotação"]
+            )
+            df_vis = df_cmp[df_cmp['Status'].isin(f_st)] if f_st else df_cmp
+            st.dataframe(df_vis, use_container_width=True, hide_index=True)
+
+            if NIVEL in ['Admin','Editor']:
+                c1, c2 = st.columns(2)
+                id_cp = c1.selectbox("ID:", df_cmp['ID'].tolist())
+                st_cp = c2.selectbox("Novo Status:", [
+                    "Pendente","Em Cotação","Aprovado","Entregue","Cancelado"
+                ])
+                if st.button("✅ Atualizar"):
+                    df_cmp.loc[df_cmp['ID'] == id_cp, 'Status'] = st_cp
+                    salvar(df_cmp, 'compras')
+                    st.success("Atualizado!")
+                    st.rerun()
+
+    with tab2:
+        with st.form("form_cmp", clear_on_submit=True):
+            c1, c2, c3 = st.columns(3)
+            item_c = c1.text_input("Item / Material")
+            qtd_c  = c2.number_input("Quantidade:", min_value=1, step=1)
+            unid_c = c3.selectbox("Unidade:", [
+                "Un","Kg","Lt","M","M²","Caixa","Pacote"
+            ])
+            c4, c5, c6 = st.columns(3)
+            solic_c = c4.text_input("Solicitante")
+            setor_c = c5.selectbox("Setor:", [
+                "Manutenção","Obra","Escritório","Marketing","Comercial"
+            ])
+            urg_c = c6.select_slider("Urgência:", ["Baixa","Média","Alta"])
+            if st.form_submit_button("🛒 Enviar Pedido", use_container_width=True):
+                if item_c.strip() and solic_c.strip():
+                    nova = pd.DataFrame([[
+                        proximo_id(df_cmp),
+                        datetime.now().strftime("%d/%m/%Y"),
+                        item_c, qtd_c, unid_c, solic_c, setor_c, urg_c, "Pendente", ""
+                    ]], columns=COLUNAS['compras'])
+                    df_cmp = pd.concat([df_cmp, nova], ignore_index=True)
+                    salvar(df_cmp, 'compras')
+                    st.success("✅ Pedido enviado!")
+                    st.rerun()
+                else:
+                    st.warning("Informe item e solicitante.")
+
+# ============================================================
+# 17. CADASTROS & CONFIGURAÇÕES
+# ============================================================
+elif modulo == "⚙️  Cadastros & Config":
+    page_header("⚙️", "Cadastros & Configurações",
+                "Usuários, stands e inventário — acesso Admin")
+
+    tab_usr, tab_std, tab_inv = st.tabs([
+        "👥  Usuários", "🏪  Stands", "📦  Inventário"
+    ])
+
+    # ── USUÁRIOS ──────────────────────────────────────────
+    with tab_usr:
+        df_usr = carregar('usuarios')
+        st.markdown("#### 👥 Usuários Cadastrados")
+        st.dataframe(
+            df_usr[['ID','Nome','Email','Setor','
 
