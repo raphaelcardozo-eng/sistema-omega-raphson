@@ -22,7 +22,6 @@ with st.sidebar:
         st.title("🏢 OMEGA & RAPHSON")
     
     st.divider()
-    # Adicionado todos os setores planejados
     modulo = st.selectbox("Escolha o Setor:", [
         "🏠 Início", 
         "🛠️ Manutenção", 
@@ -43,10 +42,11 @@ if modulo == "🏠 Início":
     with col2:
         st.metric(label="Status da Operação", value="Normal", delta="0 Alertas")
     with col3:
-        st.metric(label="Manutenções Hoje", value="2", delta="Pendentes")
+        st.metric(label="Manutenções Hoje", value="Ver Planilha", delta_color="off")
 
     st.divider()
-    st.info("Utilize o menu lateral para navegar entre os departamentos.")
+    st.markdown("### Informativos Recentes")
+    st.info("Utilize o menu lateral para navegar entre os departamentos da Omega & Raphson.")
 
 # --- 4. MÓDULO DE MANUTENÇÃO ---
 elif modulo == "🛠️ Manutenção":
@@ -55,34 +55,29 @@ elif modulo == "🛠️ Manutenção":
         try:
             df = pd.read_csv(CSV_URL)
             st.dataframe(df, use_container_width=True)
+            st.success("Dados carregados da Planilha Google.")
         except:
-            st.error("Erro ao carregar banco de dados.")
+            st.error("Erro ao acessar a planilha. Verifique a publicação na web.")
 
-# --- 5. GESTÃO DE USUÁRIOS (NOVO) ---
+# --- 5. GESTÃO DE USUÁRIOS ---
 elif modulo == "👤 Gestão de Usuários":
-    st.subheader("👤 Cadastro de Novos Usuários")
-    st.write("Adicione membros da equipe para acesso ao sistema.")
+    st.subheader("👤 Cadastro e Gestão de Usuários")
     
-    with st.form("form_usuarios", clear_on_submit=True):
-        col_u1, col_u2 = st.columns(2)
-        with col_u1:
-            nome = st.text_input("Nome Completo")
-            email = st.text_input("E-mail corporativo")
-        with col_u2:
-            setor = st.selectbox("Departamento", ["Engenharia", "Operacional", "Financeiro", "Diretoria"])
-            nivel = st.radio("Nível de Acesso", ["Visualização", "Editor", "Administrador"], horizontal=True)
+    with st.form("novo_usuario", clear_on_submit=True):
+        st.write("Preencha os dados para solicitar acesso:")
+        c1, c2 = st.columns(2)
+        with c1:
+            nome_novo = st.text_input("Nome Completo")
+            email_novo = st.text_input("E-mail Corporativo")
+        with c2:
+            setor_novo = st.selectbox("Setor", ["Engenharia", "Manutenção", "Financeiro", "Diretoria"])
+            acesso_novo = st.select_slider("Nível de Acesso", options=["Leitura", "Editor", "Admin"])
         
-        btn_user = st.form_submit_button("Cadastrar Usuário")
-        
-        if btn_user:
-            if nome and email:
-                st.success(f"Solicitação de cadastro para {nome} enviada com sucesso!")
+        enviar = st.form_submit_button("Registrar Usuário")
+        if enviar:
+            if nome_novo and email_novo:
+                st.success(f"Usuário {nome_novo} pré-cadastrado! (Aguardando aprovação do Admin)")
             else:
-                st.warning("Por favor, preencha o nome e o e-mail.")
+                st.error("Por favor, preencha todos os campos obrigatórios.")
 
-# --- 6. ESCALAS / FINANCEIRO / RELATÓRIOS (ESTRUTURA PRONTA) ---
-elif modulo == "📅 Escalas de Trabalho":
-    st.subheader("📅 Gestão de Escalas")
-    st.info("Módulo em integração com o calendário de campo.")
-
-elif modulo
+# --- 6. OUTROS SET
