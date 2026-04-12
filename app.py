@@ -1093,8 +1093,125 @@ elif modulo == "Cadastros e Config":
                         else:
                             st.error("Usuario nao encontrado.")
 
-        with s3:
+                with s3:
             with st.form("form_del_usr", clear_on_submit=True):
                 st.warning("Esta acao revoga o acesso do usuario ao sistema.")
-                email_d = st.text_input("E-mail do
+                email_d = st.text_input("E-mail do usuario a desativar")
+                conf_d  = st.checkbox("Confirmo que desejo desativar este usuario.")
+                if st.form_submit_button("Desativar Usuario", use_container_width=True):
+                    if not conf_d:
+                        st.warning("Marque a caixa de confirmacao.")
+                    elif not email_d:
+                        st.warning("Informe o e-mail.")
+                    else:
+                        df2  = carregar('usuarios')
+                        mask = df2['Email'].str.lower() == email_d.strip().lower()
+                        if mask.any():
+                            df2.loc[mask, 'Ativo'] = 'Nao'
+                            salvar(df2, 'usuarios')
+                            st.success("Usuario desativado com sucesso.")
+                            st.rerun()
+                        else:
+                            st.error("Usuario nao encontrado.")
+
+    # ── STANDS ────────────────────────────────────────────
+    with tab_std:
+        df_std = carregar('stands')
+        st.markdown("#### Stands Cadastrados")
+        st.dataframe(df_std, use_container_width=True, hide_index=True)
+
+        sa, sb = st.tabs(["Novo Stand", "Editar Status"])
+
+        with sa:
+            with st.form("form_std", clear_on_submit=True):
+                c1, c2 = st.columns(2)
+                nome_s = c1.text_input("Nome do Stand")
+                end_s  = c2.text_input("Endereco / Localizacao")
+                resp_s = st.text_input("Responsavel pelo Stand")
+                if st.form_submit_button("Cadastrar Stand", use_container_width=True):
+                    if nome_s.strip():
+                        df_std2 = carregar('stands')
+                        nova = pd.DataFrame([[
+                            proximo_id(df_std2),
+                            nome_s.strip(), end_s, "Ativo", resp_s
+                        ]], columns=COLUNAS['stands'])
+                        df_std2 = pd.concat([df_std2, nova], ignore_index=True)
+                        salvar(df_std2, 'stands')
+                        st.success("Stand " + nome_s + " cadastrado!")
+                        st.rerun()
+                    else:
+                        st.warning("Informe o nome do stand.")
+
+        with sb:
+            df_std = carregar('stands')
+            if not df_std.empty:
+                c1, c2 = st.columns(2)
+                def fmt_stand(x):
+                    row_s = df_std[df_std['ID'] == x]
+                    if row_s.empty:
+                        return str(x)
+                    return str(x) + " - " + str(row_s['Nome'].values[0])
+                id_s  = c1.selectbox("Stand:", df_std['ID'].tolist(), format_func=fmt_stand)
+                nst_s = c2.selectbox("Novo Status:", ["Ativo","Inativo","Em Manutencao"])
+                if st.button("Atualizar Status do Stand"):
+                    df_std.loc[df_std['ID'] == id_s, 'Status'] = nst_s
+                    salvar(df_std, 'stands')
+                    st.success("Stand atualizado!")
+                    st.rerun()
+            else:
+                st.info("Nenhum stand cadastrado.")
+
+    # ── INVENTARIO ────────────────────────────────────────
+    with tab_inv:
+        df_inv      = carregar('inventario')
+        stands_list = get_stands()
+
+        st.markdown("#### Inventario de Materiais e Equipamentos")
+        if not df_inv.empty:
+            st.dataframe(df_inv, use_container_width=True, hide_index=True)
+        else:
+            st.info("Inventario vazio. Adicione o primeiro item abaixo.")
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        with st.form("form_inv", clear_on_submit=True):
+            c1, c2, c3 = st.columns(3)
+            item_i = c1.text_input("Item / Equipamento")
+            cat_i  = c2.selectbox("Categoria:", [
+                "Ferramenta","Equipamento","Material","EPI","Mobiliario","Outro"
+            ])
+            qtd_i  = c3.number_input("Quantidade:", min_value=0, step=1)
+
+            c4, c5, c6 = st.columns(3)
+            unid_i  = c4.selectbox("Unidade:", [
+                "Un","Kg","Lt","M","Par","Conjunto","Caixa"
+            ])
+            stand_i = c5.selectbox("Stand / Local:", [
+                "Almoxarifado","Escritorio"
+            ] + stands_list)
+            stat_i  = c6.selectbox("Estado:", [
+                "Disponivel","Em Uso","Em Manutencao","Descartado"
+            ])
+
+            prop_i = st.selectbox("Propriedade:", [
+                "Raphson",
+                "Omega",
+                "Raphson x Omega",
+                "Raphson x Omega x 4V"
+            ])
+
+            if st.form_submit_button("Registrar Item", use_container_width=True):
+                if item_i.strip():
+                    df_inv2 = carregar('inventario')
+                    nova = pd.DataFrame([[
+                        proximo_id(df_inv2),
+                        item_i.strip(), cat_i, qtd_i,
+                        unid_i, stand_i, stat_i, prop_i
+                    ]], columns=COLUNAS['inventario'])
+                    df_inv2 = pd.concat([df_inv2, nova], ignore_index=True)
+                    salvar(df_inv2, 'inventario')
+                    st.success("'" + item_i + "' registrado no inventario!")
+                    st.rerun()
+                else:
+                    st.warning("Informe o nome do item.")
 
