@@ -1,83 +1,77 @@
 import streamlit as st
 import pandas as pd
-import os
-from datetime import datetime
 from PIL import Image
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
-st.set_page_config(page_title="Gestão Omega & Raphson", layout="wide")
+st.set_page_config(page_title="Gestão Omega & Raphson", layout="wide", page_icon="🏗️")
 
-# --- ESTILIZAÇÃO CUSTOMIZADA (CSS) ---
-st.markdown("""
-    <style>
-    [data-testid="stSidebar"] { background-color: #2b468b; }
-    [data-testid="stSidebar"] .st-expanderHeader, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] h3 { color: white !important; }
-    .main-title { color: #2b468b; font-size: 32px; font-weight: bold; text-align: center; }
-    </style>
-    """, unsafe_allow_html=True)
+# --- 1. CONFIGURAÇÃO DO LINK DA PLANILHA ---
+# COLE O LINK QUE VOCÊ COPIOU DO BOTÃO COMPARTILHAR ENTRE AS ASPAS ABAIXO:
+URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1GjNaksY3_N2AxVvMdVtr2L-0Zk2DXT3luZUwbdNFpeA/edit?gid=0#gid=0"
 
-# --- CARREGAMENTO DA LOGO (VERSÃO REFORÇADA) ---
-try:
-    # Tenta carregar a imagem que está na mesma pasta do GitHub
-    image = Image.open("logo_empresas.png")
-    st.sidebar.image(image, use_container_width=True)
-except Exception as e:
-    # Se der erro, ele coloca um título bonito em vez do ícone quebrado
-    st.sidebar.markdown("<h2 style='color:white; text-align:center;'>OMEGA & RAPHSON</h2>", unsafe_allow_html=True)
+# Esta linha transforma o link normal em um link que o Python consegue ler (formato CSV)
+if "docs.google.com" in URL_PLANILHA:
+    CSV_URL = URL_PLANILHA.replace('/edit?usp=sharing', '/export?format=csv').replace('/edit', '/export?format=csv')
+else:
+    CSV_URL = None
 
-# --- MENU DE NAVEGAÇÃO ---
-st.sidebar.divider()
-modulo = st.sidebar.selectbox(
-    "Escolha o Setor:", 
-    ["Início", "🛠️ Manutenção", "🤝 Comercial", "💰 Financeiro", "📣 Marketing", "🛒 Compras", "⚙️ Configurações"]
-)
+# --- 2. LOGO E SIDEBAR ---
+with st.sidebar:
+    try:
+        # Tenta carregar sua logo se o arquivo estiver no GitHub
+        image = Image.open("logo_empresas.png")
+        st.image(image, use_container_width=True)
+    except:
+        st.title("🏢 OMEGA & RAPHSON")
+    
+    st.divider()
+    modulo = st.selectbox("Escolha o Setor:", ["🏠 Início", "🛠️ Manutenção", "📊 Relatórios"])
 
-# Título na tela principal
-st.markdown("<div class='main-title'>Omega Inc & Raphson Engenharia</div>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Sistema Unificado de Gestão e Escalas</p>", unsafe_allow_html=True)
-st.divider()
+# --- 3. PÁGINA INICIAL ---
+if modulo == "🏠 Início":
+    st.title("Painel de Controle Omega & Raphson")
+    st.markdown(f"""
+    ### Bem-vindo ao Sistema Unificado
+    Este painel está conectado diretamente à sua Planilha Google.
+    
+    * **Status do Banco de Dados:** {"✅ Conectado" if CSV_URL else "❌ Link não configurado"}
+    * **Equipe Ativa:** Jazz, Live, Principal.
+    """)
+    
+    st.info("Utilize o menu lateral para navegar entre os setores.")
 
-# --- LÓGICA DE DADOS (BANCO TEMPORÁRIO EM CSV) ---
-def gerenciar_dados(nome):
-    arquivo = f"dados_{nome}.csv"
-    if os.path.exists(arquivo):
-        return pd.read_csv(arquivo)
-    return pd.DataFrame(columns=['ID', 'Data', 'Stand', 'Tarefa', 'Responsável', 'Escala', 'Status'])
+# --- 4. MÓDULO DE MANUTENÇÃO (LEITURA DA PLANILHA) ---
+elif modulo == "🛠️ Manutenção":
+    st.subheader("Registro de Atividades de Manutenção")
+    
+    if CSV_URL:
+        try:
+            # Lendo os dados em tempo real
+            df = pd.read_csv(CSV_URL)
+            
+            # Filtros rápidos
+            st.write("### Filtros")
+            col1, col2 = st.columns(2)
+            with col1:
+                filtro_stand = st.multiselect("Filtrar por Stand:", options=df.iloc[:, 0].unique())
+            
+            # Exibição da Tabela
+            st.write("### Dados da Planilha")
+            if filtro_stand:
+                df_filtrado = df[df.iloc[:, 0].isin(filtro_stand)]
+                st.dataframe(df_filtrado, use_container_width=True)
+            else:
+                st.dataframe(df, use_container_width=True)
+                
+            st.success("Dados atualizados em tempo real diretamente do Google Sheets.")
+            
+        except Exception as e:
+            st.error("Erro ao ler a planilha. Verifique se você a 'Publicou na Web' e se o link está correto.")
+            st.info("Passo para corrigir: Arquivo > Compartilhar > Publicar na Web.")
+    else:
+        st.warning("Por favor, insira o link da planilha no código `app.py` para visualizar os dados.")
 
-# --- MÓDULO INÍCIO ---
-if modulo == "Início":
-    st.subheader("📍 Painel de Controle")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Projetos Ativos", "3", "Jazz, Live, Principal")
-    col2.metric("Equipe em Campo", "8", "Técnicos")
-    col3.metric("Status Global", "Operacional")
-    st.info("Utilize o menu à esquerda para gerenciar os setores.")
-
-# --- MÓDULOS DE GESTÃO ---
-elif modulo in ["🛠️ Manutenção", "🤝 Comercial", "💰 Financeiro", "📣 Marketing", "🛒 Compras"]:
-    setor_nome = modulo.split(" ")[1]
-    st.subheader(f"Gestão de Escala - {setor_nome}")
-    df = gerenciar_dados(setor_nome)
-    
-    with st.expander("➕ Nova Atribuição"):
-        with st.form(f"form_{setor_nome}"):
-            c1, c2 = st.columns(2)
-            stand = c1.selectbox("Local:", ["Stand Jazz", "Stand Live", "Stand Principal", "Escritório"])
-            resp = c2.text_input("Responsável:")
-            escala = st.selectbox("Escala:", ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"])
-            tarefa = st.text_area("Descrição:")
-            if st.form_submit_button("Registrar"):
-                novo = pd.DataFrame([[len(df)+1, datetime.now().strftime("%d/%m/%Y"), stand, tarefa, resp, escala, "Pendente"]], columns=df.columns)
-                df = pd.concat([df, novo], ignore_index=True)
-                df.to_csv(f"dados_{setor_nome}.csv", index=False)
-                st.success("Salvo com sucesso!")
-                st.rerun()
-
-    st.dataframe(df, use_container_width=True, hide_index=True)
-
-elif modulo == "⚙️ Configurações":
-    st.subheader("Configurações")
-    st.write("Em breve: Integração direta com Google Sheets.")
+# --- 5. RELATÓRIOS ---
+elif modulo == "📊 Relatórios":
+    st.subheader("Análise de Produtividade")
+    st.write("Gráficos e indicadores serão exibidos aqui conforme os dados da planilha crescerem.")
