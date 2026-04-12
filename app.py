@@ -1093,7 +1093,7 @@ elif modulo == "Cadastros e Config":
                         else:
                             st.error("Usuario nao encontrado.")
 
-                with s3:
+                       with s3:
             with st.form("form_del_usr", clear_on_submit=True):
                 st.warning("Esta acao revoga o acesso do usuario ao sistema.")
                 email_d = st.text_input("E-mail do usuario a desativar")
@@ -1214,4 +1214,3 @@ elif modulo == "Cadastros e Config":
                     st.rerun()
                 else:
                     st.warning("Informe o nome do item.")
-
