@@ -1093,7 +1093,7 @@ elif modulo == "Cadastros e Config":
                         else:
                             st.error("Usuario nao encontrado.")
 
-                       with s3:
+                with s3:
             with st.form("form_del_usr", clear_on_submit=True):
                 st.warning("Esta acao revoga o acesso do usuario ao sistema.")
                 email_d = st.text_input("E-mail do usuario a desativar")
@@ -1114,7 +1114,6 @@ elif modulo == "Cadastros e Config":
                         else:
                             st.error("Usuario nao encontrado.")
 
-    # ── STANDS ────────────────────────────────────────────
     with tab_std:
         df_std = carregar('stands')
         st.markdown("#### Stands Cadastrados")
@@ -1143,25 +1142,24 @@ elif modulo == "Cadastros e Config":
                         st.warning("Informe o nome do stand.")
 
         with sb:
-            df_std = carregar('stands')
-            if not df_std.empty:
+            df_std2 = carregar('stands')
+            if not df_std2.empty:
                 c1, c2 = st.columns(2)
                 def fmt_stand(x):
-                    row_s = df_std[df_std['ID'] == x]
-                    if row_s.empty:
+                    r = df_std2[df_std2['ID'] == x]
+                    if r.empty:
                         return str(x)
-                    return str(x) + " - " + str(row_s['Nome'].values[0])
-                id_s  = c1.selectbox("Stand:", df_std['ID'].tolist(), format_func=fmt_stand)
+                    return str(x) + " - " + str(r['Nome'].values[0])
+                id_s  = c1.selectbox("Stand:", df_std2['ID'].tolist(), format_func=fmt_stand)
                 nst_s = c2.selectbox("Novo Status:", ["Ativo","Inativo","Em Manutencao"])
                 if st.button("Atualizar Status do Stand"):
-                    df_std.loc[df_std['ID'] == id_s, 'Status'] = nst_s
-                    salvar(df_std, 'stands')
+                    df_std2.loc[df_std2['ID'] == id_s, 'Status'] = nst_s
+                    salvar(df_std2, 'stands')
                     st.success("Stand atualizado!")
                     st.rerun()
             else:
                 st.info("Nenhum stand cadastrado.")
 
-    # ── INVENTARIO ────────────────────────────────────────
     with tab_inv:
         df_inv      = carregar('inventario')
         stands_list = get_stands()
@@ -1170,7 +1168,7 @@ elif modulo == "Cadastros e Config":
         if not df_inv.empty:
             st.dataframe(df_inv, use_container_width=True, hide_index=True)
         else:
-            st.info("Inventario vazio. Adicione o primeiro item abaixo.")
+            st.info("Inventario vazio.")
 
         st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1210,7 +1208,8 @@ elif modulo == "Cadastros e Config":
                     ]], columns=COLUNAS['inventario'])
                     df_inv2 = pd.concat([df_inv2, nova], ignore_index=True)
                     salvar(df_inv2, 'inventario')
-                    st.success("'" + item_i + "' registrado no inventario!")
+                    st.success(item_i + " registrado no inventario!")
                     st.rerun()
                 else:
                     st.warning("Informe o nome do item.")
+
