@@ -1,19 +1,53 @@
 import streamlit as st
 import pandas as pd
 from PIL import Image
+from datetime import datetime
+import calendar
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="Gestão Omega & Raphson", layout="wide", page_icon="🏗️")
 
-# --- 1. CONFIGURAÇÃO DO LINK DA PLANILHA ---
-URL_PLANILHA = "https://docs.google.com/spreadsheets/d/1GjNaksY3_N2AxVvMdVtr2L-0Zk2DXT3luZUwbdNFpeA/edit?gid=0#gid=0"
+# --- 1. CONTROLE DE ACESSO (SESSION STATE) ---
+if 'autenticado' not in st.session_state:
+    st.session_state['autenticado'] = False
+if 'nivel' not in st.session_state:
+    st.session_state['nivel'] = "Leitor"
 
-if "docs.google.com" in URL_PLANILHA:
-    CSV_URL = URL_PLANILHA.split("/edit")[0] + "/export?format=csv"
-else:
-    CSV_URL = None
+def login(u, s):
+    # Simulação de base de dados (Pode ser substituído pela sua planilha no futuro)
+    if u == "admin" and s == "1234":
+        st.session_state['autenticado'] = True
+        st.session_state['nivel'] = "Admin"
+    elif u == "editor" and s == "1234":
+        st.session_state['autenticado'] = True
+        st.session_state['nivel'] = "Editor"
+    else:
+        st.error("Credenciais inválidas.")
 
-# --- 2. LOGO E SIDEBAR ---
+def logout():
+    st.session_state['autenticado'] = False
+    st.rerun()
+
+# --- 2. TELA DE ENTRADA (LOGIN / ESQUECI SENHA) ---
+if not st.session_state['autenticado']:
+    st.title("🏗️ Sistema Integrado Omega & Raphson")
+    t_login, t_reset = st.tabs(["🔐 Acesso", "🔑 Esqueci a Senha"])
+    
+    with t_login:
+        with st.form("form_login"):
+            u_input = st.text_input("Usuário")
+            s_input = st.text_input("Senha", type="password")
+            if st.form_submit_button("Entrar"):
+                login(u_input, s_input)
+                
+    with t_reset:
+        st.subheader("Recuperação de Acesso")
+        email_rec = st.text_input("E-mail Cadastrado")
+        if st.button("Solicitar Nova Senha"):
+            st.info(f"As instruções de redefinição foram enviadas para {email_rec}")
+    st.stop()
+
+# --- 3. BARRA LATERAL (SIDEBAR) ---
 with st.sidebar:
     try:
         image = Image.open("logo_empresas.png")
@@ -21,101 +55,35 @@ with st.sidebar:
     except:
         st.title("🏢 OMEGA & RAPHSON")
     
+    st.write(f"✅ **Sessão:** {st.session_state['nivel']}")
+    if st.button("🚪 Sair do Sistema"):
+        logout()
+    
     st.divider()
-    modulo = st.selectbox("Escolha o Setor:", [
-        "🏠 Início", 
+    modulo = st.selectbox("Navegação:", [
+        "🏠 Dashboard Inicial", 
+        "📅 Escala de Trabalho", 
+        "👤 Gestão e Cadastros", 
         "🛠️ Manutenção", 
-        "🤝 Comercial",
-        "📅 Escalas de Trabalho",
-        "💰 Financeiro",
-        "📊 Relatórios",
-        "👤 Gestão de Usuários"
+        "🤝 Comercial"
     ])
 
-# --- 3. PÁGINA INICIAL ---
-if modulo == "🏠 Início":
+# --- 4. DASHBOARD INICIAL ---
+if modulo == "🏠 Dashboard Inicial":
     st.title("Painel de Gestão Integrada")
-    st.subheader("Visão Geral da Operação")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric(label="Stands Ativos", value="3", delta="Jazz, Live, Principal")
-    with col2:
-        st.metric(label="Status da Operação", value="Normal", delta="0 Alertas")
-    with col3:
-        st.metric(label="Manutenções Hoje", value="Ver Planilha", delta_color="off")
-    st.divider()
-    st.info("Utilize o menu lateral para navegar entre os setores.")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Stands Ativos", "3", "Jazz, Live, Principal")
+    c2.metric("Equipe em Campo", "8", "Técnicos")
+    c3.metric("Status Global", "Operacional")
 
-# --- 4. GESTÃO DE USUÁRIOS ---
-elif modulo == "👤 Gestão de Usuários":
-    st.subheader("👤 Gestão de Usuários e Acessos")
+# --- 5. ESCALA DE TRABALHO (CALENDÁRIO DINÂMICO) ---
+elif modulo == "📅 Escala de Trabalho":
+    st.title("📅 Escala Mensal de Trabalho")
+    hoje = datetime.now()
+    ano, mes = hoje.year, hoje.month
     
-    tab1, tab2, tab3 = st.tabs(["🆕 Novo Cadastro", "🔑 Alterar Senha", "❌ Excluir Usuário"])
+    # Cabeçalho do Calendário
+    st.subheader(f"Visualização: {calendar.month_name[mes]} / {ano}")
     
-    with tab1:
-        with st.form("form_novo_usuario", clear_on_submit=True):
-            st.write("### Registrar Novo Membro")
-            c1, c2 = st.columns(2)
-            with c1:
-                nome_u = st.text_input("Nome Completo")
-                email_u = st.text_input("E-mail Corporativo")
-                senha_u = st.text_input("Definir Senha", type="password")
-            with c2:
-                # Setor Comercial incluído
-                setor_u = st.selectbox("Setor", ["Diretoria", "Engenharia", "Manutenção", "Comercial", "Financeiro"])
-                acesso_u = st.select_slider("Nível de Acesso", options=["Leitor", "Editor", "Admin"])
-            
-            if st.form_submit_button("Registrar"):
-                if nome_u and email_u and senha_u:
-                    st.success(f"Usuário {nome_u} pré-cadastrado com sucesso!")
-                else:
-                    st.error("Todos os campos são obrigatórios.")
-
-    with tab2:
-        with st.form("form_alterar_senha"):
-            st.write("### Alteração de Senha")
-            email_alt = st.text_input("Confirme o E-mail")
-            nova_senha = st.text_input("Nova Senha", type="password")
-            confirma_s = st.text_input("Repita a Nova Senha", type="password")
-            
-            if st.form_submit_button("Salvar Nova Senha"):
-                if nova_senha == confirma_s and nova_senha:
-                    st.success("Senha atualizada!")
-                else:
-                    st.error("As senhas não coincidem.")
-
-    with tab3:
-        with st.form("form_excluir"):
-            st.write("### Excluir Conta")
-            email_del = st.text_input("E-mail do usuário a remover")
-            confirma_del = st.checkbox("Confirmo a exclusão permanente deste acesso.")
-            
-            if st.form_submit_button("Excluir Permanentemente"):
-                if confirma_del and email_del:
-                    st.success(f"Usuário {email_del} removido.")
-                else:
-                    st.warning("Marque a confirmação e digite o e-mail.")
-
-# --- 5. DEMAIS SETORES ---
-elif modulo == "🛠️ Manutenção":
-    st.subheader("🛠️ Controle de Manutenção")
-    if CSV_URL:
-        try:
-            df = pd.read_csv(CSV_URL)
-            st.dataframe(df, use_container_width=True)
-        except:
-            st.error("Erro ao ler banco de dados.")
-
-elif modulo == "🤝 Comercial":
-    st.subheader("🤝 Gestão Comercial")
-    st.info("Módulo Comercial carregado.")
-
-elif modulo == "📅 Escalas de Trabalho":
-    st.subheader("📅 Cronograma")
-
-elif modulo == "💰 Financeiro":
-    st.subheader("💰 Financeiro")
-    st.warning("Área Restrita.")
-
-elif modulo == "📊 Relatórios":
-    st.subheader("📊 BI & Performance")
+    # Criar a grade do calendário
+    cal = calendar.monthcalendar(ano
