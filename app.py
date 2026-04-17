@@ -13,30 +13,36 @@ def carregar_logo():
     except FileNotFoundError:
         return None
 
-# --- INICIALIZAÇÃO DE DADOS MOCK E NAVEGAÇÃO ---
+# --- INICIALIZAÇÃO DE BANCO DE DADOS TEMPORÁRIO (SESSION STATE) ---
 if 'autenticado' not in st.session_state:
     st.session_state['autenticado'] = False
 if 'pagina_atual' not in st.session_state:
     st.session_state['pagina_atual'] = "Painel de Gestão"
+
+# Tabelas de Cadastro
 if 'usuarios' not in st.session_state:
-    st.session_state['usuarios'] = pd.DataFrame(columns=["Nome", "Email", "Perfil", "Status"])
+    st.session_state['usuarios'] = pd.DataFrame(columns=["Nome", "Email", "Telefone", "Perfil", "Status"])
+if 'stands' not in st.session_state:
+    st.session_state['stands'] = pd.DataFrame(columns=["Nome do Stand", "Endereço", "Prazo de Locação", "Status"])
+if 'centros_custo' not in st.session_state:
+    st.session_state['centros_custo'] = pd.DataFrame(columns=["Nome do Centro de Custo", "Descrição", "Status"])
+
+# Outras tabelas
 if 'chamados' not in st.session_state:
     st.session_state['chamados'] = pd.DataFrame(columns=["ID", "Stand", "Descrição", "Status", "Prioridade"])
 
 # --- PÁGINA DE LOGIN ---
 def tela_login():
-    # Ajustei as proporções das colunas [1, 1.2, 1] para comprimir o espaço central e diminuir a logo
     col1, col2, col3 = st.columns([1, 1.2, 1])
     with col2:
         logo = carregar_logo()
         if logo:
-            # A imagem vai respeitar a largura reduzida da coluna 2
             st.image(logo, use_container_width=True)
         else:
             st.warning("⚠️ Imagem 'Image_from_Image.jpg' não encontrada.")
             
         st.markdown("<h3 style='text-align: center;'>Acesso Restrito</h3>", unsafe_allow_html=True)
-        st.write("") # Espaço em branco
+        st.write("") 
         
         with st.form("login_form"):
             user = st.text_input("E-mail")
@@ -69,6 +75,8 @@ def module_painel_gestao():
 def module_cadastro():
     st.header("📝 Cadastro Integrado")
     tab1, tab2, tab3, tab4 = st.tabs(["Usuários", "Stands de Vendas", "Centros de Custo", "Itens de Inventário"])
+    
+    # --- ABA 1: USUÁRIOS ---
     with tab1:
         st.subheader("Gestão de Usuários")
         with st.expander("➕ Novo Usuário"):
@@ -79,14 +87,52 @@ def module_cadastro():
                 perfil = c1.selectbox("Perfil", ["Diretor", "Gestor", "Administrativo", "Manutenção"])
                 telefone = c2.text_input("Telefone")
                 if st.form_submit_button("Salvar Usuário"):
-                    st.success(f"Usuário {nome} cadastrado com sucesso! (Simulação)")
+                    # Salvando na tabela
+                    novo_usuario = pd.DataFrame([{"Nome": nome, "Email": email, "Telefone": telefone, "Perfil": perfil, "Status": "Ativo"}])
+                    st.session_state['usuarios'] = pd.concat([st.session_state['usuarios'], novo_usuario], ignore_index=True)
+                    st.success(f"Usuário {nome} cadastrado com sucesso!")
+                    st.rerun() # Atualiza a página para mostrar na tabela
+        
+        # Exibe a tabela atualizada
         st.dataframe(st.session_state['usuarios'], use_container_width=True)
+
+    # --- ABA 2: STANDS DE VENDAS ---
     with tab2:
         st.subheader("Stands e Projetos")
+        with st.expander("➕ Novo Stand de Vendas"):
+            with st.form("form_novo_stand"):
+                nome_stand = st.text_input("Nome do Stand")
+                endereco = st.text_input("Endereço Completo")
+                prazo = st.text_input("Prazo de locação do espaço (Ex: 12 meses, 30 dias)")
+                
+                if st.form_submit_button("Salvar Stand"):
+                    novo_stand = pd.DataFrame([{"Nome do Stand": nome_stand, "Endereço": endereco, "Prazo de Locação": prazo, "Status": "Ativo"}])
+                    st.session_state['stands'] = pd.concat([st.session_state['stands'], novo_stand], ignore_index=True)
+                    st.success(f"Stand '{nome_stand}' cadastrado com sucesso!")
+                    st.rerun()
+                    
+        st.dataframe(st.session_state['stands'], use_container_width=True)
+
+    # --- ABA 3: CENTROS DE CUSTO ---
     with tab3:
         st.subheader("Centros de Custo")
+        with st.expander("➕ Novo Centro de Custo"):
+            with st.form("form_novo_cc"):
+                nome_cc = st.text_input("Nome do Centro de Custo (Ex: CC-Obras, CC-Marketing)")
+                desc_cc = st.text_input("Descrição / Finalidade")
+                
+                if st.form_submit_button("Salvar Centro de Custo"):
+                    novo_cc = pd.DataFrame([{"Nome do Centro de Custo": nome_cc, "Descrição": desc_cc, "Status": "Ativo"}])
+                    st.session_state['centros_custo'] = pd.concat([st.session_state['centros_custo'], novo_cc], ignore_index=True)
+                    st.success(f"Centro de Custo '{nome_cc}' cadastrado com sucesso!")
+                    st.rerun()
+                    
+        st.dataframe(st.session_state['centros_custo'], use_container_width=True)
+
+    # --- ABA 4: INVENTÁRIO ---
     with tab4:
         st.subheader("Inventário Inicial")
+        st.info("Aqui faremos a listagem dos itens imobilizados vinculados aos Centros de Custo.")
 
 def module_manutencao():
     st.header("🔧 Manutenção")
@@ -94,7 +140,12 @@ def module_manutencao():
     with col1:
         st.subheader("Abertura de Chamado")
         with st.form("form_os"):
-            stand = st.selectbox("Stand", ["Stand Alpha", "Stand Beta", "Sede"])
+            # Puxando a lista de stands cadastrados dinamicamente
+            lista_stands = st.session_state['stands']['Nome do Stand'].tolist()
+            if not lista_stands:
+                lista_stands = ["Nenhum stand cadastrado"]
+                
+            stand = st.selectbox("Stand", lista_stands)
             descricao = st.text_area("Descrição do Problema")
             prioridade = st.selectbox("Prioridade", ["Baixa", "Média", "Alta", "Urgente"])
             if st.form_submit_button("Abrir OS"):
@@ -135,7 +186,6 @@ def main():
     if not st.session_state['autenticado']:
         tela_login()
     else:
-        # MENU LATERAL COM BOTÕES
         with st.sidebar:
             logo = carregar_logo()
             if logo:
@@ -143,7 +193,6 @@ def main():
             st.divider()
             st.markdown("### 🏢 Departamentos")
             
-            # Lista de Módulos
             modulos = [
                 "Painel de Gestão", 
                 "Cadastro", 
@@ -155,9 +204,7 @@ def main():
                 "Escala do Time"
             ]
             
-            # Gerador de botões responsivos
             for mod in modulos:
-                # Se o módulo for o atual, o botão ganha destaque (primary)
                 tipo_botao = "primary" if st.session_state['pagina_atual'] == mod else "secondary"
                 if st.button(mod, use_container_width=True, type=tipo_botao):
                     st.session_state['pagina_atual'] = mod
@@ -166,10 +213,9 @@ def main():
             st.divider()
             if st.button("Sair", use_container_width=True):
                 st.session_state['autenticado'] = False
-                st.session_state['pagina_atual'] = "Painel de Gestão" # Reseta a navegação
+                st.session_state['pagina_atual'] = "Painel de Gestão"
                 st.rerun()
                 
-        # ROTEAMENTO DE PÁGINAS BASEADO NO BOTÃO CLICADO
         pagina = st.session_state['pagina_atual']
         if pagina == "Painel de Gestão":
             module_painel_gestao()
