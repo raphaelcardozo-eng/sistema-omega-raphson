@@ -6,7 +6,6 @@ import datetime
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="Omega & Raphson ERP", layout="wide", initial_sidebar_state="expanded")
 
-# --- FUNÇÃO PARA CARREGAR LOGO ---
 def carregar_logo():
     try:
         return Image.open("Image_from_Image.jpg")
@@ -20,288 +19,175 @@ if 'pagina_atual' not in st.session_state:
     st.session_state['pagina_atual'] = "Painel de Gestão"
 if 'usuario_logado' not in st.session_state:
     st.session_state['usuario_logado'] = ""
-if 'precisa_trocar_senha' not in st.session_state:
-    st.session_state['precisa_trocar_senha'] = False
 
-# Tabelas de Cadastro
+# Tabelas (Persistência em sessão)
 if 'usuarios' not in st.session_state:
-    dados_iniciais = [{
-        "Nome": "Raphael Cardozo", 
-        "Email": "raphaelcardozo@raphsonengenharia.com.br", 
-        "Telefone": "", 
-        "Perfil": "Diretor", 
-        "Senha": "1234", 
-        "Primeiro_Acesso": False, 
-        "Data_Ultima_Senha": datetime.date.today(),
-        "Status": "Ativo"
-    }]
-    st.session_state['usuarios'] = pd.DataFrame(dados_iniciais)
-
+    st.session_state['usuarios'] = pd.DataFrame([{"Nome": "Raphael Cardozo", "Email": "raphaelcardozo@raphsonengenharia.com.br", "Perfil": "Diretor", "Senha": "1234", "Primeiro_Acesso": False, "Data_Ultima_Senha": datetime.date.today(), "Status": "Ativo"}])
 if 'stands' not in st.session_state:
     st.session_state['stands'] = pd.DataFrame(columns=["Nome do Stand", "Endereço", "Prazo de Locação", "Status"])
-
 if 'centros_custo' not in st.session_state:
     st.session_state['centros_custo'] = pd.DataFrame(columns=["Nome do Centro de Custo", "CNPJ", "Descrição", "Status"])
-
 if 'chamados' not in st.session_state:
     st.session_state['chamados'] = pd.DataFrame(columns=["ID", "Stand", "Descrição", "Status", "Prioridade"])
+if 'solicitacoes_material' not in st.session_state:
+    st.session_state['solicitacoes_material'] = []
 
-
-# --- PÁGINA DE TROCA DE SENHA OBRIGATÓRIA ---
-def tela_trocar_senha():
-    col1, col2, col3 = st.columns([1.5, 1, 1.5])
-    with col2:
-        st.markdown("<h3 style='text-align: center;'>Atualização de Senha Obrigatória 🔒</h3>", unsafe_allow_html=True)
-        st.warning("É o seu primeiro acesso ou a sua senha expirou. Por favor, crie uma nova senha de acesso.")
-        
-        with st.form("form_trocar_senha"):
-            nova_senha = st.text_input("Nova Senha", type="password")
-            conf_senha = st.text_input("Confirme a Nova Senha", type="password")
-            submit_senha = st.form_submit_button("Atualizar Senha", use_container_width=True)
-            
-            if submit_senha:
-                if len(nova_senha) < 4:
-                    st.error("A senha deve ter pelo menos 4 caracteres.")
-                elif nova_senha != conf_senha:
-                    st.error("As senhas não coincidem.")
-                else:
-                    email = st.session_state['usuario_logado']
-                    df = st.session_state['usuarios']
-                    idx = df[df['Email'] == email].index[0]
-                    
-                    df.at[idx, 'Senha'] = nova_senha
-                    df.at[idx, 'Primeiro_Acesso'] = False
-                    df.at[idx, 'Data_Ultima_Senha'] = datetime.date.today()
-                    
-                    st.session_state['usuarios'] = df
-                    st.session_state['precisa_trocar_senha'] = False
-                    st.success("Senha atualizada! Redirecionando...")
-                    st.rerun()
-
-# --- PÁGINA DE LOGIN ---
+# --- TELAS DE ACESSO ---
 def tela_login():
-    # Aumentando as colunas laterais para espremer e diminuir a coluna central (logo menor)
     col1, col2, col3 = st.columns([1.5, 1, 1.5])
     with col2:
         logo = carregar_logo()
-        if logo:
-            st.image(logo, use_container_width=True)
-            
-        st.markdown("<h4 style='text-align: center; color: #475569;'>Acesso Restrito</h4>", unsafe_allow_html=True)
-        
+        if logo: st.image(logo, use_container_width=True)
+        st.markdown("<h4 style='text-align: center;'>Acesso Restrito</h4>", unsafe_allow_html=True)
         with st.form("login_form"):
             user = st.text_input("E-mail")
             senha = st.text_input("Senha", type="password")
-            submit = st.form_submit_button("Entrar", use_container_width=True)
-            
-            if submit:
+            if st.form_submit_button("Entrar", use_container_width=True):
                 df_users = st.session_state['usuarios']
                 user_match = df_users[(df_users['Email'] == user) & (df_users['Senha'] == senha)]
-                
                 if not user_match.empty:
                     st.session_state['autenticado'] = True
                     st.session_state['usuario_logado'] = user
-                    
-                    idx = user_match.index[0]
-                    primeiro_acesso = user_match.at[idx, 'Primeiro_Acesso']
-                    data_senha = user_match.at[idx, 'Data_Ultima_Senha']
-                    hoje = datetime.date.today()
-                    
-                    if primeiro_acesso or (hoje - data_senha).days > 90:
-                        st.session_state['precisa_trocar_senha'] = True
-                    else:
-                        st.session_state['precisa_trocar_senha'] = False
-                        
                     st.rerun()
                 else:
-                    st.error("Credenciais inválidas ou utilizador não encontrado.")
+                    st.error("Credenciais inválidas.")
 
-# --- MÓDULOS DO SISTEMA ---
+# --- MÓDULOS ---
 
 def module_painel_gestao():
-    st.header("📊 Painel de Gestão (Dashboard)")
+    st.header("📊 Painel de Gestão")
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Chamados Abertos", len(st.session_state['chamados'][st.session_state['chamados']['Status'] == 'Aberto']) if not st.session_state['chamados'].empty else 0, "Atualizado")
-    col2.metric("Lead Time Compras", "4 dias", "1 dia", delta_color="inverse")
-    col3.metric("Despesas no Mês", "R$ 145.000", "R$ 12k")
-    col4.metric("Ações de MKT Ativas", "3")
+    abertos = len(st.session_state['chamados'][st.session_state['chamados']['Status'] != 'Concluído'])
+    col1.metric("OS Ativas", abertos)
+    col2.metric("Lead Time", "4 dias")
+    col3.metric("Custos", "R$ 145k")
+    col4.metric("MKT", "3 Ativas")
     
     st.divider()
-    st.subheader("📋 Tarefas em Destaque por Setor")
-    
-    # Simulação de tarefas agrupadas de forma estética
-    col_t1, col_t2, col_t3 = st.columns(3)
-    
-    with col_t1:
-        st.markdown("#### 🔧 Manutenção")
-        st.info("**Aprovar Orçamento:** Stand Alpha\n\n⏳ **Prazo:** Hoje\n\n👤 **Responsável:** Gestão")
-        st.warning("**Revisão Preventiva:** Stand Beta\n\n⏳ **Prazo:** Amanhã\n\n👤 **Responsável:** Equipa Técnica")
-
-    with col_t2:
-        st.markdown("#### 🛒 Compras")
-        st.success("**Cotação de Materiais:** Tintas e Pincéis\n\n⏳ **Prazo:** 20/04\n\n👤 **Responsável:** Comprador Senior")
-        
-    with col_t3:
-        st.markdown("#### 💰 Financeiro")
-        st.error("**Libertar Pagamento:** Fornecedor X\n\n⏳ **Prazo:** Atrasado\n\n👤 **Responsável:** Diretoria")
+    st.subheader("📋 Tarefas por Setor")
+    c1, c2, c3 = st.columns(3)
+    with c1: st.info("**Manutenção:** Aprovar OS-001")
+    with c2: st.success("**Compras:** Cotação de Tintas")
+    with c3: st.error("**Financeiro:** Fornecedor X")
 
 def module_cadastro():
-    st.header("📝 Cadastro Integrado")
-    st.info("💡 Dica: Na tabela abaixo, pode dar um duplo-clique em qualquer item para editar ou clicar nas bordas para excluir uma linha.")
-    
-    tab1, tab2, tab3, tab4 = st.tabs(["Usuários", "Stands de Vendas", "Centros de Custo", "Itens de Inventário"])
-    
-    # --- ABA 1: USUÁRIOS ---
+    st.header("📝 Cadastro")
+    tab1, tab2, tab3 = st.tabs(["Usuários", "Stands", "Centros de Custo"])
     with tab1:
         with st.expander("➕ Novo Usuário"):
-            with st.form("form_novo_usuario", clear_on_submit=True):
-                c1, c2 = st.columns(2)
-                nome = c1.text_input("Nome e Sobrenome")
-                email = c2.text_input("E-mail")
-                senha = c1.text_input("Senha Inicial (O utilizador deverá trocar)", type="password")
-                telefone = c2.text_input("Telefone")
-                perfil = c1.selectbox("Perfil", ["Diretor", "Gestor", "Administrativo", "Manutenção"])
-                
-                if st.form_submit_button("Salvar Usuário"):
-                    novo_usuario = pd.DataFrame([{
-                        "Nome": nome, "Email": email, "Telefone": telefone, 
-                        "Perfil": perfil, "Senha": senha, "Primeiro_Acesso": True, 
-                        "Data_Ultima_Senha": datetime.date.today(), "Status": "Ativo"
-                    }])
-                    st.session_state['usuarios'] = pd.concat([st.session_state['usuarios'], novo_usuario], ignore_index=True)
-                    st.success(f"Usuário {nome} cadastrado com sucesso!")
+            with st.form("f_user", clear_on_submit=True):
+                n = st.text_input("Nome")
+                e = st.text_input("Email")
+                s = st.text_input("Senha", type="password")
+                if st.form_submit_button("Salvar"):
+                    new = pd.DataFrame([{"Nome": n, "Email": e, "Perfil": "Gestor", "Senha": s, "Primeiro_Acesso": True, "Data_Ultima_Senha": datetime.date.today(), "Status": "Ativo"}])
+                    st.session_state['usuarios'] = pd.concat([st.session_state['usuarios'], new], ignore_index=True)
                     st.rerun()
-        
-        st.session_state['usuarios'] = st.data_editor(st.session_state['usuarios'], num_rows="dynamic", use_container_width=True, key="edit_user")
+        st.session_state['usuarios'] = st.data_editor(st.session_state['usuarios'], use_container_width=True)
 
-    # --- ABA 2: STANDS DE VENDAS ---
     with tab2:
-        with st.expander("➕ Novo Stand de Vendas"):
-            with st.form("form_novo_stand", clear_on_submit=True):
-                nome_stand = st.text_input("Nome do Stand")
-                endereco = st.text_input("Endereço Completo")
-                prazo = st.text_input("Prazo de locação do espaço (Ex: 12 meses)")
-                
+        with st.expander("➕ Novo Stand"):
+            with st.form("f_stand", clear_on_submit=True):
+                ns = st.text_input("Nome do Stand")
                 if st.form_submit_button("Salvar Stand"):
-                    novo_stand = pd.DataFrame([{"Nome do Stand": nome_stand, "Endereço": endereco, "Prazo de Locação": prazo, "Status": "Ativo"}])
-                    st.session_state['stands'] = pd.concat([st.session_state['stands'], novo_stand], ignore_index=True)
-                    st.success(f"Stand '{nome_stand}' cadastrado com sucesso!")
+                    new_s = pd.DataFrame([{"Nome do Stand": ns, "Endereço": "", "Prazo de Locação": "", "Status": "Ativo"}])
+                    st.session_state['stands'] = pd.concat([st.session_state['stands'], new_s], ignore_index=True)
                     st.rerun()
-                    
-        st.session_state['stands'] = st.data_editor(st.session_state['stands'], num_rows="dynamic", use_container_width=True, key="edit_stand")
+        st.session_state['stands'] = st.data_editor(st.session_state['stands'], use_container_width=True)
 
-    # --- ABA 3: CENTROS DE CUSTO ---
     with tab3:
         with st.expander("➕ Novo Centro de Custo"):
-            with st.form("form_novo_cc", clear_on_submit=True):
-                nome_cc = st.text_input("Nome do Centro de Custo (Ex: SPE NOVA IGUACU)")
-                cnpj_cc = st.text_input("CNPJ")
-                desc_cc = st.text_input("Descrição / Finalidade")
-                
-                if st.form_submit_button("Salvar Centro de Custo"):
-                    novo_cc = pd.DataFrame([{"Nome do Centro de Custo": nome_cc, "CNPJ": cnpj_cc, "Descrição": desc_cc, "Status": "Ativo"}])
-                    st.session_state['centros_custo'] = pd.concat([st.session_state['centros_custo'], novo_cc], ignore_index=True)
-                    st.success(f"Centro de Custo '{nome_cc}' cadastrado!")
+            with st.form("f_cc", clear_on_submit=True):
+                ncc = st.text_input("Nome CC")
+                cnpj = st.text_input("CNPJ")
+                if st.form_submit_button("Salvar CC"):
+                    new_cc = pd.DataFrame([{"Nome do Centro de Custo": ncc, "CNPJ": cnpj, "Descrição": "", "Status": "Ativo"}])
+                    st.session_state['centros_custo'] = pd.concat([st.session_state['centros_custo'], new_cc], ignore_index=True)
                     st.rerun()
-                    
-        st.session_state['centros_custo'] = st.data_editor(st.session_state['centros_custo'], num_rows="dynamic", use_container_width=True, key="edit_cc")
-
-    with tab4:
-        st.info("Esta lista será populada a partir das aprovações de compras (imobilizados).")
+        st.session_state['centros_custo'] = st.data_editor(st.session_state['centros_custo'], use_container_width=True)
 
 def module_manutencao():
     st.header("🔧 Manutenção")
-    col1, col2 = st.columns([1, 2])
+    col_f, col_b = st.columns([1, 2])
     
-    with col1:
+    with col_f:
         st.subheader("Abertura de Chamado")
         with st.form("form_os", clear_on_submit=True):
-            lista_stands = st.session_state['stands']['Nome do Stand'].tolist()
-            if not lista_stands:
-                lista_stands = ["Nenhum stand cadastrado"]
-                
-            stand = st.selectbox("Stand", lista_stands)
-            descricao = st.text_area("Descrição do Problema")
-            prioridade = st.selectbox("Prioridade", ["Baixa", "Média", "Alta", "Urgente"])
-            
+            lista_s = st.session_state['stands']['Nome do Stand'].tolist()
+            stand = st.selectbox("Stand", lista_s if lista_s else ["Nenhum cadastrado"])
+            desc = st.text_area("Descrição")
+            prio = st.selectbox("Prioridade", ["Baixa", "Média", "Alta", "Urgente"])
             if st.form_submit_button("Abrir OS"):
-                if stand == "Nenhum stand cadastrado":
-                    st.error("Por favor, cadastre um stand primeiro.")
-                else:
-                    # Geração do ID automático e adição na tabela
-                    novo_id = f"OS-{len(st.session_state['chamados']) + 1:03d}"
-                    nova_os = pd.DataFrame([{
-                        "ID": novo_id, 
-                        "Stand": stand, 
-                        "Descrição": descricao, 
-                        "Status": "Aberto", 
-                        "Prioridade": prioridade
-                    }])
-                    st.session_state['chamados'] = pd.concat([st.session_state['chamados'], nova_os], ignore_index=True)
-                    st.success("Chamado aberto e listado no Backlog!")
-                    st.rerun() # Faz a página atualizar imediatamente
+                new_id = f"OS-{len(st.session_state['chamados']) + 1:03d}"
+                nova_os = pd.DataFrame([{"ID": new_id, "Stand": stand, "Descrição": desc, "Status": "Aguardando atendimento", "Prioridade": prio}])
+                st.session_state['chamados'] = pd.concat([st.session_state['chamados'], nova_os], ignore_index=True)
+                st.success("OS Aberta!")
+                st.rerun()
                     
-    with col2:
+    with col_b:
         st.subheader("Backlog de Manutenção")
-        # Editor dinâmico para permitir atualizar o Status da OS diretamente na grelha
-        st.session_state['chamados'] = st.data_editor(st.session_state['chamados'], num_rows="dynamic", use_container_width=True, key="edit_os")
-        st.button("Solicitar Material ao Setor de Compras 📦")
+        # CONFIGURAÇÃO DA TABELA: Apenas status é editável
+        st.session_state['chamados'] = st.data_editor(
+            st.session_state['chamados'],
+            column_config={
+                "Status": st.column_config.SelectboxColumn(
+                    "Status",
+                    options=["Aguardando atendimento", "Em andamento", "Aguardando Material", "Concluído", "Cancelada"],
+                    required=True,
+                ),
+                "ID": st.column_config.Column(disabled=True),
+                "Stand": st.column_config.Column(disabled=True),
+                "Descrição": st.column_config.Column(disabled=True),
+                "Prioridade": st.column_config.Column(disabled=True),
+            },
+            hide_index=True,
+            use_container_width=True
+        )
 
-def module_financeiro():
-    st.header("💰 Financeiro")
+        # SEÇÃO DE SOLICITAÇÃO DE MATERIAL (CARD/POPOVER)
+        with st.popover("Solicitar Material ao Setor de Compras 📦", use_container_width=True):
+            st.markdown("### Nova Requisição de Material")
+            with st.form("form_material", clear_on_submit=True):
+                # Seleção de OS
+                lista_os = st.session_state['chamados']['ID'].tolist()
+                os_ref = st.selectbox("Selecione a OS de referência", lista_os if lista_os else ["Nenhuma OS aberta"])
+                
+                # Número do Item automático
+                proximo_item = len(st.session_state['solicitacoes_material']) + 1
+                st.info(f"Item Número: {proximo_item}")
+                
+                mat = st.text_input("Material/Ferramenta")
+                qtd = st.number_input("Quantidade", min_value=1, step=1)
+                
+                if st.form_submit_button("Enviar para Compras"):
+                    st.session_state['solicitacoes_material'].append({
+                        "Item": proximo_item, "OS": os_ref, "Material": mat, "Qtd": qtd, "Data": datetime.date.today()
+                    })
+                    st.success(f"Item {proximo_item} solicitado com sucesso!")
 
-def module_compras():
-    st.header("🛒 Compras")
-
-def module_inventario():
-    st.header("📦 Inventário Patrimonial")
-
-def module_marketing():
-    st.header("🎯 Marketing")
-
-def module_escala():
-    st.header("👥 Escala do Time")
-
-# --- CONTROLADOR PRINCIPAL ---
+# --- MAIN ---
 def main():
     if not st.session_state['autenticado']:
         tela_login()
-    elif st.session_state['precisa_trocar_senha']:
-        tela_trocar_senha()
     else:
         with st.sidebar:
-            # Controlando o tamanho da logo na barra lateral também
-            col_l1, col_l2, col_l3 = st.columns([0.2, 1, 0.2])
-            with col_l2:
-                logo = carregar_logo()
-                if logo:
-                    st.image(logo, use_container_width=True)
+            logo = carregar_logo()
+            if logo: st.image(logo, use_container_width=True)
             st.divider()
-            st.markdown("### 🏢 Departamentos")
-            
             modulos = ["Painel de Gestão", "Cadastro", "Manutenção", "Financeiro", "Compras", "Inventário", "Marketing", "Escala do Time"]
-            
             for mod in modulos:
-                tipo_botao = "primary" if st.session_state['pagina_atual'] == mod else "secondary"
-                if st.button(mod, use_container_width=True, type=tipo_botao):
+                if st.button(mod, use_container_width=True, type="primary" if st.session_state['pagina_atual'] == mod else "secondary"):
                     st.session_state['pagina_atual'] = mod
                     st.rerun()
-            
-            st.divider()
             if st.button("Sair", use_container_width=True):
                 st.session_state['autenticado'] = False
-                st.session_state['pagina_atual'] = "Painel de Gestão"
                 st.rerun()
                 
-        pagina = st.session_state['pagina_atual']
-        if pagina == "Painel de Gestão": module_painel_gestao()
-        elif pagina == "Cadastro": module_cadastro()
-        elif pagina == "Manutenção": module_manutencao()
-        elif pagina == "Financeiro": module_financeiro()
-        elif pagina == "Compras": module_compras()
-        elif pagina == "Inventário": module_inventario()
-        elif pagina == "Marketing": module_marketing()
-        elif pagina == "Escala do Time": module_escala()
+        p = st.session_state['pagina_atual']
+        if p == "Painel de Gestão": module_painel_gestao()
+        elif p == "Cadastro": module_cadastro()
+        elif p == "Manutenção": module_manutencao()
+        else: st.title(p)
 
 if __name__ == "__main__":
     main()
