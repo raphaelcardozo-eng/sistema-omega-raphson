@@ -12,16 +12,21 @@ st.set_page_config(page_title="Omega & Raphson ERP", layout="wide")
 DB_FILE = "database_erp.json"
 
 def salvar_dados():
-    dados = {
-        "usuarios": st.session_state['usuarios'].to_dict(orient="records"),
-        "stands": st.session_state['stands'].to_dict(orient="records"),
-        "centros": st.session_state['centros_custo'].to_dict(orient="records"),
-        "departamentos": st.session_state['departamentos'].to_dict(orient="records"),
-        "chamados": st.session_state['chamados'].to_dict(orient="records"),
-        "materiais": st.session_state['solicitacoes_material']
-    }
-    with open(DB_FILE, "w") as f:
-        json.dump(dados, f, default=str)
+    try:
+        dados = {
+            "usuarios": st.session_state['usuarios'].to_dict(orient="records"),
+            "stands": st.session_state['stands'].to_dict(orient="records"),
+            "centros": st.session_state['centros_custo'].to_dict(orient="records"),
+            "departamentos": st.session_state['departamentos'].to_dict(orient="records"),
+            "chamados": st.session_state['chamados'].to_dict(orient="records"),
+            "materiais": st.session_state['solicitacoes_material']
+        }
+        with open(DB_FILE, "w") as f:
+            json.dump(dados, f, default=str)
+        return True
+    except Exception as e:
+        st.error(f"Erro ao salvar: {e}")
+        return False
 
 def carregar_dados():
     if os.path.exists(DB_FILE):
@@ -39,15 +44,15 @@ def carregar_dados():
             return False
     return False
 
-# --- INICIALIZAÇÃO DE ESTADO ---
+# --- INICIALIZAÇÃO ---
 if 'autenticado' not in st.session_state:
     st.session_state['autenticado'] = False
     st.session_state['pagina_atual'] = "Painel de Gestão"
     
     if not carregar_dados():
-        st.session_state['usuarios'] = pd.DataFrame([{"Nome": "Raphael Cardozo", "Email": "raphaelcardozo@raphsonengenharia.com.br", "Perfil": "Diretor", "Status": "Ativo"}])
-        st.session_state['stands'] = pd.DataFrame(columns=["Nome do Stand", "Endereço", "Prazo", "Status"])
-        st.session_state['centros_custo'] = pd.DataFrame(columns=["Nome do Centro de Custo", "Descrição", "Status"])
+        st.session_state['usuarios'] = pd.DataFrame([{"Nome": "Raphael Cardozo", "Email": "raphael@raphson.com.br", "Perfil": "Diretor", "Status": "Ativo"}])
+        st.session_state['stands'] = pd.DataFrame(columns=["Nome do Stand", "Endereço", "Status"])
+        st.session_state['centros_custo'] = pd.DataFrame(columns=["Nome do Centro de Custo", "CNPJ", "Status"])
         st.session_state['departamentos'] = pd.DataFrame(columns=["Nome do Departamento", "Responsável", "Status"])
         st.session_state['chamados'] = pd.DataFrame(columns=["ID", "Stand", "Descrição", "Status", "Prioridade"])
         st.session_state['solicitacoes_material'] = []
@@ -62,87 +67,58 @@ def exibir_logo():
 
 def module_cadastro():
     st.header("📝 Gestão de Cadastros")
-    tab1, tab2, tab3, tab4 = st.tabs(["Usuários", "Stands de Vendas", "Centros de Custo", "Departamentos"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Usuários", "Stands", "Centros de Custo", "Departamentos"])
     
     with tab1:
-        st.session_state['usuarios'] = st.data_editor(st.session_state['usuarios'], num_rows="dynamic", use_container_width=True, key="ed_u")
-        if st.button("Salvar Usuários"): salvar_dados(); st.success("Usuários Salvos!")
+        st.session_state['usuarios'] = st.data_editor(st.session_state['usuarios'], num_rows="dynamic", use_container_width=True, key="u")
+        if st.button("Salvar Usuários"): salvar_dados(); st.success("Salvo!")
 
     with tab2:
-        st.session_state['stands'] = st.data_editor(st.session_state['stands'], num_rows="dynamic", use_container_width=True, key="ed_s")
-        if st.button("Salvar Stands"): salvar_dados(); st.success("Stands Salvos!")
+        st.session_state['stands'] = st.data_editor(st.session_state['stands'], num_rows="dynamic", use_container_width=True, key="s")
+        if st.button("Salvar Stands"): salvar_dados(); st.success("Salvo!")
 
     with tab3:
-        st.session_state['centros_custo'] = st.data_editor(st.session_state['centros_custo'], num_rows="dynamic", use_container_width=True, key="ed_c")
-        if st.button("Salvar Centros de Custo"): salvar_dados(); st.success("Centros de Custo Salvos!")
+        st.session_state['centros_custo'] = st.data_editor(st.session_state['centros_custo'], num_rows="dynamic", use_container_width=True, key="c")
+        if st.button("Salvar Centros de Custo"): salvar_dados(); st.success("Salvo!")
 
     with tab4:
-        st.session_state['departamentos'] = st.data_editor(st.session_state['departamentos'], num_rows="dynamic", use_container_width=True, key="ed_d")
-        if st.button("Salvar Departamentos"): salvar_dados(); st.success("Departamentos Salvos!")
+        st.session_state['departamentos'] = st.data_editor(st.session_state['departamentos'], num_rows="dynamic", use_container_width=True, key="d")
+        if st.button("Salvar Departamentos"): 
+            salvar_dados()
+            st.success("Departamentos salvos no banco de dados!")
 
 def module_manutencao():
     st.header("🔧 Manutenção")
     col_f, col_b = st.columns([1, 2])
-    
     with col_f:
         st.subheader("Abertura de Chamado")
-        with st.form("form_os", clear_on_submit=True):
-            lista_s = st.session_state['stands']['Nome do Stand'].tolist()
-            stand = st.selectbox("Stand", lista_s if lista_s else ["Nenhum"])
-            desc = st.text_area("Descrição do Problema")
+        with st.form("f_os", clear_on_submit=True):
+            lista = st.session_state['stands']['Nome do Stand'].tolist()
+            st_sel = st.selectbox("Stand", lista if lista else ["-"])
+            desc = st.text_area("Descrição")
             prio = st.selectbox("Prioridade", ["Baixa", "Média", "Alta", "Urgente"])
             if st.form_submit_button("Abrir OS"):
                 new_id = f"OS-{len(st.session_state['chamados']) + 1:03d}"
-                nova_os = pd.DataFrame([{"ID": new_id, "Stand": stand, "Descrição": desc, "Status": "Aguardando atendimento", "Prioridade": prio}])
-                st.session_state['chamados'] = pd.concat([st.session_state['chamados'], nova_os], ignore_index=True)
-                salvar_dados()
-                st.rerun()
-                    
+                n_os = pd.DataFrame([{"ID": new_id, "Stand": st_sel, "Descrição": desc, "Status": "Aguardando atendimento", "Prioridade": prio}])
+                st.session_state['chamados'] = pd.concat([st.session_state['chamados'], n_os], ignore_index=True)
+                salvar_dados(); st.rerun()
     with col_b:
-        st.subheader("Backlog de Manutenção")
-        df_edit = st.data_editor(
-            st.session_state['chamados'],
-            column_config={
-                "Status": st.column_config.SelectboxColumn("Status", options=["Aguardando atendimento", "Em andamento", "Aguardando Material", "Concluído", "Cancelada"]),
-                "ID": st.column_config.Column(disabled=True),
-                "Stand": st.column_config.Column(disabled=True),
-                "Descrição": st.column_config.Column(disabled=True),
-                "Prioridade": st.column_config.Column(disabled=True)
-            },
-            hide_index=True, use_container_width=True, key="edit_os"
-        )
-        if not df_edit.equals(st.session_state['chamados']):
-            st.session_state['chamados'] = df_edit
+        st.subheader("Backlog")
+        edit = st.data_editor(st.session_state['chamados'], column_config={"Status": st.column_config.SelectboxColumn("Status", options=["Aguardando atendimento", "Em andamento", "Aguardando Material", "Concluído", "Cancelada"]), "ID": st.column_config.Column(disabled=True)}, hide_index=True, use_container_width=True)
+        if not edit.equals(st.session_state['chamados']):
+            st.session_state['chamados'] = edit
             salvar_dados()
 
-        with st.popover("Solicitar Material ao Setor de Compras 📦", use_container_width=True):
-            with st.form("f_mat", clear_on_submit=True):
-                ids = st.session_state['chamados']['ID'].tolist()
-                os_ref = st.selectbox("Selecione a OS", ids if ids else ["-"])
-                item_n = len(st.session_state['solicitacoes_material']) + 1
-                st.write(f"**Item:** {item_n}")
-                mat = st.text_input("Material/Ferramenta")
-                qtd = st.number_input("Quantidade", min_value=1)
-                if st.form_submit_button("Enviar Solicitação"):
-                    st.session_state['solicitacoes_material'].append({"Item": item_n, "OS": os_ref, "Material": mat, "Qtd": qtd, "Data": str(datetime.date.today())})
-                    salvar_dados()
-                    st.success("Solicitação enviada!")
-
-# --- FLUXO PRINCIPAL ---
+# --- MAIN ---
 def main():
     if not st.session_state['autenticado']:
         col1, col2, col3 = st.columns([1, 1, 1])
         with col2:
             exibir_logo()
-            st.markdown("<h3 style='text-align: center;'>Acesso Restrito</h3>", unsafe_allow_html=True)
             user = st.text_input("E-mail")
             senha = st.text_input("Senha", type="password")
             if st.button("Entrar", use_container_width=True):
-                if senha == "1234":
-                    st.session_state['autenticado'] = True
-                    st.rerun()
-                else:
-                    st.error("Senha incorreta.")
+                if senha == "1234": st.session_state['autenticado'] = True; st.rerun()
     else:
         with st.sidebar:
             exibir_logo()
@@ -151,17 +127,24 @@ def main():
             if st.button("🔧 Manutenção", use_container_width=True): st.session_state['pagina_atual'] = "Manutenção"
             if st.button("📝 Cadastros", use_container_width=True): st.session_state['pagina_atual'] = "Cadastro"
             st.divider()
-            if st.button("Sair"):
-                st.session_state['autenticado'] = False
-                st.rerun()
+            # ÁREA DE SEGURANÇA CONTRA PERDA DE DADOS
+            with st.expander("💾 Backup de Segurança"):
+                st.caption("Se os dados sumirem, cole o código de backup abaixo:")
+                if st.button("Gerar Código de Backup"):
+                    bkp = {
+                        "usuarios": st.session_state['usuarios'].to_dict(orient="records"),
+                        "stands": st.session_state['stands'].to_dict(orient="records"),
+                        "centros": st.session_state['centros_custo'].to_dict(orient="records"),
+                        "departamentos": st.session_state['departamentos'].to_dict(orient="records"),
+                        "chamados": st.session_state['chamados'].to_dict(orient="records"),
+                        "materiais": st.session_state['solicitacoes_material']
+                    }
+                    st.code(json.dumps(bkp))
+            if st.button("Sair"): st.session_state['autenticado'] = False; st.rerun()
 
-        if st.session_state['pagina_atual'] == "Manutenção":
-            module_manutencao()
-        elif st.session_state['pagina_atual'] == "Cadastro":
-            module_cadastro()
-        else:
-            st.title("📊 Painel de Gestão")
-            st.write("Bem-vindo ao sistema Omega & Raphson.")
+        if st.session_state['pagina_atual'] == "Manutenção": module_manutencao()
+        elif st.session_state['pagina_atual'] == "Cadastro": module_cadastro()
+        else: st.title("📊 Painel de Gestão")
 
 if __name__ == "__main__":
     main()
