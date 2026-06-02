@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sistema Omega-Raphson</title>
+<style>
+:root{
+  --bg:#0d1117;--sb:#161b22;--card:#1c2230;--card2:#212936;
+  --border:#2a3245;--primary:#2563eb;--pl:#3b82f6;
+  --gold:#d4a017;--gl:#f0c040;
+  --text:#e6edf3;--muted:#8b949e;
+  --green:#22c55e;--warn:#f59e0b;--red:#ef4444;--purple:#a78bfa;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:var(--sb);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.brand{font-size:14px;font-weight:800;color:var(--gold);}
+.brand span{color:var(--pl);}
+.body-wrap{display:flex;flex:1;overflow:hidden;}
+.leftnav{width:200px;min-width:200px;background:var(--sb);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.ln-title{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:14px 14px 6px;}
+.ln-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;font-size:13px;color:var(--muted);border-left:3px solid transparent;transition:all .15s;}
+.ln-item:hover{color:var(--text);background:rgba(255,255,255,.04);}
+.ln-item.active{color:var(--pl);background:rgba(37,99,235,.1);border-left-color:var(--primary);}
+.ln-item .ico{font-size:15px;width:18px;text-align:center;}
+.ln-cnt{margin-left:auto;font-size:10px;background:var(--border);color:var(--muted);padding:1px 6px;border-radius:10px;}
+.ln-item.active .ln-cnt{background:rgba(37,99,235,.3);color:var(--pl);}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.toolbar{padding:12px 20px;background:var(--sb);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.search-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 12px;flex:1;max-width:340px;}
+.search-wrap input{background:none;border:none;outline:none;color:var(--text);font-size:13px;width:100%;}
+.search-wrap input::placeholder{color:var(--muted);}
+.flt{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.flt select{background:none;border:none;outline:none;color:var(--muted);font-size:12px;cursor:pointer;}
+.flt select option{background:var(--card2);color:var(--text);}
+.add-btn{margin-left:auto;background:linear-gradient(135deg,var(--primary),#1d4ed8);border:none;border-radius:8px;padding:8px 15px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;}
+.results-lbl{padding:8px 20px 4px;font-size:12px;color:var(--muted);flex-shrink:0;display:flex;align-items:center;gap:8px;}
+.spin{width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--pl);border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.spin.on{display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.grid-wrap{flex:1;overflow-y:auto;padding:0 20px 20px;}
+.records-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:12px;padding-top:10px;}
+.rc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:border .15s,transform .1s;position:relative;overflow:hidden;}
+.rc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,var(--primary));}
+.rc:hover{border-color:var(--primary);transform:translateY(-1px);}
+.rc-head{display:flex;align-items:flex-start;gap:11px;margin-bottom:10px;}
+.av{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;}
+.rc-name{font-size:13.5px;font-weight:700;line-height:1.3;}
+.rc-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.rc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.rc-meta{display:flex;flex-direction:column;gap:3px;}
+.mrow{font-size:12px;color:var(--muted);}
+.mrow b{color:var(--text);}
+.rc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.sdot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px;}
+.ibtns{display:flex;gap:5px;}
+.ibtn{background:var(--card2);border:1px solid var(--border);border-radius:6px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;}
+.ibtn:hover{border-color:var(--primary);}
+.empty{text-align:center;padding:60px;color:var(--muted);}
+.empty-ico{font-size:40px;opacity:.25;margin-bottom:10px;}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:50;display:none;}
+.ov.open{display:block;}
+.dp{position:fixed;top:0;right:0;width:400px;height:100vh;background:var(--sb);border-left:1px solid var(--border);overflow-y:auto;z-index:51;transform:translateX(100%);transition:transform .22s ease;}
+.dp.open{transform:none;}
+.dp-hd{padding:18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.dp-av{width:48px;height:48px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;}
+.dp-name{font-size:16px;font-weight:800;}
+.dp-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.cls{margin-left:auto;background:var(--card);border:1px solid var(--border);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0;}
+.dp-sec{padding:14px 18px;border-bottom:1px solid var(--border);}
+.dp-sec-t{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
+.dp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;}
+.dp-f{margin-bottom:10px;}
+.dp-f label{font-size:10px;color:var(--muted);display:block;margin-bottom:2px;}
+.dp-f span{font-size:13px;}
+.hi{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.hi:last-child{border:none;}
+.hdot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.ht{font-size:13px;}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:60;display:none;align-items:center;justify-content:center;}
+.modal-ov.open{display:flex;}
+.modal{background:var(--sb);border:1px solid var(--border);border-radius:14px;width:540px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.modal-hd{padding:20px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.modal-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.modal-title{font-size:16px;font-weight:800;}
+.modal-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.modal-body{overflow-y:auto;padding:20px 22px;flex:1;}
+.modal-ft{padding:16px 22px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;}
+.form-row{display:grid;gap:14px;margin-bottom:14px;}
+.form-row.cols2{grid-template-columns:1fr 1fr;}
+.form-row.cols1{grid-template-columns:1fr;}
+.f-group{display:flex;flex-direction:column;gap:5px;}
+.f-group label{font-size:11px;color:var(--muted);font-weight:600;}
+.f-group label .req{color:var(--red);margin-left:2px;}
+.f-input,.f-select,.f-textarea{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:13px;outline:none;transition:border .15s;width:100%;}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--primary);}
+.f-input::placeholder,.f-textarea::placeholder{color:var(--muted);}
+.f-select option{background:var(--card2);}
+.f-input.err,.f-select.err{border-color:var(--red);}
+.section-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;margin-top:4px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.btn-cancel{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 18px;color:var(--muted);font-size:13px;cursor:pointer;}
+.btn-save{background:linear-gradient(135deg,var(--primary),#1d4ed8);border:none;border-radius:8px;padding:9px 22px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;}
+.btn-save:disabled{opacity:.5;cursor:not-allowed;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 20px;font-size:13px;font-weight:600;z-index:100;transition:transform .3s ease;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,.4);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{border-color:var(--green);color:var(--green);}
+.toast.error{border-color:var(--red);color:var(--red);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="brand">OMEGA·<span>RAPHSON</span></div>
+    <div style="color:var(--border);">|</div>
+    <span style="font-size:13px;color:var(--muted);">Cadastro Geral</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div style="width:8px;height:8px;border-radius:50%;background:#f59e0b" id="db-dot"></div>
+    <span style="font-size:11px;color:var(--muted)" id="db-lbl">Conectando...</span>
+  </div>
+</div>
+<div class="body-wrap">
+  <div class="leftnav">
+    <div class="ln-title">Entidades</div>
+    <div class="ln-item active" data-cat="todos" onclick="setTab(this)"><span class="ico">🔷</span>Todos <span class="ln-cnt" id="cnt-todos">—</span></div>
+    <div class="ln-title">Pessoas</div>
+    <div class="ln-item" data-cat="colaboradores" onclick="setTab(this)"><span class="ico">👤</span>Colaboradores <span class="ln-cnt" id="cnt-colaboradores">—</span></div>
+    <div class="ln-title">Empresas</div>
+    <div class="ln-item" data-cat="fornecedores" onclick="setTab(this)"><span class="ico">🏢</span>Fornecedores <span class="ln-cnt" id="cnt-fornecedores">—</span></div>
+    <div class="ln-item" data-cat="servicos_recorrentes" onclick="setTab(this)"><span class="ico">🔄</span>Serviços Recorr. <span class="ln-cnt" id="cnt-servicos_recorrentes">—</span></div>
+    <div class="ln-title">Empreendimentos</div>
+    <div class="ln-item" data-cat="spes" onclick="setTab(this)"><span class="ico">🏗️</span>SPEs <span class="ln-cnt" id="cnt-spes">—</span></div>
+    <div class="ln-item" data-cat="obras" onclick="setTab(this)"><span class="ico">🏠</span>Obras <span class="ln-cnt" id="cnt-obras">—</span></div>
+    <div class="ln-item" data-cat="viabilidade" onclick="setTab(this)"><span class="ico">🔍</span>Viabilidade <span class="ln-cnt" id="cnt-viabilidade">—</span></div>
+    <div class="ln-item" data-cat="stands" onclick="setTab(this)"><span class="ico">🪧</span>Stands <span class="ln-cnt" id="cnt-stands">—</span></div>
+    <div class="ln-title">Patrimônio</div>
+    <div class="ln-item" data-cat="inventario" onclick="setTab(this)"><span class="ico">📦</span>Inventário <span class="ln-cnt" id="cnt-inventario">—</span></div>
+    <div class="ln-item" data-cat="almoxarifado" onclick="setTab(this)"><span class="ico">🖊️</span>Almoxarifado <span class="ln-cnt" id="cnt-almoxarifado">—</span></div>
+    <div class="ln-item" data-cat="veiculos" onclick="setTab(this)"><span class="ico">🚗</span>Veículos <span class="ln-cnt" id="cnt-veiculos">—</span></div>
+    <div class="ln-title">Suprimentos</div>
+    <div class="ln-item" data-cat="insumos" onclick="setTab(this)"><span class="ico">🧱</span>Insumos / Mat. <span class="ln-cnt" id="cnt-insumos">—</span></div>
+  </div>
+  <div class="main">
+    <div class="toolbar">
+      <div class="search-wrap">🔍<input id="s-input" type="text" placeholder="Buscar..." oninput="render()"/></div>
+      <div class="flt">SPE: <select id="f-spe" onchange="render()"><option value="">Todas</option><option>SPE 01</option><option>SPE 02</option><option>SPE 03</option><option>SPE 04</option><option>HQ</option></select></div>
+      <div class="flt">Status: <select id="f-status" onchange="render()"><option value="">Todos</option><option>Ativo</option><option>Inativo</option><option>Em Obra</option><option>Disponível</option><option>Em Uso</option><option>Estoque Baixo</option></select></div>
+      <button class="add-btn" onclick="openModal()">＋ Novo Cadastro</button>
+    </div>
+    <div class="results-lbl"><div class="spin" id="spin"></div><span id="results-lbl">Carregando...</span></div>
+    <div class="grid-wrap">
+      <div class="records-grid" id="rg"></div>
+      <div class="empty" id="empty" style="display:none"><div class="empty-ico">🗂️</div><div>Nenhum registro encontrado</div></div>
+    </div>
+  </div>
+</div>
+<div class="ov" id="ov" onclick="closeDP()"></div>
+<div class="dp" id="dp">
+  <div class="dp-hd">
+    <div class="dp-av" id="dp-av"></div>
+    <div><div class="dp-name" id="dp-name"></div><div class="dp-sub" id="dp-sub"></div></div>
+    <div class="cls" onclick="closeDP()">✕</div>
+  </div>
+  <div id="dp-body"></div>
+</div>
+<div class="modal-ov" id="modal-ov">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-ico" id="m-ico"></div>
+      <div><div class="modal-title" id="m-title">Novo Cadastro</div><div class="modal-sub" id="m-sub"></div></div>
+      <div class="cls" onclick="closeModal()">✕</div>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+    <div class="modal-ft">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-save" id="btn-save" onclick="saveRecord()"><span id="save-spin" class="spin"></span>Salvar Registro</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SB_URL='https://jljqhonsiiqittioxjrf.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsanFob25zaWlxaXR0aW94anJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDkyMTcsImV4cCI6MjA5NTkyNTIxN30.MQCPYUxCC1N3fuqbhx19TpHCB4TA2DS9iLGAzu6ms9o';
+const TABLES=['colaboradores','fornecedores','servicos_recorrentes','spes','obras','viabilidade','stands','inventario','almoxarifado','veiculos','insumos'];
+const FORMS={colaboradores:{label:'Colaborador',ico:'👤',accent:'#2563eb',sections:[{title:'Dados Pessoais',fields:[{id:'nome',label:'Nome Completo',type:'text',req:true,placeholder:'Ex: João da Silva'},{id:'cpf',label:'CPF',type:'text',placeholder:'000.000.000-00'},{id:'email',label:'E-mail',type:'email',placeholder:'email@empresa.com.br'},{id:'telefone',label:'Telefone',type:'text',placeholder:'(21) 99999-0000'}]},{title:'Vínculo Profissional',fields:[{id:'empresa',label:'Empresa',type:'select',options:['Omega Inc','Raphson Engenharia','SPE 01 — Omega I','SPE 02 — Raphson Prime','SPE 03 — Omega Tower','SPE 04 — Green Life','Outro']},{id:'tipo_contrato',label:'Tipo de Contrato',type:'select',options:['CLT','PJ','Efetivo','Estagiário','Temporário','Sócio']},{id:'cargo',label:'Cargo',type:'text',placeholder:'Ex: Analista Financeiro'},{id:'departamento',label:'Departamento',type:'text',placeholder:'Ex: Engenharia'},{id:'data_admissao',label:'Data de Admissão',type:'date'},{id:'spe_label',label:'SPE / Alocação',type:'select',options:['HQ','SPE 01','SPE 02','SPE 03','SPE 04','Todas']}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Ativo','Inativo','Férias','Desligado']}]}]},fornecedores:{label:'Fornecedor',ico:'🏢',accent:'#d4a017',sections:[{title:'Dados da Empresa',fields:[{id:'nome',label:'Razão Social',type:'text',req:true,placeholder:'Ex: Construtora XYZ Ltda'},{id:'cnpj',label:'CNPJ',type:'text',placeholder:'00.000.000/0001-00'},{id:'categoria',label:'Categoria',type:'select',options:['Construção Civil','Consultoria','Materiais','Arquitetura','Limpeza','Segurança','Tecnologia','Transporte','Outro']},{id:'responsavel',label:'Responsável',type:'text',placeholder:'Nome do contato'},{id:'email',label:'E-mail',type:'email',placeholder:'email@empresa.com.br'},{id:'telefone',label:'Telefone',type:'text',placeholder:'(21) 99999-0000'},{id:'spes_atendidas',label:'SPEs Atendidas',type:'select',options:['Todas','SPE 01','SPE 02','SPE 03','SPE 04','HQ']}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Ativo','Inativo']}]}]},servicos_recorrentes:{label:'Serviço Recorrente',ico:'🔄',accent:'#a78bfa',sections:[{title:'Dados do Serviço',fields:[{id:'nome',label:'Nome',type:'text',req:true,placeholder:'Ex: GreenClean Facilities'},{id:'cnpj',label:'CNPJ',type:'text',placeholder:'00.000.000/0001-00'},{id:'categoria',label:'Categoria',type:'select',options:['Limpeza','Vigilância','Tecnologia','Manutenção','Contabilidade','Jurídico','Outro']},{id:'recorrencia',label:'Recorrência',type:'select',options:['Mensal','Trimestral','Semestral','Anual']},{id:'valor_mensal',label:'Valor Mensal (R$)',type:'number',placeholder:'0'},{id:'spes_atendidas',label:'SPEs',type:'select',options:['Todas','SPE 01','SPE 02','SPE 03','SPE 04','HQ']},{id:'contato',label:'Contato',type:'text',placeholder:'(21) 99999-0000'}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Ativo','Inativo']}]}]},spes:{label:'SPE',ico:'🏗️',accent:'#3b82f6',sections:[{title:'Dados Jurídicos',fields:[{id:'codigo',label:'Código',type:'text',req:true,placeholder:'Ex: SPE05'},{id:'nome',label:'Nome da SPE',type:'text',req:true,placeholder:'Ex: SPE 05 — Residencial ABC'},{id:'cnpj',label:'CNPJ',type:'text',placeholder:'00.000.000/0001-00'},{id:'data_constituicao',label:'Data de Constituição',type:'date'}]},{title:'Localização',fields:[{id:'endereco',label:'Endereço',type:'text',placeholder:'Rua, número'},{id:'cidade',label:'Cidade',type:'text',placeholder:'Ex: Rio de Janeiro'},{id:'uf',label:'UF',type:'select',options:['RJ','SP','MG','ES','BA','PR','RS','SC','Outro']},{id:'incorporador',label:'Incorporador',type:'text',placeholder:'Ex: Omega Inc'},{id:'construtor',label:'Construtor',type:'text',placeholder:'Ex: Raphson Engenharia'},{id:'unidades',label:'Unidades',type:'text',placeholder:'Ex: 120 ap.'}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Planejamento','Em Obra','Lançamento','Entregue','Encerrada']}]}]},obras:{label:'Obra',ico:'🏠',accent:'#f59e0b',sections:[{title:'Identificação',fields:[{id:'nome',label:'Nome da Obra',type:'text',req:true,placeholder:'Ex: Residencial Omega I'},{id:'spe_label',label:'SPE Vinculada',type:'select',options:['SPE 01','SPE 02','SPE 03','SPE 04']},{id:'endereco',label:'Endereço',type:'text',placeholder:'Rua, número, bairro'}]},{title:'Dados Técnicos',fields:[{id:'area_m2',label:'Área (m²)',type:'number',placeholder:'0'},{id:'unidades',label:'Unidades',type:'text',placeholder:'Ex: 120 ap.'},{id:'data_inicio',label:'Início',type:'date'},{id:'previsao_entrega',label:'Previsão Entrega',type:'date'},{id:'engenheiro',label:'Engenheiro',type:'text',placeholder:'Nome'},{id:'percentual_concluido',label:'% Concluído',type:'number',placeholder:'0'}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Projeto','Pré-obra','Em Execução','Paralisada','Entregue']}]}]},viabilidade:{label:'Viabilidade',ico:'🔍',accent:'#22c55e',sections:[{title:'Terreno',fields:[{id:'nome',label:'Identificação',type:'text',req:true,placeholder:'Ex: Terreno Rua XV'},{id:'endereco',label:'Endereço',type:'text',placeholder:'Rua, número, bairro'},{id:'area_m2',label:'Área (m²)',type:'number',placeholder:'0'},{id:'zoneamento',label:'Zoneamento',type:'text',placeholder:'Ex: ZR-3'}]},{title:'Financeiro',fields:[{id:'vgv_estimado',label:'VGV Estimado (R$)',type:'number',placeholder:'0'},{id:'valor_terreno',label:'Valor Terreno (R$)',type:'number',placeholder:'0'},{id:'responsavel',label:'Responsável',type:'text',placeholder:'Nome'},{id:'spe_label',label:'SPE Referência',type:'select',options:['SPE 01','SPE 02','SPE 03','SPE 04','Nova SPE']}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Em Análise','Aguardando','Aprovado','Reprovado']}]}]},stands:{label:'Stand de Vendas',ico:'🪧',accent:'#f59e0b',sections:[{title:'Dados',fields:[{id:'nome',label:'Nome',type:'text',req:true,placeholder:'Ex: Stand SPE 01'},{id:'spe_label',label:'SPE',type:'select',options:['SPE 01','SPE 02','SPE 03','SPE 04']},{id:'endereco',label:'Endereço',type:'text',placeholder:'Rua, número'},{id:'area_m2',label:'Área (m²)',type:'number',placeholder:'0'},{id:'responsavel',label:'Responsável',type:'text',placeholder:'Nome'},{id:'aluguel_mensal',label:'Aluguel (R$)',type:'number',placeholder:'0'},{id:'funcionamento',label:'Funcionamento',type:'text',placeholder:'Ex: Seg–Dom 9h–18h'},{id:'data_inauguracao',label:'Inauguração',type:'date'}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Ativo','Inativo','Em Montagem','Em Reforma']}]}]},inventario:{label:'Inventário',ico:'📦',accent:'#a78bfa',sections:[{title:'Identificação',fields:[{id:'nome',label:'Descrição',type:'text',req:true,placeholder:'Ex: Notebook Dell'},{id:'codigo_patrimonio',label:'Nº Patrimônio',type:'text',placeholder:'PAT-005'},{id:'tipo',label:'Tipo',type:'select',options:['TI','Escritório','Mobiliário','AV','Ferramental','Outro']}]},{title:'Dados',fields:[{id:'marca',label:'Marca',type:'text',placeholder:'Ex: Dell'},{id:'modelo',label:'Modelo',type:'text',placeholder:'Ex: Latitude 5540'},{id:'num_serie',label:'Nº Série',type:'text',placeholder:'DL2024001'},{id:'responsavel',label:'Responsável',type:'text',placeholder:'Nome'},{id:'local',label:'Local',type:'text',placeholder:'Ex: HQ Sala 1'},{id:'spe_label',label:'SPE',type:'select',options:['HQ','SPE 01','SPE 02','SPE 03','SPE 04']},{id:'valor_aquisicao',label:'Valor (R$)',type:'number',placeholder:'0'},{id:'data_aquisicao',label:'Data Aquisição',type:'date'}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Em Uso','Em Manutenção','Disponível','Baixado']}]}]},almoxarifado:{label:'Almoxarifado',ico:'🖊️',accent:'#22c55e',sections:[{title:'Identificação',fields:[{id:'nome',label:'Nome',type:'text',req:true,placeholder:'Ex: Papel A4'},{id:'codigo',label:'Código',type:'text',placeholder:'ALM-010'},{id:'categoria',label:'Categoria',type:'select',options:['Papel e Impressão','Material de Escrita','Copa e Cozinha','Limpeza','Informática','Outro']},{id:'unidade',label:'Unidade',type:'text',placeholder:'Ex: Resma'}]},{title:'Estoque',fields:[{id:'estoque_atual',label:'Estoque Atual',type:'number',placeholder:'0'},{id:'estoque_minimo',label:'Estoque Mínimo',type:'number',placeholder:'0'},{id:'fornecedor',label:'Fornecedor',type:'text',placeholder:'Nome'},{id:'ultima_compra',label:'Última Compra',type:'date'},{id:'spe_label',label:'Local',type:'select',options:['HQ','SPE 01','SPE 02','SPE 03','SPE 04']}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Estoque OK','Estoque Baixo','Sem Estoque']}]}]},veiculos:{label:'Veículo',ico:'🚗',accent:'#ef4444',sections:[{title:'Identificação',fields:[{id:'nome',label:'Descrição',type:'text',req:true,placeholder:'Ex: Toyota Hilux'},{id:'placa',label:'Placa',type:'text',placeholder:'ABC-1234'},{id:'marca',label:'Marca',type:'text',placeholder:'Toyota'},{id:'modelo',label:'Modelo',type:'text',placeholder:'Hilux SW4'},{id:'ano',label:'Ano',type:'number',placeholder:'2024'},{id:'combustivel',label:'Combustível',type:'select',options:['Flex','Gasolina','Diesel','Elétrico','Híbrido']}]},{title:'Documentação',fields:[{id:'renavam',label:'RENAVAM',type:'text',placeholder:'00000000000'},{id:'responsavel',label:'Responsável',type:'text',placeholder:'Nome'},{id:'seguradora',label:'Seguradora',type:'text',placeholder:'Ex: Porto Seguro'},{id:'spe_label',label:'SPE',type:'select',options:['HQ','SPE 01','SPE 02','SPE 03','SPE 04','Todas']}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Ativo','Em Manutenção','Inativo','Alienado']}]}]},insumos:{label:'Insumo',ico:'🧱',accent:'#d4a017',sections:[{title:'Identificação',fields:[{id:'nome',label:'Nome',type:'text',req:true,placeholder:'Ex: Cimento CP-II'},{id:'codigo',label:'Código',type:'text',placeholder:'INS-010'},{id:'categoria',label:'Categoria',type:'select',options:['Argamassas e Concreto','Aço e Ferragem','Alvenaria','Hidráulica','Elétrica','Revestimento','Outro']},{id:'unidade',label:'Unidade',type:'text',placeholder:'Ex: Saco 50kg'}]},{title:'Estoque',fields:[{id:'estoque_atual',label:'Estoque Atual',type:'number',placeholder:'0'},{id:'estoque_minimo',label:'Estoque Mínimo',type:'number',placeholder:'0'},{id:'fornecedor',label:'Fornecedor',type:'text',placeholder:'Nome'},{id:'ultima_entrada',label:'Última Entrada',type:'date'},{id:'spe_label',label:'SPE Destino',type:'select',options:['SPE 01','SPE 02','SPE 03','SPE 04','Todas']}]},{title:'Status',fields:[{id:'status',label:'Status',type:'select',req:true,options:['Disponível','Estoque Baixo','Sem Estoque']}]}]}};
+const CFG={colaboradores:{nameField:'nome',subFn:r=>`${r.cargo||''} · ${r.empresa||''}`,avFn:r=>ini(r.nome),avColor:'#2563eb',accent:'#2563eb',metaFields:[['Cargo','cargo'],['Email','email']]},fornecedores:{nameField:'nome',subFn:r=>r.categoria||'',avFn:r=>ini(r.nome),avColor:'#d4a017',accent:'#d4a017',metaFields:[['CNPJ','cnpj'],['SPEs','spes_atendidas']]},servicos_recorrentes:{nameField:'nome',subFn:r=>`${r.categoria||''} · ${r.recorrencia||''}`,avFn:r=>ini(r.nome),avColor:'#a78bfa',accent:'#a78bfa',metaFields:[['Recorrência','recorrencia'],['Valor','valor_mensal']]},spes:{nameField:'nome',subFn:r=>`${r.cidade||''} · ${r.uf||''}`,avFn:r=>r.codigo?.replace('SPE','S')||'S',avColor:'#3b82f6',accent:'#3b82f6',metaFields:[['CNPJ','cnpj'],['Unidades','unidades']]},obras:{nameField:'nome',subFn:r=>r.spe_label||'',avFn:r=>ini(r.nome),avColor:'#f59e0b',accent:'#f59e0b',metaFields:[['Endereço','endereco'],['% Concluído','percentual_concluido']]},viabilidade:{nameField:'nome',subFn:r=>r.endereco||'',avFn:r=>ini(r.nome),avColor:'#22c55e',accent:'#22c55e',metaFields:[['VGV','vgv_estimado'],['Responsável','responsavel']]},stands:{nameField:'nome',subFn:r=>r.spe_label||'',avFn:r=>ini(r.nome),avColor:'#f59e0b',accent:'#f59e0b',metaFields:[['Endereço','endereco'],['Aluguel','aluguel_mensal']]},inventario:{nameField:'nome',subFn:r=>`${r.tipo||''} · ${r.marca||''}`,avFn:r=>ini(r.nome),avColor:'#a78bfa',accent:'#a78bfa',metaFields:[['Patrimônio','codigo_patrimonio'],['Responsável','responsavel']]},almoxarifado:{nameField:'nome',subFn:r=>r.categoria||'',avFn:r=>ini(r.nome),avColor:'#22c55e',accent:'#22c55e',metaFields:[['Código','codigo'],['Estoque','estoque_atual']]},veiculos:{nameField:'nome',subFn:r=>`${r.marca||''} ${r.modelo||''} ${r.ano||''}`,avFn:r=>ini(r.nome),avColor:'#ef4444',accent:'#ef4444',metaFields:[['Placa','placa'],['Responsável','responsavel']]},insumos:{nameField:'nome',subFn:r=>r.categoria||'',avFn:r=>ini(r.nome),avColor:'#d4a017',accent:'#d4a017',metaFields:[['Código','codigo'],['Estoque','estoque_atual']]}};
+const sColor=s=>({'Ativo':'#22c55e','Inativo':'#ef4444','Férias':'#f59e0b','Desligado':'#ef4444','Em Análise':'#f59e0b','Aguardando':'#a78bfa','Reprovado':'#ef4444','Em Obra':'#f59e0b','Lançamento':'#3b82f6','Planejamento':'#a78bfa','Pré-obra':'#3b82f6','Em Execução':'#f59e0b','Projeto':'#a78bfa','Em Montagem':'#f59e0b','Disponível':'#22c55e','Estoque Baixo':'#ef4444','Estoque OK':'#22c55e','Em Uso':'#22c55e','Aprovado':'#22c55e','Sem Estoque':'#ef4444','Em Manutenção':'#f59e0b','Baixado':'#8b949e','Alienado':'#8b949e','Entregue':'#22c55e','Encerrada':'#8b949e','Paralisada':'#ef4444'}[s]||'#8b949e');
+function ini(n){if(!n)return'?';const p=n.trim().split(' ');return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():n.slice(0,2).toUpperCase();}
+let DB={},currentCat='todos',modalCat='colaboradores';
+async function sbFetch(table){const r=await fetch(`${SB_URL}/rest/v1/${table}?select=*&order=created_at.desc`,{headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json'}});if(!r.ok)throw new Error(table);return r.json();}
+async function loadAll(){document.getElementById('spin').classList.add('on');try{const res=await Promise.all(TABLES.map(t=>sbFetch(t).then(d=>({t,d}))));res.forEach(({t,d})=>{DB[t]=d;});document.getElementById('db-dot').style.background='#22c55e';document.getElementById('db-lbl').textContent='Supabase · Conectado';updateCounts();render();}catch(e){document.getElementById('db-dot').style.background='#ef4444';document.getElementById('db-lbl').textContent='Erro de conexão';}document.getElementById('spin').classList.remove('on');}
+function allRecs(){return TABLES.flatMap(t=>(DB[t]||[]).map(r=>({...r,_cat:t})));}
+function setTab(el){currentCat=el.dataset.cat;document.querySelectorAll('.ln-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');document.getElementById('s-input').value='';render();}
+function render(){const q=document.getElementById('s-input').value.toLowerCase();const fSpe=document.getElementById('f-spe').value;const fSt=document.getElementById('f-status').value;let recs=currentCat==='todos'?allRecs():(DB[currentCat]||[]).map(r=>({...r,_cat:currentCat}));if(q)recs=recs.filter(r=>Object.values(r).some(v=>v&&String(v).toLowerCase().includes(q)));if(fSpe)recs=recs.filter(r=>{const s=(r.spe_label||r.spes_atendidas||'').toLowerCase();return s.includes(fSpe.toLowerCase())||s.includes('todas');});if(fSt)recs=recs.filter(r=>r.status===fSt);const grid=document.getElementById('rg'),empty=document.getElementById('empty');document.getElementById('results-lbl').textContent=`${recs.length} registro${recs.length!==1?'s':''} encontrado${recs.length!==1?'s':''}`;if(!recs.length){grid.innerHTML='';empty.style.display='block';return;}empty.style.display='none';grid.innerHTML=recs.map(r=>{const cat=r._cat||currentCat;const cfg=CFG[cat]||{accent:'#2563eb',avFn:()=>'?',avColor:'#2563eb',subFn:()=>'',metaFields:[]};const tags=Array.isArray(r.tags)?r.tags:[];const sC=sColor(r.status);const meta=cfg.metaFields.slice(0,2).map(([l,f])=>r[f]!=null?`<div class="mrow">${l}: <b>${r[f]}</b></div>`:'').join('');return`<div class="rc" style="--accent:${cfg.accent}" onclick="openDP('${r.id}','${cat}')"><div class="rc-head"><div class="av" style="background:${cfg.avColor}20;color:${cfg.avColor}">${cfg.avFn(r)}</div><div><div class="rc-name">${r[cfg.nameField||'nome']||'—'}</div><div class="rc-sub">${cfg.subFn(r)}</div></div></div><div class="rc-tags">${tags.map(t=>`<span class="tag" style="background:${t.c||cfg.accent}20;color:${t.c||cfg.accent}">${t.l}</span>`).join('')}</div><div class="rc-meta">${meta}</div><div class="rc-foot"><div><span class="sdot" style="background:${sC}"></span><span style="font-size:11px;color:${sC}">${r.status||'—'}</span></div><div class="ibtns"><div class="ibtn">👁</div><div class="ibtn">✏️</div></div></div></div>`;}).join('');}
+function updateCounts(){let total=0;TABLES.forEach(t=>{const c=(DB[t]||[]).length;const el=document.getElementById('cnt-'+t);if(el)el.textContent=c;total+=c;});const te=document.getElementById('cnt-todos');if(te)te.textContent=total;}
+function openModal(){modalCat=(currentCat==='todos'||!FORMS[currentCat])?'colaboradores':currentCat;buildModal(modalCat);document.getElementById('modal-ov').classList.add('open');}
+function buildModal(cat){modalCat=cat;const f=FORMS[cat];if(!f)return;document.getElementById('m-ico').style.cssText=`background:${f.accent}20;color:${f.accent}`;document.getElementById('m-ico').textContent=f.ico;document.getElementById('m-title').textContent=`Novo ${f.label}`;document.getElementById('m-sub').textContent=`Preencha os dados para cadastrar`;let html=`<div class="form-row cols1"><div class="f-group"><label>Categoria</label><select class="f-select" id="cat-selector" onchange="buildModal(this.value)">${TABLES.map(t=>FORMS[t]?`<option value="${t}" ${t===cat?'selected':''}>${FORMS[t].ico} ${FORMS[t].label}</option>`:'').join('')}</select></div></div>`;f.sections.forEach(sec=>{html+=`<div class="section-label">${sec.title}</div><div class="form-row cols2">`;sec.fields.forEach(fld=>{if(fld.type==='select'){html+=`<div class="f-group"><label>${fld.label}${fld.req?'<span class="req">*</span>':''}</label><select class="f-select" id="f_${fld.id}"><option value="">Selecione...</option>${(fld.options||[]).map(o=>`<option>${o}</option>`).join('')}</select></div>`;}else{html+=`<div class="f-group"><label>${fld.label}${fld.req?'<span class="req">*</span>':''}</label><input class="f-input" id="f_${fld.id}" type="${fld.type}" placeholder="${fld.placeholder||''}"/></div>`;}});html+=`</div>`;});document.getElementById('m-body').innerHTML=html;}
+function closeModal(){document.getElementById('modal-ov').classList.remove('open');}
+async function saveRecord(){const f=FORMS[modalCat];if(!f)return;let valid=true;const allFields=f.sections.flatMap(s=>s.fields);allFields.forEach(fld=>{const el=document.getElementById('f_'+fld.id);if(!el)return;el.classList.remove('err');if(fld.req&&!el.value.trim()){el.classList.add('err');valid=false;}});if(!valid){showToast('Preencha os campos obrigatórios','error');return;}const payload={tags:[],historico:[{t:`Cadastrado em ${new Date().toLocaleDateString('pt-BR')}`}],docs:[]};allFields.forEach(fld=>{const el=document.getElementById('f_'+fld.id);if(!el||!el.value)return;if(fld.type==='number')payload[fld.id]=parseFloat(el.value)||0;else payload[fld.id]=el.value;});const btn=document.getElementById('btn-save');const sp=document.getElementById('save-spin');btn.disabled=true;sp.classList.add('on');try{const r=await fetch(`${SB_URL}/rest/v1/${modalCat}`,{method:'POST',headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(payload)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}const[saved]=await r.json();DB[modalCat]=[saved,...(DB[modalCat]||[])];updateCounts();render();closeModal();showToast(`✅ ${f.label} cadastrado!`,'success');}catch(e){showToast(`Erro: ${e.message}`,'error');}btn.disabled=false;sp.classList.remove('on');}
+function openDP(id,cat){const r=(DB[cat]||[]).find(x=>x.id===id);if(!r)return;const cfg=CFG[cat]||{};const av=cfg.avFn?cfg.avFn(r):'?';const avC=cfg.avColor||'#2563eb';const sC=sColor(r.status);document.getElementById('dp-av').style.cssText=`background:${avC}20;color:${avC}`;document.getElementById('dp-av').textContent=av;document.getElementById('dp-name').textContent=r[cfg.nameField||'nome']||'—';document.getElementById('dp-sub').innerHTML=`${cfg.subFn?cfg.subFn(r):''} &nbsp;<span class="tag" style="background:${sC}20;color:${sC}">${r.status||'—'}</span>`;const skip=['id','tags','historico','docs','created_at','updated_at','_cat'];const fields=Object.entries(r).filter(([k])=>!skip.includes(k)&&r[k]!==null&&r[k]!=='');const tags=Array.isArray(r.tags)?r.tags:[];const hist=Array.isArray(r.historico)?r.historico:[];const docs=Array.isArray(r.docs)?r.docs:[];const hc=['#2563eb','#d4a017','#22c55e','#a78bfa'];let b='';if(tags.length)b+=`<div class="dp-sec"><div class="dp-sec-t">Tags</div><div>${tags.map(t=>`<span class="tag" style="background:${t.c||'#2563eb'}20;color:${t.c||'#2563eb'};margin-right:4px">${t.l}</span>`).join('')}</div></div>`;b+=`<div class="dp-sec"><div class="dp-sec-t">Dados</div><div class="dp-grid2">`;fields.forEach(([k,v])=>{b+=`<div class="dp-f"><label>${k.replace(/_/g,' ')}</label><span>${v}</span></div>`;});b+=`</div></div>`;if(docs.length){b+=`<div class="dp-sec"><div class="dp-sec-t">Documentos</div>`;docs.forEach(d=>{b+=`<div style="display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:7px"><span>📄</span><div><div style="font-size:13px;font-weight:600">${d}</div></div><div style="margin-left:auto;font-size:12px;color:var(--pl);cursor:pointer">⬇</div></div>`;});b+=`</div>`;}if(hist.length){b+=`<div class="dp-sec"><div class="dp-sec-t">Histórico</div>`;hist.forEach((h,i)=>{b+=`<div class="hi"><div class="hdot" style="background:${hc[i%4]}"></div><div class="ht">${h.t||h}</div></div>`;});b+=`</div>`;}document.getElementById('dp-body').innerHTML=b;document.getElementById('ov').classList.add('open');document.getElementById('dp').classList.add('open');}
+function closeDP(){document.getElementById('ov').classList.remove('open');document.getElementById('dp').classList.remove('open');}
+function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type}`;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
+loadAll();
+</script>
+</body>
+</html>
