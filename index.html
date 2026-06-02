@@ -635,8 +635,12 @@ async function deleteRecord(id){
 }
 
 function editRecord(id){
-  openDP(id);
-  showToast('Edição em desenvolvimento','error');
+  const r=(DB[currentTab]||[]).find(x=>x.id===id);
+  if(!r) return;
+  editingId=id;
+  currentModalTab=currentTab;
+  buildModal(r);
+  document.getElementById('modal-ov').classList.add('open');
 }
 
 function showToast(msg,type='success'){
