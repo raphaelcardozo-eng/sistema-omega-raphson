@@ -8,8 +8,6 @@
 :root{--bg:#0d1117;--sb:#161b22;--card:#1c2230;--card2:#212936;--border:#2a3245;--primary:#2563eb;--pl:#3b82f6;--gold:#d4a017;--gl:#f0c040;--text:#e6edf3;--muted:#8b949e;--green:#22c55e;--warn:#f59e0b;--red:#ef4444;--purple:#a78bfa;--r:8px;--sidebar-w:220px;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
 body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
-
-/* TOPBAR */
 .topbar{background:var(--sb);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;z-index:10;}
 .brand{font-size:15px;font-weight:800;color:var(--gold);letter-spacing:.5px;white-space:nowrap;}
 .brand span{color:var(--pl);}
@@ -23,28 +21,19 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;}
 .user-name{font-size:12px;font-weight:600;}
 .db-dot{width:7px;height:7px;border-radius:50%;background:var(--warn);}
-
-/* LAYOUT */
 .app-body{display:flex;flex:1;overflow:hidden;}
-
-/* SIDEBAR */
-.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sb);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;transition:width .2s;}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sb);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
 .nav-section{padding:14px 14px 4px;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
-.nav-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;font-size:13px;color:var(--muted);border-left:3px solid transparent;transition:all .15s;border-radius:0;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;font-size:13px;color:var(--muted);border-left:3px solid transparent;transition:all .15s;}
 .nav-item:hover{color:var(--text);background:rgba(255,255,255,.04);}
 .nav-item.active{color:var(--pl);background:rgba(37,99,235,.1);border-left-color:var(--primary);}
 .nav-item .ni{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
 .nav-badge{margin-left:auto;font-size:10px;background:var(--red);color:#fff;padding:1px 6px;border-radius:10px;}
-.nav-badge.blue{background:rgba(37,99,235,.3);color:var(--pl);}
 .sidebar-footer{margin-top:auto;padding:14px;border-top:1px solid var(--border);}
 .ver{font-size:10px;color:var(--muted);text-align:center;}
-
-/* MAIN CONTENT */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .module{display:none;flex:1;flex-direction:column;overflow:hidden;}
 .module.active{display:flex;}
-
-/* ===== DASHBOARD ===== */
 .dash-wrap{flex:1;overflow-y:auto;padding:24px;}
 .dash-header{margin-bottom:20px;}
 .dash-header h1{font-size:20px;font-weight:800;}
@@ -56,7 +45,6 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .kpi-card.c-gold::before{background:var(--gold);}
 .kpi-card.c-green::before{background:var(--green);}
 .kpi-card.c-red::before{background:var(--red);}
-.kpi-card.c-purple::before{background:var(--purple);}
 .kpi-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
 .kpi-val{font-size:28px;font-weight:800;}
 .kpi-sub{font-size:12px;color:var(--muted);margin-top:4px;}
@@ -74,9 +62,6 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .act-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
 .act-text{font-size:13px;line-height:1.4;}
 .act-time{font-size:11px;color:var(--muted);margin-top:2px;}
-.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
-
-/* ===== CADASTRO ===== */
 .tabnav{background:var(--sb);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:flex-end;gap:2px;flex-shrink:0;}
 .tab{padding:11px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
 .tab:hover{color:var(--text);}
@@ -109,8 +94,6 @@ tbody tr:hover .row-actions{opacity:1;}
 .act-btn{background:var(--card2);border:1px solid var(--border);border-radius:6px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;}
 .act-btn:hover{border-color:var(--primary);}
 .empty-row td{text-align:center;padding:60px;color:var(--muted);}
-
-/* ===== MANUTENÇÃO ===== */
 .kpi-strip{display:flex;gap:12px;padding:0 24px 12px;flex-shrink:0;}
 .kpi-s{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 18px;flex:1;position:relative;overflow:hidden;}
 .kpi-s::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
@@ -130,15 +113,11 @@ tbody tr:hover .row-actions{opacity:1;}
 .p-cancelado{background:rgba(139,148,158,.15);color:var(--muted);}
 .p-preventiva{background:rgba(167,139,250,.15);color:var(--purple);}
 .overdue{color:var(--red);font-size:11px;font-weight:600;}
-
-/* ===== PLACEHOLDER MODULES ===== */
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;text-align:center;padding:40px;}
 .ph-icon{font-size:52px;opacity:.25;}
 .ph-title{font-size:20px;font-weight:700;}
 .ph-desc{color:var(--muted);font-size:14px;max-width:340px;line-height:1.7;}
 .ph-badge{background:rgba(37,99,235,.15);color:var(--pl);border:1px solid rgba(37,99,235,.3);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;}
-
-/* SHARED PANELS */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;display:none;}
 .ov.open{display:block;}
 .dp{position:fixed;top:0;right:0;width:430px;height:100vh;background:var(--sb);border-left:1px solid var(--border);overflow-y:auto;z-index:51;transform:translateX(100%);transition:transform .22s ease;}
@@ -163,8 +142,6 @@ tbody tr:hover .row-actions{opacity:1;}
 .s-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;}
 .s-btn:hover{border-color:var(--primary);color:var(--pl);}
 .s-btn.on{background:rgba(37,99,235,.15);border-color:var(--primary);color:var(--pl);}
-
-/* MODAL */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:60;display:none;align-items:center;justify-content:center;}
 .modal-ov.open{display:flex;}
 .modal{background:var(--sb);border:1px solid var(--border);border-radius:14px;width:560px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
@@ -200,7 +177,6 @@ tbody tr:hover .row-actions{opacity:1;}
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="brand">OMEGA·<span>RAPHSON</span></div>
   <div class="topbar-div"></div>
@@ -208,52 +184,36 @@ tbody tr:hover .row-actions{opacity:1;}
   <div class="topbar-right">
     <div class="spe-badge">🏗️ Todas as SPEs ▾</div>
     <div class="notif">🔔<div class="notif-dot"></div></div>
-    <div class="user-pill">
-      <div class="avatar">RC</div>
-      <div class="user-name">Raphael C.</div>
-    </div>
-    <div class="db-dot" id="db-dot" title="Status banco"></div>
+    <div class="user-pill"><div class="avatar">RC</div><div class="user-name">Raphael C.</div></div>
+    <div class="db-dot" id="db-dot"></div>
   </div>
 </div>
 
 <div class="app-body">
-
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="nav-section">Principal</div>
     <div class="nav-item active" onclick="goTo('dashboard',this)"><span class="ni">⬛</span>Dashboard</div>
     <div class="nav-item" onclick="goTo('planejamento',this)"><span class="ni">📅</span>Planejamento</div>
-
     <div class="nav-section">Gestão</div>
     <div class="nav-item" onclick="goTo('cadastro',this)"><span class="ni">🗂️</span>Cadastro Geral</div>
     <div class="nav-item" onclick="goTo('contratos',this)"><span class="ni">📋</span>Contratos</div>
     <div class="nav-item" onclick="goTo('financeiro',this)"><span class="ni">💰</span>Financeiro</div>
     <div class="nav-item" onclick="goTo('viabilidade',this)"><span class="ni">🔍</span>Viabilidade</div>
-
     <div class="nav-section">Operações</div>
     <div class="nav-item" onclick="goTo('manutencao',this)"><span class="ni">🔧</span>Manutenção <span class="nav-badge" id="badge-manut">0</span></div>
-
     <div class="nav-section">Dados</div>
     <div class="nav-item" onclick="goTo('relatorios',this)"><span class="ni">📊</span>Relatórios</div>
-
     <div class="nav-section">Sistema</div>
     <div class="nav-item" onclick="goTo('usuarios',this)"><span class="ni">🔐</span>Usuários</div>
-
-    <div class="sidebar-footer">
-      <div class="ver">v1.0.0 · Omega·Raphson</div>
-    </div>
+    <div class="sidebar-footer"><div class="ver">v1.0.0 · Omega·Raphson</div></div>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
 
-    <!-- ===== DASHBOARD ===== -->
+    <!-- DASHBOARD -->
     <div class="module active" id="mod-dashboard">
       <div class="dash-wrap">
-        <div class="dash-header">
-          <h1>Visão Geral</h1>
-          <p id="dash-date">Carregando...</p>
-        </div>
+        <div class="dash-header"><h1>Visão Geral</h1><p id="dash-date"></p></div>
         <div class="kpi-grid">
           <div class="kpi-card c-blue"><div class="kpi-lbl">Funcionários Ativos</div><div class="kpi-val" id="d-func">—</div><div class="kpi-sub">Todas as SPEs</div></div>
           <div class="kpi-card c-gold"><div class="kpi-lbl">Fornecedores</div><div class="kpi-val" id="d-forn">—</div><div class="kpi-sub">Cadastros ativos</div></div>
@@ -268,14 +228,14 @@ tbody tr:hover .row-actions{opacity:1;}
           <div class="panel">
             <div class="panel-title">Atividades Recentes</div>
             <div id="dash-atividades">
-              <div class="act-item"><div class="act-dot" style="background:var(--primary)"></div><div><div class="act-text">Sistema iniciado com sucesso</div><div class="act-time">Hoje</div></div></div>
+              <div class="act-item"><div class="act-dot" style="background:var(--primary)"></div><div><div class="act-text">Sistema iniciado</div><div class="act-time">Hoje</div></div></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ===== CADASTRO ===== -->
+    <!-- CADASTRO -->
     <div class="module" id="mod-cadastro">
       <div class="tabnav" id="cad-tabnav">
         <div class="tab active" data-ct="funcionarios" onclick="cadTab(this)">👤 Funcionários <span class="tc" id="ctc-funcionarios">0</span></div>
@@ -295,7 +255,7 @@ tbody tr:hover .row-actions{opacity:1;}
       <div class="table-wrap"><table><thead id="cad-thead"></thead><tbody id="cad-tbody"></tbody></table></div>
     </div>
 
-    <!-- ===== MANUTENÇÃO ===== -->
+    <!-- MANUTENÇÃO -->
     <div class="module" id="mod-manutencao">
       <div class="tabnav">
         <div class="tab active" data-mt="chamados" onclick="mantTab(this)">🔧 Chamados <span class="tc" id="mtc-chamados">0</span></div>
@@ -325,11 +285,10 @@ tbody tr:hover .row-actions{opacity:1;}
     <div class="module" id="mod-viabilidade"><div class="placeholder"><div class="ph-icon">🔍</div><div class="ph-title">Viabilidade</div><div class="ph-desc">Estudos de viabilidade para novos empreendimentos e terrenos.</div><div class="ph-badge">Em desenvolvimento</div></div></div>
     <div class="module" id="mod-relatorios"><div class="placeholder"><div class="ph-icon">📊</div><div class="ph-title">Relatórios</div><div class="ph-desc">Exportação em PDF e Excel, dashboards consolidados por SPE.</div><div class="ph-badge">Em desenvolvimento</div></div></div>
     <div class="module" id="mod-usuarios"><div class="placeholder"><div class="ph-icon">🔐</div><div class="ph-title">Usuários & Permissões</div><div class="ph-desc">Gestão de acessos por perfil, empresa e SPE.</div><div class="ph-badge">Em desenvolvimento</div></div></div>
+  </div>
+</div>
 
-  </div><!-- /main -->
-</div><!-- /app-body -->
-
-<!-- SHARED OVERLAY + DETAIL PANEL -->
+<!-- OVERLAY + DETAIL -->
 <div class="ov" id="ov" onclick="closeDP()"></div>
 <div class="dp" id="dp">
   <div class="dp-hd">
@@ -341,7 +300,7 @@ tbody tr:hover .row-actions{opacity:1;}
   <div id="dp-body"></div>
 </div>
 
-<!-- SHARED MODAL -->
+<!-- MODAL -->
 <div class="modal-ov" id="modal-ov">
   <div class="modal">
     <div class="modal-hd">
@@ -362,61 +321,58 @@ tbody tr:hover .row-actions{opacity:1;}
 const SB='https://jljqhonsiiqittioxjrf.supabase.co';
 const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsanFob25zaWlxaXR0aW94anJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDkyMTcsImV4cCI6MjA5NTkyNTIxN30.MQCPYUxCC1N3fuqbhx19TpHCB4TA2DS9iLGAzu6ms9o';
 const H={'apikey':KEY,'Authorization':`Bearer ${KEY}`,'Content-Type':'application/json'};
-async function sb(table,opts={}){const r=await fetch(`${SB}/rest/v1/${table}${opts.q||'?select=*&order=created_at.desc'}`,{method:opts.method||'GET',headers:{...H,...(opts.extra||{})},body:opts.body});if(!r.ok){const e=await r.json();throw new Error(e.message||r.status);}return opts.method==='DELETE'?null:r.json();}
+async function sbGet(table){const r=await fetch(`${SB}/rest/v1/${table}?select=*&order=created_at.desc`,{headers:H});if(!r.ok)throw new Error(table);return r.json();}
+async function sbPost(table,body){const r=await fetch(`${SB}/rest/v1/${table}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(body)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}return r.json();}
+async function sbPatch(table,id,body){const r=await fetch(`${SB}/rest/v1/${table}?id=eq.${id}`,{method:'PATCH',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(body)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}return r.json();}
+async function sbDelete(table,id){const r=await fetch(`${SB}/rest/v1/${table}?id=eq.${id}`,{method:'DELETE',headers:H});if(!r.ok)throw new Error('Erro ao excluir');}
 
-// ======= NAVIGATION =======
 const TITLES={dashboard:'Dashboard',cadastro:'Cadastro Geral',manutencao:'Manutenção',planejamento:'Planejamento Mensal',contratos:'Contratos',financeiro:'Financeiro',viabilidade:'Viabilidade',relatorios:'Relatórios',usuarios:'Usuários & Permissões'};
 let currentModule='dashboard';
 function goTo(id,el){
   document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('mod-'+id).classList.add('active');
-  if(el) el.classList.add('active');
+  if(el)el.classList.add('active');
   else document.querySelectorAll('.nav-item').forEach(n=>{if(n.getAttribute('onclick')?.includes(`'${id}'`))n.classList.add('active');});
   document.getElementById('page-title').textContent=TITLES[id]||id;
-  currentModule=id;
-  closeDP();
+  currentModule=id;closeDP();
 }
 
-// ======= DATA =======
 const DB={funcionarios:[],spes:[],stands:[],inventario:[],almoxarifado:[],fornecedores:[],chamados:[],preventiva:[]};
 const TBL={funcionarios:'colaboradores',spes:'spes',stands:'stands',inventario:'inventario',almoxarifado:'almoxarifado',fornecedores:'fornecedores'};
 
 async function loadAll(){
   try{
-    const tables=['colaboradores','spes','stands','inventario','almoxarifado','fornecedores','manutencao_chamados','manutencao_preventiva'];
-    const keys=['funcionarios','spes','stands','inventario','almoxarifado','fornecedores','chamados','preventiva'];
-    const res=await Promise.all(tables.map(t=>sb(t)));
-    res.forEach((d,i)=>{DB[keys[i]]=d;});
+    const [func,spes,stands,inv,alm,forn,cham,prev]=await Promise.all([
+      sbGet('colaboradores'),sbGet('spes'),sbGet('stands'),sbGet('inventario'),
+      sbGet('almoxarifado'),sbGet('fornecedores'),sbGet('manutencao_chamados'),sbGet('manutencao_preventiva')
+    ]);
+    DB.funcionarios=func;DB.spes=spes;DB.stands=stands;DB.inventario=inv;
+    DB.almoxarifado=alm;DB.fornecedores=forn;DB.chamados=cham;DB.preventiva=prev;
     document.getElementById('db-dot').style.background='var(--green)';
-    initDash(); cadUpdateCounts(); mantUpdateKPIs(); mantUpdateCounts();
-    cadRender(); mantRender();
+    initDash();cadUpdateCounts();mantUpdateKPIs();mantUpdateCounts();cadRender();mantRender();
   }catch(e){
     document.getElementById('db-dot').style.background='var(--red)';
     showToast('Erro ao conectar ao banco','error');
   }
 }
 
-// ======= DASHBOARD =======
+// DASHBOARD
 function initDash(){
-  const now=new Date();
-  document.getElementById('dash-date').textContent=`Atualizado em ${now.toLocaleDateString('pt-BR')} · Todas as SPEs`;
+  document.getElementById('dash-date').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
   document.getElementById('d-func').textContent=DB.funcionarios.filter(r=>r.status==='Ativo').length;
   document.getElementById('d-forn').textContent=DB.fornecedores.filter(r=>r.status==='Ativo').length;
   document.getElementById('d-cham').textContent=DB.chamados.filter(r=>r.status==='Aberto').length;
   document.getElementById('d-spes').textContent=DB.spes.filter(r=>r.status==='Em Obra'||r.status==='Lançamento').length;
   const colors=['var(--primary)','var(--gold)','var(--green)','var(--purple)'];
   const pcts=[72,58,41,29];
-  document.getElementById('dash-spes-bars').innerHTML=DB.spes.length?DB.spes.slice(0,4).map((s,i)=>`
-    <div class="spe-row">
-      <div class="spe-name">${s.codigo||s.nome}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${pcts[i]||30}%;background:${colors[i]}"></div></div>
-      <div class="spe-pct">${pcts[i]||30}%</div>
-    </div>`).join(''):'<div style="color:var(--muted);font-size:13px">Nenhuma SPE cadastrada</div>';
+  document.getElementById('dash-spes-bars').innerHTML=DB.spes.length
+    ?DB.spes.slice(0,4).map((s,i)=>`<div class="spe-row"><div class="spe-name">${s.codigo||s.nome}</div><div class="bar-track"><div class="bar-fill" style="width:${pcts[i]||30}%;background:${colors[i]}"></div></div><div class="spe-pct">${pcts[i]||30}%</div></div>`).join('')
+    :'<div style="color:var(--muted);font-size:13px">Nenhuma SPE cadastrada</div>';
 }
 
-// ======= CADASTRO =======
-let cadTab_='funcionarios', cadEditId=null;
+// CADASTRO
+let cadTab_='funcionarios',cadEditId=null;
 const CAD_COLS={
   funcionarios:[{k:'nome',l:'Nome',main:true},{k:'cargo',l:'Cargo'},{k:'empresa',l:'Empresa'},{k:'tipo_contrato',l:'Contrato'},{k:'spe_label',l:'SPE'},{k:'email',l:'E-mail'},{k:'status',l:'Status',t:'status'},{k:'_',l:'',t:'actions'}],
   spes:[{k:'nome',l:'Nome',main:true},{k:'cnpj',l:'CNPJ'},{k:'cidade',l:'Cidade'},{k:'uf',l:'UF'},{k:'incorporador',l:'Incorporador'},{k:'unidades',l:'Unidades'},{k:'status',l:'Status',t:'status'},{k:'_',l:'',t:'actions'}],
@@ -433,7 +389,7 @@ const CAD_FORMS={
     {s:'Status',f:[{id:'status',l:'Status',t:'select',r:true,o:['Ativo','Inativo','Férias','Desligado']}]},
   ]},
   spes:{l:'SPE',i:'🏗️',a:'#3b82f6',t:'spes',secs:[
-    {s:'Dados Jurídicos',f:[{id:'codigo',l:'Código',t:'text',r:true,p:'Ex: SPE05'},{id:'nome',l:'Nome',t:'text',r:true,p:'Ex: SPE 05 — Nome'},{id:'cnpj',l:'CNPJ',t:'text',p:'00.000.000/0001-00'},{id:'data_constituicao',l:'Constituição',t:'date'}]},
+    {s:'Dados Jurídicos',f:[{id:'codigo',l:'Código',t:'text',r:true,p:'Ex: SPE05'},{id:'nome',l:'Nome',t:'text',r:true,p:'Ex: SPE 05'},{id:'cnpj',l:'CNPJ',t:'text',p:'00.000.000/0001-00'},{id:'data_constituicao',l:'Constituição',t:'date'}]},
     {s:'Localização',f:[{id:'endereco',l:'Endereço',t:'text',p:'Rua, número',sp:2},{id:'cidade',l:'Cidade',t:'text',p:'Rio de Janeiro'},{id:'uf',l:'UF',t:'select',o:['RJ','SP','MG','ES','BA','PR','RS','SC','Outro']},{id:'incorporador',l:'Incorporador',t:'text',p:'Omega Inc'},{id:'construtor',l:'Construtor',t:'text',p:'Raphson Engenharia'},{id:'unidades',l:'Unidades',t:'text',p:'Ex: 120 ap.'}]},
     {s:'Status',f:[{id:'status',l:'Status',t:'select',r:true,o:['Planejamento','Em Obra','Lançamento','Entregue','Encerrada']}]},
   ]},
@@ -455,9 +411,9 @@ const CAD_FORMS={
     {s:'Status',f:[{id:'status',l:'Status',t:'select',r:true,o:['Ativo','Inativo']}]},
   ]},
 };
+
 const sCol=s=>({'Ativo':'#22c55e','Inativo':'#ef4444','Férias':'#f59e0b','Desligado':'#ef4444','Em Obra':'#f59e0b','Lançamento':'#3b82f6','Planejamento':'#a78bfa','Em Uso':'#22c55e','Disponível':'#22c55e','Estoque OK':'#22c55e','Estoque Baixo':'#ef4444','Sem Estoque':'#ef4444','Em Manutenção':'#f59e0b','Em Montagem':'#f59e0b','Entregue':'#22c55e','Encerrada':'#8b949e','Baixado':'#8b949e','Aberto':'#3b82f6','Em Andamento':'#f59e0b','Concluído':'#22c55e','Cancelado':'#8b949e','Preventiva':'#a78bfa'}[s]||'#8b949e');
 function ini(n){if(!n)return'?';const p=n.trim().split(' ');return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():n.slice(0,2).toUpperCase();}
-
 function cadUpdateCounts(){Object.keys(TBL).forEach(t=>{const el=document.getElementById('ctc-'+t);if(el)el.textContent=(DB[t]||[]).length;});}
 function cadTab(el){cadTab_=el.dataset.ct;document.querySelectorAll('#cad-tabnav .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('cad-search').value='';cadRender();}
 function cadRender(){
@@ -512,7 +468,7 @@ function cadOpenModal(){
   document.getElementById('m-title').textContent=`Novo ${f.l}`;
   document.getElementById('m-sub').textContent='Preencha os dados abaixo';
   document.getElementById('save-lbl').textContent='Salvar';
-  buildForm(CAD_FORMS[cadTab_].secs,null);
+  buildForm(f.secs,null);
   document.getElementById('modal-ov').classList.add('open');
 }
 function cadEdit(id){
@@ -524,37 +480,99 @@ function cadEdit(id){
   document.getElementById('m-title').textContent=`Editar ${f.l}`;
   document.getElementById('m-sub').textContent='Atualize os dados abaixo';
   document.getElementById('save-lbl').textContent='Salvar Alterações';
-  buildForm(CAD_FORMS[cadTab_].secs,r);
+  buildForm(f.secs,r);
   document.getElementById('modal-ov').classList.add('open');
 }
 async function cadDelete(id){
   if(!confirm('Confirma a exclusão?'))return;
-  await sb(TBL[cadTab_]+'?id=eq.'+id,{method:'DELETE'});
+  await sbDelete(TBL[cadTab_],id);
   DB[cadTab_]=DB[cadTab_].filter(x=>x.id!==id);
   cadUpdateCounts();cadRender();showToast('Excluído','success');
 }
 
-// ======= MANUTENÇÃO =======
-let mantTab_='chamados', mantEditId=null;
-const MANT_COLS_CH=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'SPE'},{k:'responsavel',l:'Responsável'},{k:'prazo',l:'Prazo',t:'prazo'},{k:'prioridade',l:'Prioridade',t:'prio'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
-const MANT_COLS_PR=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'SPE'},{k:'responsavel',l:'Responsável'},{k:'proxima_data',l:'Próxima Data',t:'prazo'},{k:'frequencia',l:'Frequência'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
-const MANT_FORM_CH=[
-  {s:'Identificação',f:[{id:'titulo',l:'Título',t:'text',r:true,p:'Ex: Ar-condicionado com defeito',sp:2},{id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil / Estrutural','Pintura','Limpeza','Segurança','Equipamento','Outro']},{id:'prioridade',l:'Prioridade',t:'select',r:true,o:['Alta','Média','Baixa']}]},
-  {s:'Localização',f:[{id:'local',l:'Local Específico',t:'text',r:true,p:'Ex: Sala 2, Recepção'},{id:'spe_label',l:'SPE / Unidade',t:'select',r:true,o:['HQ','SPE 01','SPE 02','SPE 03','SPE 04','Stand SPE 01','Stand SPE 02']}]},
-  {s:'Detalhes',f:[{id:'descricao',l:'Descrição do Problema',t:'textarea',r:true,p:'Descreva o problema...',sp:2},{id:'responsavel',l:'Responsável',t:'text',p:'Técnico ou empresa'},{id:'prazo',l:'Prazo',t:'date'},{id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},{id:'solicitante',l:'Solicitante',t:'text',p:'Quem abriu'}]},
-];
+// MANUTENÇÃO
+let mantTab_='chamados',mantEditId=null;
+const MANT_COLS_CH=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'Local/SPE'},{k:'responsavel',l:'Responsável'},{k:'data_abertura',l:'Abertura',t:'data'},{k:'prioridade',l:'Prioridade',t:'prio'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
+const MANT_COLS_PR=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'SPE'},{k:'responsavel',l:'Responsável'},{k:'proxima_data',l:'Próxima Data',t:'data'},{k:'frequencia',l:'Frequência'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
+
+// Formulário de chamado com SPE/Unidade dinâmica e tipo Outro
+function getMantFormCH(){
+  // Monta lista de locais a partir de stands e escritórios cadastrados
+  const standOpts=DB.stands.filter(s=>s.status==='Ativo'||s.status==='Em Montagem').map(s=>s.nome);
+  const locais=[...standOpts,'Escritório HQ','Escritório SPE 01','Escritório SPE 02','Escritório SPE 03','Escritório SPE 04','Outro'];
+  return [
+    {s:'Identificação',f:[
+      {id:'titulo',l:'Título do Chamado',t:'text',r:true,p:'Ex: Ar-condicionado com defeito',sp:2},
+      {id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil / Estrutural','Pintura','Limpeza','Segurança','Equipamento','Outro'],onChange:'mantTipoChange()'},
+      {id:'prioridade',l:'Prioridade',t:'select',r:true,o:['Alta','Média','Baixa']},
+    ]},
+    {s:'Localização',f:[
+      {id:'local',l:'Local Específico',t:'text',r:true,p:'Ex: Sala 2, Recepção'},
+      {id:'spe_label',l:'Stand / Escritório',t:'select',r:true,o:locais,id2:'spe_label'},
+    ]},
+    {s:'Detalhes',f:[
+      {id:'descricao',l:'Descrição do Problema',t:'textarea',r:true,p:'Descreva o problema...',sp:2},
+      {id:'responsavel',l:'Responsável pela Execução',t:'text',p:'Técnico ou empresa'},
+      {id:'data_abertura',l:'Data de Abertura',t:'date'},
+      {id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},
+      {id:'solicitante',l:'Solicitante',t:'text',p:'Quem abriu o chamado'},
+    ]},
+  ];
+}
+
 const MANT_FORM_PR=[
-  {s:'Identificação',f:[{id:'titulo',l:'Título',t:'text',r:true,p:'Ex: Revisão Ar-condicionado',sp:2},{id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil','Equipamento','Dedetização','Outro']},{id:'frequencia',l:'Frequência',t:'select',r:true,o:['Semanal','Quinzenal','Mensal','Bimestral','Trimestral','Semestral','Anual']}]},
-  {s:'Localização',f:[{id:'local',l:'Local',t:'text',r:true,p:'Ex: Escritório HQ'},{id:'spe_label',l:'SPE',t:'select',r:true,o:['HQ','SPE 01','SPE 02','SPE 03','SPE 04']}]},
-  {s:'Programação',f:[{id:'proxima_data',l:'Próxima Data',t:'date',r:true},{id:'responsavel',l:'Responsável',t:'text',p:'Nome'},{id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},{id:'descricao',l:'Observações',t:'textarea',p:'Detalhes...',sp:2}]},
+  {s:'Identificação',f:[
+    {id:'titulo',l:'Título',t:'text',r:true,p:'Ex: Revisão Ar-condicionado',sp:2},
+    {id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil','Equipamento','Dedetização','Outro']},
+    {id:'frequencia',l:'Frequência',t:'select',r:true,o:['Semanal','Quinzenal','Mensal','Bimestral','Trimestral','Semestral','Anual']},
+  ]},
+  {s:'Localização',f:[
+    {id:'local',l:'Local',t:'text',r:true,p:'Ex: Escritório HQ'},
+    {id:'spe_label',l:'SPE',t:'select',r:true,o:['HQ','SPE 01','SPE 02','SPE 03','SPE 04']},
+  ]},
+  {s:'Programação',f:[
+    {id:'proxima_data',l:'Próxima Data',t:'date',r:true},
+    {id:'responsavel',l:'Responsável',t:'text',p:'Nome'},
+    {id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},
+    {id:'descricao',l:'Observações',t:'textarea',p:'Detalhes...',sp:2},
+  ]},
 ];
+
+function mantTipoChange(){
+  const tipo=document.getElementById('f_tipo')?.value;
+  const speGroup=document.getElementById('f_spe_label')?.closest('.f-group');
+  const speSelect=document.getElementById('f_spe_label');
+  if(!speGroup||!speSelect)return;
+  if(tipo==='Outro'){
+    speSelect.removeAttribute('required');
+    speGroup.querySelector('label').innerHTML='Stand / Escritório';
+  }else{
+    speGroup.querySelector('label').innerHTML='Stand / Escritório<span class="req">*</span>';
+  }
+}
+
 const mPrioCls=p=>p==='Alta'?'p-alta':p==='Média'?'p-media':'p-baixa';
 const mStCls=s=>({'Aberto':'p-aberto','Em Andamento':'p-andamento','Concluído':'p-concluido','Cancelado':'p-cancelado','Preventiva':'p-preventiva'}[s]||'p-cancelado');
-function isOv(d){return d&&new Date(d)<new Date();}
-function fmtD(d){if(!d)return'—';return new Date(d).toLocaleDateString('pt-BR');}
-function mantUpdateKPIs(){const ch=DB.chamados;document.getElementById('mk-ab').textContent=ch.filter(r=>r.status==='Aberto').length;document.getElementById('mk-and').textContent=ch.filter(r=>r.status==='Em Andamento').length;document.getElementById('mk-con').textContent=ch.filter(r=>r.status==='Concluído').length;document.getElementById('mk-ven').textContent=ch.filter(r=>r.prazo&&isOv(r.prazo)&&r.status!=='Concluído'&&r.status!=='Cancelado').length;document.getElementById('badge-manut').textContent=ch.filter(r=>r.status==='Aberto').length;}
-function mantUpdateCounts(){document.getElementById('mtc-chamados').textContent=DB.chamados.length;document.getElementById('mtc-preventiva').textContent=DB.preventiva.length;}
-function mantTab(el){mantTab_=el.dataset.mt;document.querySelectorAll('.module#mod-manutencao .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('mant-search').value='';mantRender();}
+function fmtD(d){if(!d)return'—';return new Date(d+'T00:00:00').toLocaleDateString('pt-BR');}
+function mantUpdateKPIs(){
+  const ch=DB.chamados;
+  document.getElementById('mk-ab').textContent=ch.filter(r=>r.status==='Aberto').length;
+  document.getElementById('mk-and').textContent=ch.filter(r=>r.status==='Em Andamento').length;
+  document.getElementById('mk-con').textContent=ch.filter(r=>r.status==='Concluído').length;
+  document.getElementById('mk-ven').textContent=ch.filter(r=>r.data_abertura&&new Date(r.data_abertura)<new Date()&&r.status!=='Concluído'&&r.status!=='Cancelado'&&r.prioridade==='Alta').length;
+  document.getElementById('badge-manut').textContent=ch.filter(r=>r.status==='Aberto').length;
+}
+function mantUpdateCounts(){
+  document.getElementById('mtc-chamados').textContent=DB.chamados.length;
+  document.getElementById('mtc-preventiva').textContent=DB.preventiva.length;
+}
+function mantTab(el){
+  mantTab_=el.dataset.mt;
+  document.querySelectorAll('#mod-manutencao .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('mant-search').value='';
+  mantRender();
+}
 function mantRender(){
   const q=document.getElementById('mant-search').value.toLowerCase();
   const fSt=document.getElementById('mant-fst').value;
@@ -574,7 +592,7 @@ function mantRender(){
     const cells=cols.map(c=>{
       if(c.t==='mstatus')return`<td><span class="pill ${mStCls(r.status)}">${r.status||'—'}</span></td>`;
       if(c.t==='prio')return`<td><span class="pill ${mPrioCls(r.prioridade)}">${r.prioridade||'—'}</span></td>`;
-      if(c.t==='prazo'){const d=r.prazo||r.proxima_data;const ov=isOv(d)&&r.status!=='Concluído'&&r.status!=='Cancelado';return`<td><span class="${ov?'overdue':''}">${ov?'⚠ ':''}${fmtD(d)}</span></td>`;}
+      if(c.t==='data')return`<td>${fmtD(r[c.k])}</td>`;
       if(c.t==='actions')return`<td><div class="row-actions"><div class="act-btn" onclick="event.stopPropagation();mantOpenDP('${r.id}')">👁</div><div class="act-btn" onclick="event.stopPropagation();mantEdit('${r.id}')">✏️</div><div class="act-btn" onclick="event.stopPropagation();mantDelete('${r.id}')">🗑</div></div></td>`;
       if(c.main)return`<td style="font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r[c.k]||'—'}</td>`;
       return`<td>${r[c.k]??'—'}</td>`;
@@ -584,7 +602,6 @@ function mantRender(){
 }
 function mantOpenDP(id){
   const r=(DB[mantTab_]||[]).find(x=>x.id===id);if(!r)return;
-  const sC=sCol(r.status);
   document.getElementById('dp-av').style.cssText='background:rgba(37,99,235,.15);color:var(--pl)';
   document.getElementById('dp-av').textContent='🔧';
   document.getElementById('dp-name').textContent=r.titulo||'—';
@@ -593,12 +610,12 @@ function mantOpenDP(id){
   const sa=document.getElementById('dp-sa');
   sa.style.display='flex';
   sa.innerHTML='<span style="font-size:11px;color:var(--muted);align-self:center">Status:</span>'+statuses.map(s=>`<button class="s-btn ${r.status===s?'on':''}" onclick="mantUpdateStatus('${r.id}','${s}')">${s}</button>`).join('');
-  const skip=['id','historico','docs','created_at','updated_at'];
+  const skip=['id','tags','historico','docs','created_at','updated_at'];
   const fields=Object.entries(r).filter(([k])=>!skip.includes(k)&&r[k]!==null&&r[k]!=='');
   const hist=Array.isArray(r.historico)?r.historico:[];
   const hc=['#2563eb','#d4a017','#22c55e','#a78bfa'];
   let b=`<div class="dp-sec"><div class="dp-sec-t">Dados</div><div class="dp-grid">`;
-  fields.forEach(([k,v])=>{b+=`<div class="dp-f"><label>${k.replace(/_/g,' ')}</label><span>${(k==='prazo'||k==='proxima_data')?fmtD(v):v}</span></div>`;});
+  fields.forEach(([k,v])=>{b+=`<div class="dp-f"><label>${k.replace(/_/g,' ')}</label><span>${(k==='data_abertura'||k==='proxima_data')?fmtD(v):v}</span></div>`;});
   b+=`</div></div>`;
   if(hist.length){b+=`<div class="dp-sec"><div class="dp-sec-t">Histórico</div>`;hist.forEach((h,i)=>{b+=`<div class="hi"><div class="hdot" style="background:${hc[i%4]}"></div><div><div class="ht">${h.t||h}</div><div class="ht-dt">${h.dt||''}</div></div></div>`;});b+=`</div>`;}
   document.getElementById('dp-body').innerHTML=b;
@@ -609,8 +626,7 @@ async function mantUpdateStatus(id,ns){
   const tbl=mantTab_==='chamados'?'manutencao_chamados':'manutencao_preventiva';
   const ex=(DB[mantTab_]||[]).find(x=>x.id===id);
   const hist=Array.isArray(ex?.historico)?ex.historico:[];
-  const payload={status:ns,historico:[{t:`Status → "${ns}"`,dt:new Date().toLocaleString('pt-BR')},...hist]};
-  const saved=await sb(tbl+'?id=eq.'+id,{method:'PATCH',extra:{'Prefer':'return=representation'},body:JSON.stringify(payload)});
+  const saved=await sbPatch(tbl,id,{status:ns,historico:[{t:`Status → "${ns}"`,dt:new Date().toLocaleString('pt-BR')},...hist]});
   DB[mantTab_]=DB[mantTab_].map(x=>x.id===id?saved[0]:x);
   mantUpdateKPIs();mantUpdateCounts();mantRender();mantOpenDP(id);
   showToast(`Status → "${ns}"`,'success');
@@ -623,7 +639,7 @@ function mantOpenModal(){
   document.getElementById('m-title').textContent=isPr?'Nova Manutenção Preventiva':'Novo Chamado';
   document.getElementById('m-sub').textContent='Preencha os dados abaixo';
   document.getElementById('save-lbl').textContent=isPr?'Agendar':'Abrir Chamado';
-  buildForm(isPr?MANT_FORM_PR:MANT_FORM_CH,null);
+  buildForm(isPr?MANT_FORM_PR:getMantFormCH(),null);
   document.getElementById('modal-ov').classList.add('open');
 }
 function mantEdit(id){
@@ -634,27 +650,28 @@ function mantEdit(id){
   document.getElementById('m-title').textContent='Editar '+(isPr?'Preventiva':'Chamado');
   document.getElementById('m-sub').textContent='Atualize os dados abaixo';
   document.getElementById('save-lbl').textContent='Salvar Alterações';
-  buildForm(isPr?MANT_FORM_PR:MANT_FORM_CH,r);
+  buildForm(isPr?MANT_FORM_PR:getMantFormCH(),r);
   document.getElementById('modal-ov').classList.add('open');
 }
 async function mantDelete(id){
   if(!confirm('Confirma a exclusão?'))return;
   const tbl=mantTab_==='chamados'?'manutencao_chamados':'manutencao_preventiva';
-  await sb(tbl+'?id=eq.'+id,{method:'DELETE'});
+  await sbDelete(tbl,id);
   DB[mantTab_]=DB[mantTab_].filter(x=>x.id!==id);
   mantUpdateKPIs();mantUpdateCounts();mantRender();showToast('Excluído','success');
 }
 
-// ======= SHARED FORM BUILDER =======
+// SHARED FORM BUILDER
 function buildForm(secs,data){
   let html='';
   secs.forEach(sec=>{
     html+=`<div class="sec-lbl">${sec.s}</div><div class="form-grid">`;
     sec.f.forEach(fld=>{
       const span=fld.sp===2?'grid-column:span 2':'';
+      const onChange=fld.onChange?`onchange="${fld.onChange}"`:'';
       if(fld.t==='select'){
         const opts=(fld.o||[]).map(o=>`<option ${data&&data[fld.id]===o?'selected':''}>${o}</option>`).join('');
-        html+=`<div class="f-group" style="${span}"><label>${fld.l}${fld.r?'<span class="req">*</span>':''}</label><select class="f-select" id="f_${fld.id}"><option value="">Selecione...</option>${opts}</select></div>`;
+        html+=`<div class="f-group" style="${span}"><label>${fld.l}${fld.r?'<span class="req">*</span>':''}</label><select class="f-select" id="f_${fld.id}" ${onChange}><option value="">Selecione...</option>${opts}</select></div>`;
       }else if(fld.t==='textarea'){
         const val=data&&data[fld.id]?data[fld.id]:'';
         html+=`<div class="f-group" style="${span}"><label>${fld.l}${fld.r?'<span class="req">*</span>':''}</label><textarea class="f-textarea" id="f_${fld.id}" placeholder="${fld.p||''}">${val}</textarea></div>`;
@@ -668,13 +685,20 @@ function buildForm(secs,data){
   document.getElementById('m-body').innerHTML=html;
 }
 
-// ======= SAVE RECORD (shared) =======
+// SAVE RECORD
 async function saveRecord(){
   const isMant=currentModule==='manutencao';
-  const secs=isMant?(mantTab_==='preventiva'?MANT_FORM_PR:MANT_FORM_CH):CAD_FORMS[cadTab_].secs;
-  const allF=secs.flatMap(s=>s.f||s.fields||[]);
+  const isPr=mantTab_==='preventiva';
+  const secs=isMant?(isPr?MANT_FORM_PR:getMantFormCH()):CAD_FORMS[cadTab_].secs;
+  const allF=secs.flatMap(s=>s.f);
   let valid=true;
-  allF.forEach(fld=>{const el=document.getElementById('f_'+fld.id);if(!el)return;el.classList.remove('err');if(fld.r&&!el.value.trim()){el.classList.add('err');valid=false;}});
+  allF.forEach(fld=>{
+    const el=document.getElementById('f_'+fld.id);if(!el)return;
+    el.classList.remove('err');
+    // SPE/Unidade não obrigatório se tipo=Outro
+    if(fld.id==='spe_label'&&document.getElementById('f_tipo')?.value==='Outro')return;
+    if(fld.r&&!el.value.trim()){el.classList.add('err');valid=false;}
+  });
   if(!valid){showToast('Preencha os campos obrigatórios','error');return;}
   const payload={};
   allF.forEach(fld=>{const el=document.getElementById('f_'+fld.id);if(!el||el.value==='')return;payload[fld.id]=fld.t==='number'?parseFloat(el.value)||0:el.value;});
@@ -682,21 +706,24 @@ async function saveRecord(){
   btn.disabled=true;sp.classList.add('on');
   try{
     let table,dbKey,editId;
-    if(isMant){table=mantTab_==='chamados'?'manutencao_chamados':'manutencao_preventiva';dbKey=mantTab_;editId=mantEditId;}
+    if(isMant){table=isPr?'manutencao_preventiva':'manutencao_chamados';dbKey=mantTab_;editId=mantEditId;}
     else{table=TBL[cadTab_];dbKey=cadTab_;editId=cadEditId;}
     let saved;
     if(editId){
       const ex=(DB[dbKey]||[]).find(x=>x.id===editId);
       const hist=Array.isArray(ex?.historico)?ex.historico:[];
       payload.historico=[{t:`Editado em ${new Date().toLocaleDateString('pt-BR')}`,dt:new Date().toLocaleString('pt-BR')},...hist];
-      const r=await sb(table+'?id=eq.'+editId,{method:'PATCH',extra:{'Prefer':'return=representation'},body:JSON.stringify(payload)});
+      const r=await sbPatch(table,editId,payload);
       saved=r[0];DB[dbKey]=DB[dbKey].map(x=>x.id===editId?saved:x);
       showToast('✅ Atualizado!','success');
     }else{
       payload.tags=[];payload.docs=[];
-      if(isMant){payload.status=mantTab_==='chamados'?'Aberto':'Preventiva';payload.codigo=(mantTab_==='chamados'?'CHM':'PRV')+'-'+String((DB[dbKey]||[]).length+1).padStart(4,'0');}
+      if(isMant){
+        payload.status=isPr?'Preventiva':'Aberto';
+        payload.codigo=(isPr?'PRV':'CHM')+'-'+String((DB[dbKey]||[]).length+1).padStart(4,'0');
+      }
       payload.historico=[{t:`Cadastrado em ${new Date().toLocaleDateString('pt-BR')}`,dt:new Date().toLocaleString('pt-BR')}];
-      const r=await sb(table,{method:'POST',extra:{'Prefer':'return=representation'},body:JSON.stringify(payload)});
+      const r=await sbPost(table,payload);
       saved=r[0];DB[dbKey]=[saved,...(DB[dbKey]||[])];
       showToast('✅ Salvo com sucesso!','success');
     }
@@ -707,13 +734,10 @@ async function saveRecord(){
   btn.disabled=false;sp.classList.remove('on');
 }
 
-// ======= SHARED UTILS =======
 function closeDP(){document.getElementById('ov').classList.remove('open');document.getElementById('dp').classList.remove('open');}
 function closeModal(){document.getElementById('modal-ov').classList.remove('open');}
 function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type}`;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
 
-// ======= INIT =======
-document.getElementById('dash-date').textContent=`${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})}`;
 loadAll();
 </script>
 </body>
