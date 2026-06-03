@@ -5,16 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sistema Omega·Raphson</title>
 <style>
-:root{--bg:#0d1117;--sb:#161b22;--card:#1c2230;--card2:#212936;--border:#2a3245;--primary:#2563eb;--pl:#3b82f6;--gold:#d4a017;--gl:#f0c040;--text:#e6edf3;--muted:#8b949e;--green:#22c55e;--warn:#f59e0b;--red:#ef4444;--purple:#a78bfa;--r:8px;--sidebar-w:220px;}
+:root{--bg:#0d1117;--sb:#161b22;--card:#1c2230;--card2:#212936;--border:#2a3245;--primary:#2563eb;--pl:#3b82f6;--gold:#d4a017;--text:#e6edf3;--muted:#8b949e;--green:#22c55e;--warn:#f59e0b;--red:#ef4444;--purple:#a78bfa;--r:8px;--sidebar-w:220px;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
 body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 .topbar{background:var(--sb);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;z-index:10;}
-.brand{font-size:15px;font-weight:800;color:var(--gold);letter-spacing:.5px;white-space:nowrap;}
+.brand{font-size:15px;font-weight:800;color:var(--gold);white-space:nowrap;}
 .brand span{color:var(--pl);}
 .topbar-div{width:1px;height:20px;background:var(--border);}
-.page-title{font-size:13px;color:var(--muted);font-weight:500;}
+.page-title{font-size:13px;color:var(--muted);}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.spe-badge{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:5px;}
+.spe-badge{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;}
 .notif{background:var(--card);border:1px solid var(--border);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:15px;}
 .notif-dot{position:absolute;top:5px;right:6px;width:7px;height:7px;background:var(--red);border-radius:50%;}
 .user-pill{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 10px;border-radius:8px;border:1px solid var(--border);background:var(--card);}
@@ -34,6 +34,7 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .module{display:none;flex:1;flex-direction:column;overflow:hidden;}
 .module.active{display:flex;}
+/* DASHBOARD */
 .dash-wrap{flex:1;overflow-y:auto;padding:24px;}
 .dash-header{margin-bottom:20px;}
 .dash-header h1{font-size:20px;font-weight:800;}
@@ -48,7 +49,7 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .kpi-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
 .kpi-val{font-size:28px;font-weight:800;}
 .kpi-sub{font-size:12px;color:var(--muted);margin-top:4px;}
-.dash-row{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;margin-bottom:16px;}
+.dash-row{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;}
 .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;}
 .panel-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;}
 .panel-action{font-size:12px;color:var(--pl);cursor:pointer;}
@@ -62,6 +63,7 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .act-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
 .act-text{font-size:13px;line-height:1.4;}
 .act-time{font-size:11px;color:var(--muted);margin-top:2px;}
+/* TABS / TOOLBAR */
 .tabnav{background:var(--sb);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:flex-end;gap:2px;flex-shrink:0;}
 .tab{padding:11px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
 .tab:hover{color:var(--text);}
@@ -77,6 +79,7 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .flt select option{background:var(--card2);color:var(--text);}
 .add-btn{margin-left:auto;background:linear-gradient(135deg,var(--primary),#1d4ed8);border:none;border-radius:var(--r);padding:8px 16px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;}
 .results-info{font-size:12px;color:var(--muted);padding:0 24px 8px;}
+/* TABLE */
 .table-wrap{flex:1;overflow:auto;padding:0 24px 24px;}
 table{width:100%;border-collapse:collapse;font-size:13px;}
 thead tr{background:var(--card);position:sticky;top:0;z-index:2;}
@@ -94,6 +97,7 @@ tbody tr:hover .row-actions{opacity:1;}
 .act-btn{background:var(--card2);border:1px solid var(--border);border-radius:6px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;}
 .act-btn:hover{border-color:var(--primary);}
 .empty-row td{text-align:center;padding:60px;color:var(--muted);}
+/* KPI STRIP */
 .kpi-strip{display:flex;gap:12px;padding:0 24px 12px;flex-shrink:0;}
 .kpi-s{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 18px;flex:1;position:relative;overflow:hidden;}
 .kpi-s::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
@@ -112,15 +116,29 @@ tbody tr:hover .row-actions{opacity:1;}
 .p-concluido{background:rgba(34,197,94,.15);color:var(--green);}
 .p-cancelado{background:rgba(139,148,158,.15);color:var(--muted);}
 .p-preventiva{background:rgba(167,139,250,.15);color:var(--purple);}
-.overdue{color:var(--red);font-size:11px;font-weight:600;}
+/* ATRIBUIÇÃO */
+.atrib-box{padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(37,99,235,.05);}
+.atrib-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
+.atrib-content{display:flex;align-items:center;gap:10px;}
+.atrib-assigned{display:flex;align-items:center;gap:8px;flex:1;}
+.atrib-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;}
+.atrib-name{font-size:13px;font-weight:600;}
+.atrib-role{font-size:11px;color:var(--muted);}
+.atrib-select{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;color:var(--text);font-size:13px;outline:none;}
+.atrib-select:focus{border-color:var(--primary);}
+.atrib-select option{background:var(--card2);}
+.atrib-btn{background:linear-gradient(135deg,var(--primary),#1d4ed8);border:none;border-radius:var(--r);padding:8px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.atrib-btn:hover{opacity:.9;}
+/* PLACEHOLDERS */
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;text-align:center;padding:40px;}
 .ph-icon{font-size:52px;opacity:.25;}
 .ph-title{font-size:20px;font-weight:700;}
 .ph-desc{color:var(--muted);font-size:14px;max-width:340px;line-height:1.7;}
 .ph-badge{background:rgba(37,99,235,.15);color:var(--pl);border:1px solid rgba(37,99,235,.3);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;}
+/* OVERLAY / DETAIL / MODAL */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;display:none;}
 .ov.open{display:block;}
-.dp{position:fixed;top:0;right:0;width:430px;height:100vh;background:var(--sb);border-left:1px solid var(--border);overflow-y:auto;z-index:51;transform:translateX(100%);transition:transform .22s ease;}
+.dp{position:fixed;top:0;right:0;width:440px;height:100vh;background:var(--sb);border-left:1px solid var(--border);overflow-y:auto;z-index:51;transform:translateX(100%);transition:transform .22s ease;}
 .dp.open{transform:none;}
 .dp-hd{padding:18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;}
 .dp-av2{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex-shrink:0;}
@@ -176,7 +194,6 @@ tbody tr:hover .row-actions{opacity:1;}
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <div class="brand">OMEGA·<span>RAPHSON</span></div>
   <div class="topbar-div"></div>
@@ -209,7 +226,6 @@ tbody tr:hover .row-actions{opacity:1;}
   </div>
 
   <div class="main">
-
     <!-- DASHBOARD -->
     <div class="module active" id="mod-dashboard">
       <div class="dash-wrap">
@@ -296,6 +312,7 @@ tbody tr:hover .row-actions{opacity:1;}
     <div style="flex:1;min-width:0"><div class="dp-name" id="dp-name"></div><div class="dp-sub" id="dp-sub"></div></div>
     <div class="cls" onclick="closeDP()">✕</div>
   </div>
+  <div id="dp-atrib" style="display:none"></div>
   <div class="s-actions" id="dp-sa" style="display:none"></div>
   <div id="dp-body"></div>
 </div>
@@ -321,10 +338,10 @@ tbody tr:hover .row-actions{opacity:1;}
 const SB='https://jljqhonsiiqittioxjrf.supabase.co';
 const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsanFob25zaWlxaXR0aW94anJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDkyMTcsImV4cCI6MjA5NTkyNTIxN30.MQCPYUxCC1N3fuqbhx19TpHCB4TA2DS9iLGAzu6ms9o';
 const H={'apikey':KEY,'Authorization':`Bearer ${KEY}`,'Content-Type':'application/json'};
-async function sbGet(table){const r=await fetch(`${SB}/rest/v1/${table}?select=*&order=created_at.desc`,{headers:H});if(!r.ok)throw new Error(table);return r.json();}
-async function sbPost(table,body){const r=await fetch(`${SB}/rest/v1/${table}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(body)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}return r.json();}
-async function sbPatch(table,id,body){const r=await fetch(`${SB}/rest/v1/${table}?id=eq.${id}`,{method:'PATCH',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(body)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}return r.json();}
-async function sbDelete(table,id){const r=await fetch(`${SB}/rest/v1/${table}?id=eq.${id}`,{method:'DELETE',headers:H});if(!r.ok)throw new Error('Erro ao excluir');}
+async function sbGet(t){const r=await fetch(`${SB}/rest/v1/${t}?select=*&order=created_at.desc`,{headers:H});if(!r.ok)throw new Error(t);return r.json();}
+async function sbPost(t,b){const r=await fetch(`${SB}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(b)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}return r.json();}
+async function sbPatch(t,id,b){const r=await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(b)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}return r.json();}
+async function sbDelete(t,id){await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H});}
 
 const TITLES={dashboard:'Dashboard',cadastro:'Cadastro Geral',manutencao:'Manutenção',planejamento:'Planejamento Mensal',contratos:'Contratos',financeiro:'Financeiro',viabilidade:'Viabilidade',relatorios:'Relatórios',usuarios:'Usuários & Permissões'};
 let currentModule='dashboard';
@@ -343,7 +360,7 @@ const TBL={funcionarios:'colaboradores',spes:'spes',stands:'stands',inventario:'
 
 async function loadAll(){
   try{
-    const [func,spes,stands,inv,alm,forn,cham,prev]=await Promise.all([
+    const[func,spes,stands,inv,alm,forn,cham,prev]=await Promise.all([
       sbGet('colaboradores'),sbGet('spes'),sbGet('stands'),sbGet('inventario'),
       sbGet('almoxarifado'),sbGet('fornecedores'),sbGet('manutencao_chamados'),sbGet('manutencao_preventiva')
     ]);
@@ -353,7 +370,7 @@ async function loadAll(){
     initDash();cadUpdateCounts();mantUpdateKPIs();mantUpdateCounts();cadRender();mantRender();
   }catch(e){
     document.getElementById('db-dot').style.background='var(--red)';
-    showToast('Erro ao conectar ao banco','error');
+    showToast('Erro ao conectar','error');
   }
 }
 
@@ -447,6 +464,7 @@ function cadOpenDP(id){
   document.getElementById('dp-av').textContent=ini(r.nome||r.codigo||'?');
   document.getElementById('dp-name').textContent=r.nome||r.codigo||'—';
   document.getElementById('dp-sub').innerHTML=`<span style="font-size:11px;font-weight:600;color:${sC}">${r.status||'—'}</span>`;
+  document.getElementById('dp-atrib').style.display='none';
   document.getElementById('dp-sa').style.display='none';
   const skip=['id','tags','historico','docs','created_at','updated_at'];
   const fields=Object.entries(r).filter(([k])=>!skip.includes(k)&&r[k]!==null&&r[k]!=='');
@@ -492,15 +510,11 @@ async function cadDelete(id){
 
 // MANUTENÇÃO
 let mantTab_='chamados',mantEditId=null;
-const MANT_COLS_CH=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'Local/SPE'},{k:'responsavel',l:'Responsável'},{k:'data_abertura',l:'Abertura',t:'data'},{k:'prioridade',l:'Prioridade',t:'prio'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
+const MANT_COLS_CH=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'Stand/Escritório'},{k:'responsavel_nome',l:'Responsável'},{k:'data_abertura',l:'Abertura',t:'data'},{k:'prioridade',l:'Prioridade',t:'prio'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
 const MANT_COLS_PR=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'SPE'},{k:'responsavel',l:'Responsável'},{k:'proxima_data',l:'Próxima Data',t:'data'},{k:'frequencia',l:'Frequência'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
 
-// Formulário de chamado com SPE/Unidade dinâmica e tipo Outro
 function getMantFormCH(){
-  // Monta lista de locais a partir de stands e escritórios cadastrados
-  const standOpts=DB.stands.filter(s=>s.status==='Ativo'||s.status==='Em Montagem').map(s=>s.nome);
-  const locais=[...standOpts,'Escritório HQ','Escritório SPE 01','Escritório SPE 02','Escritório SPE 03','Escritório SPE 04','Outro'];
-  return [
+  return[
     {s:'Identificação',f:[
       {id:'titulo',l:'Título do Chamado',t:'text',r:true,p:'Ex: Ar-condicionado com defeito',sp:2},
       {id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil / Estrutural','Pintura','Limpeza','Segurança','Equipamento','Outro'],onChange:'mantTipoChange()'},
@@ -508,11 +522,11 @@ function getMantFormCH(){
     ]},
     {s:'Localização',f:[
       {id:'local',l:'Local Específico',t:'text',r:true,p:'Ex: Sala 2, Recepção'},
-      {id:'spe_label',l:'Stand / Escritório',t:'select',r:true,o:locais,id2:'spe_label'},
+      {id:'spe_label',l:'Stand / Escritório',t:'select',r:true,o:['__DYNAMIC__']},
     ]},
     {s:'Detalhes',f:[
       {id:'descricao',l:'Descrição do Problema',t:'textarea',r:true,p:'Descreva o problema...',sp:2},
-      {id:'responsavel',l:'Responsável pela Execução',t:'text',p:'Técnico ou empresa'},
+      {id:'responsavel',l:'Responsável (texto)',t:'text',p:'Técnico ou empresa externa'},
       {id:'data_abertura',l:'Data de Abertura',t:'date'},
       {id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},
       {id:'solicitante',l:'Solicitante',t:'text',p:'Quem abriu o chamado'},
@@ -538,28 +552,30 @@ const MANT_FORM_PR=[
   ]},
 ];
 
+function preencherLocaisManut(valorAtual){
+  const sel=document.getElementById('f_spe_label');if(!sel)return;
+  const standOpts=DB.stands.filter(s=>s.status==='Ativo'||s.status==='Em Montagem').map(s=>s.nome);
+  const escritorios=['Escritório HQ','Escritório SPE 01','Escritório SPE 02','Escritório SPE 03','Escritório SPE 04'];
+  const todos=[...standOpts,...escritorios,'Outro'];
+  sel.innerHTML=`<option value="">Selecione...</option>`+todos.map(o=>`<option ${valorAtual===o?'selected':''}>${o}</option>`).join('');
+}
+
 function mantTipoChange(){
   const tipo=document.getElementById('f_tipo')?.value;
-  const speGroup=document.getElementById('f_spe_label')?.closest('.f-group');
-  const speSelect=document.getElementById('f_spe_label');
-  if(!speGroup||!speSelect)return;
-  if(tipo==='Outro'){
-    speSelect.removeAttribute('required');
-    speGroup.querySelector('label').innerHTML='Stand / Escritório';
-  }else{
-    speGroup.querySelector('label').innerHTML='Stand / Escritório<span class="req">*</span>';
-  }
+  const lbl=document.getElementById('f_spe_label')?.closest('.f-group')?.querySelector('label');
+  if(lbl) lbl.innerHTML=tipo==='Outro'?'Stand / Escritório':'Stand / Escritório<span class="req">*</span>';
 }
 
 const mPrioCls=p=>p==='Alta'?'p-alta':p==='Média'?'p-media':'p-baixa';
 const mStCls=s=>({'Aberto':'p-aberto','Em Andamento':'p-andamento','Concluído':'p-concluido','Cancelado':'p-cancelado','Preventiva':'p-preventiva'}[s]||'p-cancelado');
 function fmtD(d){if(!d)return'—';return new Date(d+'T00:00:00').toLocaleDateString('pt-BR');}
+
 function mantUpdateKPIs(){
   const ch=DB.chamados;
   document.getElementById('mk-ab').textContent=ch.filter(r=>r.status==='Aberto').length;
   document.getElementById('mk-and').textContent=ch.filter(r=>r.status==='Em Andamento').length;
   document.getElementById('mk-con').textContent=ch.filter(r=>r.status==='Concluído').length;
-  document.getElementById('mk-ven').textContent=ch.filter(r=>r.data_abertura&&new Date(r.data_abertura)<new Date()&&r.status!=='Concluído'&&r.status!=='Cancelado'&&r.prioridade==='Alta').length;
+  document.getElementById('mk-ven').textContent=ch.filter(r=>r.prioridade==='Alta'&&r.status==='Aberto').length;
   document.getElementById('badge-manut').textContent=ch.filter(r=>r.status==='Aberto').length;
 }
 function mantUpdateCounts(){
@@ -600,17 +616,53 @@ function mantRender(){
     return`<tr onclick="mantOpenDP('${r.id}')">${cells.join('')}</tr>`;
   }).join('');
 }
+
 function mantOpenDP(id){
   const r=(DB[mantTab_]||[]).find(x=>x.id===id);if(!r)return;
   document.getElementById('dp-av').style.cssText='background:rgba(37,99,235,.15);color:var(--pl)';
   document.getElementById('dp-av').textContent='🔧';
   document.getElementById('dp-name').textContent=r.titulo||'—';
   document.getElementById('dp-sub').innerHTML=`${r.codigo||''} &nbsp;<span class="pill ${mStCls(r.status)}">${r.status}</span>${r.prioridade?` <span class="pill ${mPrioCls(r.prioridade)}">${r.prioridade}</span>`:''}`;
+
+  // ATRIBUIÇÃO DE RESPONSÁVEL (só chamados)
+  const atribDiv=document.getElementById('dp-atrib');
+  if(mantTab_==='chamados'){
+    atribDiv.style.display='block';
+    const funcAtivos=DB.funcionarios.filter(f=>f.status==='Ativo');
+    if(r.responsavel_nome){
+      atribDiv.innerHTML=`<div class="atrib-box">
+        <div class="atrib-title">👷 Responsável pelo Atendimento</div>
+        <div class="atrib-content">
+          <div class="atrib-assigned">
+            <div class="atrib-av">${ini(r.responsavel_nome)}</div>
+            <div><div class="atrib-name">${r.responsavel_nome}</div><div class="atrib-role">Em Andamento</div></div>
+          </div>
+          <button class="s-btn" onclick="mantAtribuir('${r.id}',null,null)">Remover</button>
+        </div>
+      </div>`;
+    } else {
+      atribDiv.innerHTML=`<div class="atrib-box">
+        <div class="atrib-title">👷 Atribuir Responsável</div>
+        <div class="atrib-content">
+          <select class="atrib-select" id="atrib-sel">
+            <option value="">Selecione um funcionário...</option>
+            ${funcAtivos.map(f=>`<option value="${f.id}|${f.nome}">${f.nome} — ${f.cargo||f.departamento||'Funcionário'}</option>`).join('')}
+          </select>
+          <button class="atrib-btn" onclick="mantAtribuirFromSelect('${r.id}')">✓ Atribuir</button>
+        </div>
+      </div>`;
+    }
+  } else {
+    atribDiv.style.display='none';
+  }
+
+  // STATUS ACTIONS
   const statuses=mantTab_==='chamados'?['Aberto','Em Andamento','Concluído','Cancelado']:['Preventiva','Em Andamento','Concluído','Cancelado'];
   const sa=document.getElementById('dp-sa');
   sa.style.display='flex';
   sa.innerHTML='<span style="font-size:11px;color:var(--muted);align-self:center">Status:</span>'+statuses.map(s=>`<button class="s-btn ${r.status===s?'on':''}" onclick="mantUpdateStatus('${r.id}','${s}')">${s}</button>`).join('');
-  const skip=['id','tags','historico','docs','created_at','updated_at'];
+
+  const skip=['id','tags','historico','docs','created_at','updated_at','responsavel_id'];
   const fields=Object.entries(r).filter(([k])=>!skip.includes(k)&&r[k]!==null&&r[k]!=='');
   const hist=Array.isArray(r.historico)?r.historico:[];
   const hc=['#2563eb','#d4a017','#22c55e','#a78bfa'];
@@ -622,6 +674,36 @@ function mantOpenDP(id){
   document.getElementById('ov').classList.add('open');
   document.getElementById('dp').classList.add('open');
 }
+
+function mantAtribuirFromSelect(id){
+  const sel=document.getElementById('atrib-sel');
+  if(!sel||!sel.value){showToast('Selecione um funcionário','error');return;}
+  const[funcId,funcNome]=sel.value.split('|');
+  mantAtribuir(id,funcId,funcNome);
+}
+
+async function mantAtribuir(id,funcId,funcNome){
+  const ex=(DB.chamados||[]).find(x=>x.id===id);
+  const hist=Array.isArray(ex?.historico)?ex.historico:[];
+  const novoStatus=funcId?'Em Andamento':ex?.status||'Aberto';
+  const novoHist=funcId
+    ?[{t:`Atribuído para ${funcNome}`,dt:new Date().toLocaleString('pt-BR')},...hist]
+    :[{t:'Responsável removido',dt:new Date().toLocaleString('pt-BR')},...hist];
+  const payload={
+    responsavel_id:funcId||null,
+    responsavel_nome:funcNome||null,
+    status:novoStatus,
+    historico:novoHist
+  };
+  try{
+    const saved=await sbPatch('manutencao_chamados',id,payload);
+    DB.chamados=DB.chamados.map(x=>x.id===id?saved[0]:x);
+    mantUpdateKPIs();mantUpdateCounts();mantRender();
+    mantOpenDP(id);
+    showToast(funcId?`✅ Atribuído para ${funcNome} — Em Andamento`:'Responsável removido','success');
+  }catch(e){showToast(`Erro: ${e.message}`,'error');}
+}
+
 async function mantUpdateStatus(id,ns){
   const tbl=mantTab_==='chamados'?'manutencao_chamados':'manutencao_preventiva';
   const ex=(DB[mantTab_]||[]).find(x=>x.id===id);
@@ -631,6 +713,7 @@ async function mantUpdateStatus(id,ns){
   mantUpdateKPIs();mantUpdateCounts();mantRender();mantOpenDP(id);
   showToast(`Status → "${ns}"`,'success');
 }
+
 function mantOpenModal(){
   mantEditId=null;
   const isPr=mantTab_==='preventiva';
@@ -640,6 +723,7 @@ function mantOpenModal(){
   document.getElementById('m-sub').textContent='Preencha os dados abaixo';
   document.getElementById('save-lbl').textContent=isPr?'Agendar':'Abrir Chamado';
   buildForm(isPr?MANT_FORM_PR:getMantFormCH(),null);
+  if(!isPr)preencherLocaisManut(null);
   document.getElementById('modal-ov').classList.add('open');
 }
 function mantEdit(id){
@@ -651,6 +735,7 @@ function mantEdit(id){
   document.getElementById('m-sub').textContent='Atualize os dados abaixo';
   document.getElementById('save-lbl').textContent='Salvar Alterações';
   buildForm(isPr?MANT_FORM_PR:getMantFormCH(),r);
+  if(!isPr)preencherLocaisManut(r.spe_label);
   document.getElementById('modal-ov').classList.add('open');
 }
 async function mantDelete(id){
@@ -661,17 +746,17 @@ async function mantDelete(id){
   mantUpdateKPIs();mantUpdateCounts();mantRender();showToast('Excluído','success');
 }
 
-// SHARED FORM BUILDER
+// FORM BUILDER
 function buildForm(secs,data){
   let html='';
   secs.forEach(sec=>{
     html+=`<div class="sec-lbl">${sec.s}</div><div class="form-grid">`;
     sec.f.forEach(fld=>{
       const span=fld.sp===2?'grid-column:span 2':'';
-      const onChange=fld.onChange?`onchange="${fld.onChange}"`:'';
+      const oc=fld.onChange?`onchange="${fld.onChange}"`:'';
       if(fld.t==='select'){
-        const opts=(fld.o||[]).map(o=>`<option ${data&&data[fld.id]===o?'selected':''}>${o}</option>`).join('');
-        html+=`<div class="f-group" style="${span}"><label>${fld.l}${fld.r?'<span class="req">*</span>':''}</label><select class="f-select" id="f_${fld.id}" ${onChange}><option value="">Selecione...</option>${opts}</select></div>`;
+        const opts=(fld.o||[]).filter(o=>o!=='__DYNAMIC__').map(o=>`<option ${data&&data[fld.id]===o?'selected':''}>${o}</option>`).join('');
+        html+=`<div class="f-group" style="${span}"><label>${fld.l}${fld.r?'<span class="req">*</span>':''}</label><select class="f-select" id="f_${fld.id}" ${oc}><option value="">Selecione...</option>${opts}</select></div>`;
       }else if(fld.t==='textarea'){
         const val=data&&data[fld.id]?data[fld.id]:'';
         html+=`<div class="f-group" style="${span}"><label>${fld.l}${fld.r?'<span class="req">*</span>':''}</label><textarea class="f-textarea" id="f_${fld.id}" placeholder="${fld.p||''}">${val}</textarea></div>`;
@@ -685,7 +770,7 @@ function buildForm(secs,data){
   document.getElementById('m-body').innerHTML=html;
 }
 
-// SAVE RECORD
+// SAVE
 async function saveRecord(){
   const isMant=currentModule==='manutencao';
   const isPr=mantTab_==='preventiva';
@@ -695,7 +780,6 @@ async function saveRecord(){
   allF.forEach(fld=>{
     const el=document.getElementById('f_'+fld.id);if(!el)return;
     el.classList.remove('err');
-    // SPE/Unidade não obrigatório se tipo=Outro
     if(fld.id==='spe_label'&&document.getElementById('f_tipo')?.value==='Outro')return;
     if(fld.r&&!el.value.trim()){el.classList.add('err');valid=false;}
   });
@@ -738,6 +822,7 @@ function closeDP(){document.getElementById('ov').classList.remove('open');docume
 function closeModal(){document.getElementById('modal-ov').classList.remove('open');}
 function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className=`toast ${type}`;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
 
+document.getElementById('dash-date').textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
 loadAll();
 </script>
 </body>
