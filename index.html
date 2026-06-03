@@ -5,12 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sistema Omega·Raphson</title>
 <style>
-:root{--bg:#0d1117;--sb:#161b22;--card:#1c2230;--card2:#212936;--border:#2a3245;--primary:#2563eb;--pl:#3b82f6;--gold:#d4a017;--text:#e6edf3;--muted:#8b949e;--green:#22c55e;--warn:#f59e0b;--red:#ef4444;--purple:#a78bfa;--r:8px;--sidebar-w:220px;}
+:root{--bg:#0d1117;--sb:#161b22;--card:#1c2230;--card2:#212936;--border:#2a3245;--primary:#2563eb;--pl:#3b82f6;--gold:#d4a017;--text:#e6edf3;--muted:#8b949e;--green:#22c55e;--warn:#f59e0b;--red:#ef4444;--purple:#a78bfa;--r:8px;--sw:220px;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;}
 body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 .topbar{background:var(--sb);border-bottom:1px solid var(--border);height:52px;display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;z-index:10;}
-.brand{font-size:15px;font-weight:800;color:var(--gold);white-space:nowrap;}
-.brand span{color:var(--pl);}
+.brand{font-size:15px;font-weight:800;color:var(--gold);white-space:nowrap;}.brand span{color:var(--pl);}
 .topbar-div{width:1px;height:20px;background:var(--border);}
 .page-title{font-size:13px;color:var(--muted);}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
@@ -22,7 +21,7 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .user-name{font-size:12px;font-weight:600;}
 .db-dot{width:7px;height:7px;border-radius:50%;background:var(--warn);}
 .app-body{display:flex;flex:1;overflow:hidden;}
-.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sb);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.sidebar{width:var(--sw);min-width:var(--sw);background:var(--sb);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
 .nav-section{padding:14px 14px 4px;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
 .nav-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;font-size:13px;color:var(--muted);border-left:3px solid transparent;transition:all .15s;}
 .nav-item:hover{color:var(--text);background:rgba(255,255,255,.04);}
@@ -34,6 +33,7 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .module{display:none;flex:1;flex-direction:column;overflow:hidden;}
 .module.active{display:flex;}
+
 /* DASHBOARD */
 .dash-wrap{flex:1;overflow-y:auto;padding:24px;}
 .dash-header{margin-bottom:20px;}
@@ -63,7 +63,8 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .act-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0;}
 .act-text{font-size:13px;line-height:1.4;}
 .act-time{font-size:11px;color:var(--muted);margin-top:2px;}
-/* TABS / TOOLBAR */
+
+/* SHARED */
 .tabnav{background:var(--sb);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:flex-end;gap:2px;flex-shrink:0;}
 .tab{padding:11px 16px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
 .tab:hover{color:var(--text);}
@@ -79,7 +80,6 @@ body{background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direc
 .flt select option{background:var(--card2);color:var(--text);}
 .add-btn{margin-left:auto;background:linear-gradient(135deg,var(--primary),#1d4ed8);border:none;border-radius:var(--r);padding:8px 16px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;}
 .results-info{font-size:12px;color:var(--muted);padding:0 24px 8px;}
-/* TABLE */
 .table-wrap{flex:1;overflow:auto;padding:0 24px 24px;}
 table{width:100%;border-collapse:collapse;font-size:13px;}
 thead tr{background:var(--card);position:sticky;top:0;z-index:2;}
@@ -97,7 +97,6 @@ tbody tr:hover .row-actions{opacity:1;}
 .act-btn{background:var(--card2);border:1px solid var(--border);border-radius:6px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;}
 .act-btn:hover{border-color:var(--primary);}
 .empty-row td{text-align:center;padding:60px;color:var(--muted);}
-/* KPI STRIP */
 .kpi-strip{display:flex;gap:12px;padding:0 24px 12px;flex-shrink:0;}
 .kpi-s{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 18px;flex:1;position:relative;overflow:hidden;}
 .kpi-s::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
@@ -105,17 +104,67 @@ tbody tr:hover .row-actions{opacity:1;}
 .kpi-s.kb::before{background:var(--primary);}
 .kpi-s.kg::before{background:var(--green);}
 .kpi-s.kr::before{background:var(--red);}
+.kpi-s.kp::before{background:var(--purple);}
 .kpi-sv{font-size:22px;font-weight:800;}
 .kpi-sl{font-size:11px;color:var(--muted);margin-top:2px;}
 .pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
 .p-alta{background:rgba(239,68,68,.15);color:var(--red);}
 .p-media{background:rgba(245,158,11,.15);color:var(--warn);}
 .p-baixa{background:rgba(34,197,94,.15);color:var(--green);}
+.p-normal{background:rgba(37,99,235,.15);color:var(--pl);}
 .p-aberto{background:rgba(37,99,235,.15);color:var(--pl);}
 .p-andamento{background:rgba(245,158,11,.15);color:var(--warn);}
 .p-concluido{background:rgba(34,197,94,.15);color:var(--green);}
 .p-cancelado{background:rgba(139,148,158,.15);color:var(--muted);}
 .p-preventiva{background:rgba(167,139,250,.15);color:var(--purple);}
+.p-planejado{background:rgba(37,99,235,.15);color:var(--pl);}
+.p-execucao{background:rgba(245,158,11,.15);color:var(--warn);}
+.p-concluida{background:rgba(34,197,94,.15);color:var(--green);}
+.p-atrasado{background:rgba(239,68,68,.15);color:var(--red);}
+
+/* PLANEJAMENTO */
+.plan-wrap{flex:1;overflow-y:auto;padding:0 24px 24px;display:flex;flex-direction:column;gap:20px;}
+.plan-header{display:flex;align-items:center;gap:12px;padding:16px 0 0;}
+.plan-nav-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--r);width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
+.plan-nav-btn:hover{border-color:var(--primary);}
+.plan-month-title{font-size:18px;font-weight:800;min-width:160px;text-align:center;}
+.plan-today-btn{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;font-size:12px;cursor:pointer;color:var(--muted);}
+.plan-today-btn:hover{color:var(--text);}
+
+/* ALERTAS */
+.alerts-bar{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:12px 16px;}
+.alerts-title{font-size:11px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.alerts-list{display:flex;flex-wrap:wrap;gap:8px;}
+.alert-chip{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--warn);display:flex;align-items:center;gap:5px;}
+.alert-chip.feriado{background:rgba(167,139,250,.12);border-color:rgba(167,139,250,.25);color:var(--purple);}
+.alert-chip.atrasado{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.25);color:var(--red);}
+
+/* CALENDÁRIO */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-dow{text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;padding:6px 0;}
+.cal-cell{background:var(--card);border:1px solid var(--border);border-radius:var(--r);min-height:90px;padding:6px;cursor:pointer;transition:border .15s;position:relative;}
+.cal-cell:hover{border-color:var(--primary);}
+.cal-cell.today{border-color:var(--primary);background:rgba(37,99,235,.06);}
+.cal-cell.other-month{opacity:.35;}
+.cal-cell.has-holiday{background:rgba(167,139,250,.06);}
+.cal-day{font-size:12px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
+.cal-day-num{}
+.cal-today-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);}
+.cal-event{font-size:10px;padding:2px 5px;border-radius:4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;cursor:pointer;}
+.cal-more{font-size:10px;color:var(--muted);margin-top:2px;}
+.cal-holiday{font-size:10px;color:var(--purple);font-style:italic;margin-bottom:2px;}
+
+/* LISTA ATIVIDADES */
+.plan-list{display:flex;flex-direction:column;gap:8px;}
+.plan-item{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border .15s;}
+.plan-item:hover{border-color:var(--primary);}
+.plan-item-color{width:4px;height:40px;border-radius:2px;flex-shrink:0;}
+.plan-item-info{flex:1;min-width:0;}
+.plan-item-title{font-size:13px;font-weight:700;}
+.plan-item-meta{font-size:11px;color:var(--muted);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap;}
+.plan-item-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.plan-item-cost{font-size:12px;color:var(--green);font-weight:600;}
+
 /* ATRIBUIÇÃO */
 .atrib-box{padding:14px 18px;border-bottom:1px solid var(--border);background:rgba(37,99,235,.05);}
 .atrib-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
@@ -127,15 +176,16 @@ tbody tr:hover .row-actions{opacity:1;}
 .atrib-select{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;color:var(--text);font-size:13px;outline:none;}
 .atrib-select:focus{border-color:var(--primary);}
 .atrib-select option{background:var(--card2);}
-.atrib-btn{background:linear-gradient(135deg,var(--primary),#1d4ed8);border:none;border-radius:var(--r);padding:8px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
-.atrib-btn:hover{opacity:.9;}
-/* PLACEHOLDERS */
+.atrib-btn{background:linear-gradient(135deg,var(--primary),#1d4ed8);border:none;border-radius:var(--r);padding:8px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;}
+
+/* PLACEHOLDER */
 .placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;text-align:center;padding:40px;}
 .ph-icon{font-size:52px;opacity:.25;}
 .ph-title{font-size:20px;font-weight:700;}
 .ph-desc{color:var(--muted);font-size:14px;max-width:340px;line-height:1.7;}
 .ph-badge{background:rgba(37,99,235,.15);color:var(--pl);border:1px solid rgba(37,99,235,.3);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;}
-/* OVERLAY / DETAIL / MODAL */
+
+/* OVERLAY / DP / MODAL */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;display:none;}
 .ov.open{display:block;}
 .dp{position:fixed;top:0;right:0;width:440px;height:100vh;background:var(--sb);border-left:1px solid var(--border);overflow-y:auto;z-index:51;transform:translateX(100%);transition:transform .22s ease;}
@@ -205,7 +255,6 @@ tbody tr:hover .row-actions{opacity:1;}
     <div class="db-dot" id="db-dot"></div>
   </div>
 </div>
-
 <div class="app-body">
   <div class="sidebar">
     <div class="nav-section">Principal</div>
@@ -224,17 +273,17 @@ tbody tr:hover .row-actions{opacity:1;}
     <div class="nav-item" onclick="goTo('usuarios',this)"><span class="ni">🔐</span>Usuários</div>
     <div class="sidebar-footer"><div class="ver">v1.0.0 · Omega·Raphson</div></div>
   </div>
-
   <div class="main">
+
     <!-- DASHBOARD -->
     <div class="module active" id="mod-dashboard">
       <div class="dash-wrap">
         <div class="dash-header"><h1>Visão Geral</h1><p id="dash-date"></p></div>
         <div class="kpi-grid">
           <div class="kpi-card c-blue"><div class="kpi-lbl">Funcionários Ativos</div><div class="kpi-val" id="d-func">—</div><div class="kpi-sub">Todas as SPEs</div></div>
-          <div class="kpi-card c-gold"><div class="kpi-lbl">Fornecedores</div><div class="kpi-val" id="d-forn">—</div><div class="kpi-sub">Cadastros ativos</div></div>
+          <div class="kpi-card c-gold"><div class="kpi-lbl">Fornecedores</div><div class="kpi-val" id="d-forn">—</div><div class="kpi-sub">Ativos</div></div>
           <div class="kpi-card c-red"><div class="kpi-lbl">Chamados Abertos</div><div class="kpi-val" id="d-cham">—</div><div class="kpi-sub">Manutenção</div></div>
-          <div class="kpi-card c-green"><div class="kpi-lbl">SPEs Ativas</div><div class="kpi-val" id="d-spes">—</div><div class="kpi-sub">Em operação</div></div>
+          <div class="kpi-card c-green"><div class="kpi-lbl">Atividades do Mês</div><div class="kpi-val" id="d-plan">—</div><div class="kpi-sub">Planejamento</div></div>
         </div>
         <div class="dash-row">
           <div class="panel">
@@ -242,13 +291,23 @@ tbody tr:hover .row-actions{opacity:1;}
             <div id="dash-spes-bars"><div style="color:var(--muted);font-size:13px">Carregando...</div></div>
           </div>
           <div class="panel">
-            <div class="panel-title">Atividades Recentes</div>
-            <div id="dash-atividades">
-              <div class="act-item"><div class="act-dot" style="background:var(--primary)"></div><div><div class="act-text">Sistema iniciado</div><div class="act-time">Hoje</div></div></div>
-            </div>
+            <div class="panel-title">Próximas Atividades</div>
+            <div id="dash-proximas"><div style="color:var(--muted);font-size:13px">Carregando...</div></div>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- PLANEJAMENTO -->
+    <div class="module" id="mod-planejamento">
+      <div class="toolbar">
+        <div class="search-wrap">🔍<input id="plan-search" type="text" placeholder="Buscar atividade..." oninput="planRender()"/></div>
+        <div class="flt">SPE: <select id="plan-fspe" onchange="planRender()"><option value="">Todas</option><option>HQ</option><option>SPE 01</option><option>SPE 02</option><option>SPE 03</option><option>SPE 04</option></select></div>
+        <div class="flt">Status: <select id="plan-fst" onchange="planRender()"><option value="">Todos</option><option>Planejado</option><option>Em Execução</option><option>Concluído</option><option>Cancelado</option><option>Atrasado</option></select></div>
+        <div class="flt">Categoria: <select id="plan-fcat" onchange="planRender()"><option value="">Todas</option><option>Obra</option><option>Administrativo</option><option>Comercial</option><option>Financeiro</option><option>Jurídico</option><option>Reunião</option><option>Outro</option></select></div>
+        <button class="add-btn" onclick="planOpenModal()">＋ Nova Atividade</button>
+      </div>
+      <div class="plan-wrap" id="plan-wrap"></div>
     </div>
 
     <!-- CADASTRO -->
@@ -288,14 +347,13 @@ tbody tr:hover .row-actions{opacity:1;}
         <div class="kpi-s kw"><div class="kpi-sv" id="mk-ab">0</div><div class="kpi-sl">Abertos</div></div>
         <div class="kpi-s kb"><div class="kpi-sv" id="mk-and">0</div><div class="kpi-sl">Em Andamento</div></div>
         <div class="kpi-s kg"><div class="kpi-sv" id="mk-con">0</div><div class="kpi-sl">Concluídos</div></div>
-        <div class="kpi-s kr"><div class="kpi-sv" id="mk-ven">0</div><div class="kpi-sl">Vencidos</div></div>
+        <div class="kpi-s kr"><div class="kpi-sv" id="mk-ven">0</div><div class="kpi-sl">Alta Prioridade</div></div>
       </div>
       <div class="results-info" id="mant-results"></div>
       <div class="table-wrap"><table><thead id="mant-thead"></thead><tbody id="mant-tbody"></tbody></table></div>
     </div>
 
     <!-- PLACEHOLDERS -->
-    <div class="module" id="mod-planejamento"><div class="placeholder"><div class="ph-icon">📅</div><div class="ph-title">Planejamento Mensal</div><div class="ph-desc">Calendário com atividades planejadas, custos e metas mensais por SPE.</div><div class="ph-badge">Em desenvolvimento</div></div></div>
     <div class="module" id="mod-contratos"><div class="placeholder"><div class="ph-icon">📋</div><div class="ph-title">Contratos</div><div class="ph-desc">Gestão de contratos com fornecedores, alertas de vencimento e histórico.</div><div class="ph-badge">Em desenvolvimento</div></div></div>
     <div class="module" id="mod-financeiro"><div class="placeholder"><div class="ph-icon">💰</div><div class="ph-title">Financeiro</div><div class="ph-desc">Controle de custos fixos e variáveis com rateio automático entre SPEs.</div><div class="ph-badge">Em desenvolvimento</div></div></div>
     <div class="module" id="mod-viabilidade"><div class="placeholder"><div class="ph-icon">🔍</div><div class="ph-title">Viabilidade</div><div class="ph-desc">Estudos de viabilidade para novos empreendimentos e terrenos.</div><div class="ph-badge">Em desenvolvimento</div></div></div>
@@ -338,12 +396,12 @@ tbody tr:hover .row-actions{opacity:1;}
 const SB='https://jljqhonsiiqittioxjrf.supabase.co';
 const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsanFob25zaWlxaXR0aW94anJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNDkyMTcsImV4cCI6MjA5NTkyNTIxN30.MQCPYUxCC1N3fuqbhx19TpHCB4TA2DS9iLGAzu6ms9o';
 const H={'apikey':KEY,'Authorization':`Bearer ${KEY}`,'Content-Type':'application/json'};
-async function sbGet(t){const r=await fetch(`${SB}/rest/v1/${t}?select=*&order=created_at.desc`,{headers:H});if(!r.ok)throw new Error(t);return r.json();}
+async function sbGet(t,q=''){const r=await fetch(`${SB}/rest/v1/${t}?select=*${q}&order=created_at.desc`,{headers:H});if(!r.ok)throw new Error(t);return r.json();}
 async function sbPost(t,b){const r=await fetch(`${SB}/rest/v1/${t}`,{method:'POST',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(b)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}return r.json();}
 async function sbPatch(t,id,b){const r=await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:{...H,'Prefer':'return=representation'},body:JSON.stringify(b)});if(!r.ok){const e=await r.json();throw new Error(e.message||'Erro');}return r.json();}
 async function sbDelete(t,id){await fetch(`${SB}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H});}
 
-const TITLES={dashboard:'Dashboard',cadastro:'Cadastro Geral',manutencao:'Manutenção',planejamento:'Planejamento Mensal',contratos:'Contratos',financeiro:'Financeiro',viabilidade:'Viabilidade',relatorios:'Relatórios',usuarios:'Usuários & Permissões'};
+const TITLES={dashboard:'Dashboard',planejamento:'Planejamento Mensal',cadastro:'Cadastro Geral',manutencao:'Manutenção',contratos:'Contratos',financeiro:'Financeiro',viabilidade:'Viabilidade',relatorios:'Relatórios',usuarios:'Usuários & Permissões'};
 let currentModule='dashboard';
 function goTo(id,el){
   document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
@@ -355,23 +413,316 @@ function goTo(id,el){
   currentModule=id;closeDP();
 }
 
-const DB={funcionarios:[],spes:[],stands:[],inventario:[],almoxarifado:[],fornecedores:[],chamados:[],preventiva:[]};
+const DB={funcionarios:[],spes:[],stands:[],inventario:[],almoxarifado:[],fornecedores:[],chamados:[],preventiva:[],atividades:[]};
 const TBL={funcionarios:'colaboradores',spes:'spes',stands:'stands',inventario:'inventario',almoxarifado:'almoxarifado',fornecedores:'fornecedores'};
 
 async function loadAll(){
   try{
-    const[func,spes,stands,inv,alm,forn,cham,prev]=await Promise.all([
+    const[func,spes,stands,inv,alm,forn,cham,prev,atv]=await Promise.all([
       sbGet('colaboradores'),sbGet('spes'),sbGet('stands'),sbGet('inventario'),
-      sbGet('almoxarifado'),sbGet('fornecedores'),sbGet('manutencao_chamados'),sbGet('manutencao_preventiva')
+      sbGet('almoxarifado'),sbGet('fornecedores'),sbGet('manutencao_chamados'),
+      sbGet('manutencao_preventiva'),sbGet('planejamento_atividades','&order=data_inicio.asc')
     ]);
     DB.funcionarios=func;DB.spes=spes;DB.stands=stands;DB.inventario=inv;
-    DB.almoxarifado=alm;DB.fornecedores=forn;DB.chamados=cham;DB.preventiva=prev;
+    DB.almoxarifado=alm;DB.fornecedores=forn;DB.chamados=cham;DB.preventiva=prev;DB.atividades=atv;
     document.getElementById('db-dot').style.background='var(--green)';
-    initDash();cadUpdateCounts();mantUpdateKPIs();mantUpdateCounts();cadRender();mantRender();
+    initDash();cadUpdateCounts();mantUpdateKPIs();mantUpdateCounts();cadRender();mantRender();planRender();
   }catch(e){
     document.getElementById('db-dot').style.background='var(--red)';
     showToast('Erro ao conectar','error');
   }
+}
+
+// FERIADOS NACIONAIS BRASIL (fixos + móveis aproximados)
+function getFeriadosBr(ano){
+  // Páscoa pelo algoritmo de Meeus
+  const a=ano%19,b=Math.floor(ano/100),c=ano%100;
+  const d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3);
+  const h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4;
+  const l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451);
+  const mes=Math.floor((h+l-7*m+114)/31),dia=(h+l-7*m+114)%31+1;
+  const pascoa=new Date(ano,mes-1,dia);
+  const add=(d,n)=>{const dt=new Date(d);dt.setDate(dt.getDate()+n);return dt;};
+  const fmt=dt=>`${ano}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+  return {
+    [`${ano}-01-01`]:'Confraternização Universal',
+    [fmt(add(pascoa,-48))]:'Carnaval (2ª)',
+    [fmt(add(pascoa,-47))]:'Carnaval',
+    [fmt(add(pascoa,-2))]:'Sexta-Feira Santa',
+    [fmt(pascoa)]:'Páscoa',
+    [fmt(add(pascoa,60))]:'Corpus Christi',
+    [`${ano}-04-21`]:'Tiradentes',
+    [`${ano}-05-01`]:'Dia do Trabalho',
+    [`${ano}-09-07`]:'Independência do Brasil',
+    [`${ano}-10-12`]:'Nossa Sra. Aparecida',
+    [`${ano}-11-02`]:'Finados',
+    [`${ano}-11-15`]:'Proclamação da República',
+    [`${ano}-11-20`]:'Consciência Negra',
+    [`${ano}-12-25`]:'Natal',
+  };
+}
+
+// PLANEJAMENTO
+let planViewMonth=new Date().getMonth();
+let planViewYear=new Date().getFullYear();
+let planEditId=null;
+
+const PLAN_CATS_COLORS={
+  'Obra':'#f59e0b','Administrativo':'#2563eb','Comercial':'#22c55e',
+  'Financeiro':'#d4a017','Jurídico':'#a78bfa','Reunião':'#3b82f6','Outro':'#8b949e'
+};
+
+const planStCls=s=>({'Planejado':'p-planejado','Em Execução':'p-execucao','Concluído':'p-concluida','Cancelado':'p-cancelado','Atrasado':'p-atrasado'}[s]||'p-planejado');
+const planStCol=s=>({'Planejado':'#3b82f6','Em Execução':'#f59e0b','Concluído':'#22c55e','Cancelado':'#8b949e','Atrasado':'#ef4444'}[s]||'#8b949e');
+
+function fmtD(d){if(!d)return'—';return new Date(d+'T00:00:00').toLocaleDateString('pt-BR');}
+function ini(n){if(!n)return'?';const p=n.trim().split(' ');return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():n.slice(0,2).toUpperCase();}
+const sCol=s=>({'Ativo':'#22c55e','Inativo':'#ef4444','Férias':'#f59e0b','Desligado':'#ef4444','Em Obra':'#f59e0b','Lançamento':'#3b82f6','Planejamento':'#a78bfa','Em Uso':'#22c55e','Disponível':'#22c55e','Estoque OK':'#22c55e','Estoque Baixo':'#ef4444','Sem Estoque':'#ef4444','Em Manutenção':'#f59e0b','Em Montagem':'#f59e0b','Entregue':'#22c55e','Encerrada':'#8b949e','Baixado':'#8b949e','Aberto':'#3b82f6','Em Andamento':'#f59e0b','Concluído':'#22c55e','Cancelado':'#8b949e','Preventiva':'#a78bfa','Planejado':'#3b82f6','Em Execução':'#f59e0b','Atrasado':'#ef4444'}[s]||'#8b949e');
+
+function planRender(){
+  const wrap=document.getElementById('plan-wrap');
+  if(!wrap)return;
+  const q=document.getElementById('plan-search')?.value.toLowerCase()||'';
+  const fSpe=document.getElementById('plan-fspe')?.value||'';
+  const fSt=document.getElementById('plan-fst')?.value||'';
+  const fCat=document.getElementById('plan-fcat')?.value||'';
+  const hoje=new Date();hoje.setHours(0,0,0,0);
+
+  // Auto-atualiza status atrasado
+  let recs=DB.atividades.map(r=>{
+    if(r.status==='Planejado'&&r.data_fim&&new Date(r.data_fim+'T00:00:00')<hoje) return{...r,status:'Atrasado'};
+    return r;
+  });
+  if(q)recs=recs.filter(r=>Object.values(r).some(v=>v&&String(v).toLowerCase().includes(q)));
+  if(fSpe)recs=recs.filter(r=>(r.spe_label||'').includes(fSpe));
+  if(fSt)recs=recs.filter(r=>r.status===fSt);
+  if(fCat)recs=recs.filter(r=>r.categoria===fCat);
+
+  const feriados=getFeriadosBr(planViewYear);
+  const fer90={};
+  const d90=new Date();d90.setDate(d90.getDate()+90);
+  Object.entries(feriados).forEach(([dt,nome])=>{
+    const dd=new Date(dt+'T00:00:00');
+    if(dd>=hoje&&dd<=d90) fer90[dt]=nome;
+  });
+
+  // KPIs
+  const total=recs.length;
+  const concluidos=recs.filter(r=>r.status==='Concluído').length;
+  const atrasados=recs.filter(r=>r.status==='Atrasado').length;
+  const custoTotal=recs.reduce((s,r)=>s+(r.custo_previsto||0),0);
+
+  // Alertas 90 dias
+  const atvsAlerta=recs.filter(r=>{
+    if(r.status==='Concluído'||r.status==='Cancelado')return false;
+    const df=r.data_fim?new Date(r.data_fim+'T00:00:00'):null;
+    return df&&df>=hoje&&df<=d90;
+  });
+
+  let html='';
+
+  // KPI STRIP
+  html+=`<div class="kpi-strip" style="padding:0 0 0">
+    <div class="kpi-s kb"><div class="kpi-sv">${total}</div><div class="kpi-sl">Total</div></div>
+    <div class="kpi-s kg"><div class="kpi-sv">${concluidos}</div><div class="kpi-sl">Concluídos</div></div>
+    <div class="kpi-s kr"><div class="kpi-sv">${atrasados}</div><div class="kpi-sl">Atrasados</div></div>
+    <div class="kpi-s kw"><div class="kpi-sv">R$ ${custoTotal.toLocaleString('pt-BR',{minimumFractionDigits:0})}</div><div class="kpi-sl">Custo Previsto</div></div>
+  </div>`;
+
+  // ALERTAS
+  const hasAlertas=atvsAlerta.length||Object.keys(fer90).length;
+  if(hasAlertas){
+    html+=`<div class="alerts-bar"><div class="alerts-title">⚠ Alertas — próximos 90 dias</div><div class="alerts-list">`;
+    atvsAlerta.slice(0,5).forEach(r=>{
+      html+=`<div class="alert-chip"">📌 ${r.titulo} · ${fmtD(r.data_fim)}</div>`;
+    });
+    Object.entries(fer90).slice(0,6).forEach(([dt,nome])=>{
+      html+=`<div class="alert-chip feriado">🗓 ${nome} · ${fmtD(dt)}</div>`;
+    });
+    html+=`</div></div>`;
+  }
+
+  // CALENDÁRIO
+  html+=`<div>
+    <div class="plan-header">
+      <button class="plan-nav-btn" onclick="planPrevMonth()">‹</button>
+      <div class="plan-month-title" id="plan-month-lbl"></div>
+      <button class="plan-nav-btn" onclick="planNextMonth()">›</button>
+      <button class="plan-today-btn" onclick="planGoToday()">Hoje</button>
+      <div style="margin-left:auto;font-size:12px;color:var(--muted)">${total} atividade${total!==1?'s':''}</div>
+    </div>
+    <div class="cal-grid" style="margin-top:10px">
+      ${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(d=>`<div class="cal-dow">${d}</div>`).join('')}
+      ${buildCal(recs,feriados)}
+    </div>
+  </div>`;
+
+  // LISTA
+  html+=`<div><div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--muted)">LISTA DE ATIVIDADES</div>`;
+  if(!recs.length){html+=`<div style="text-align:center;padding:30px;color:var(--muted)">Nenhuma atividade encontrada</div>`;}
+  else{
+    html+=`<div class="plan-list">`;
+    recs.forEach(r=>{
+      const cor=PLAN_CATS_COLORS[r.categoria]||'#8b949e';
+      const sC=planStCol(r.status);
+      html+=`<div class="plan-item" onclick="planOpenDP('${r.id}')">
+        <div class="plan-item-color" style="background:${cor}"></div>
+        <div class="plan-item-info">
+          <div class="plan-item-title">${r.titulo}</div>
+          <div class="plan-item-meta">
+            ${r.categoria?`<span>📁 ${r.categoria}</span>`:''}
+            ${r.spe_label?`<span>🏗️ ${r.spe_label}</span>`:''}
+            ${r.responsavel?`<span>👤 ${r.responsavel}</span>`:''}
+            ${r.data_inicio?`<span>📅 ${fmtD(r.data_inicio)}${r.data_fim?' → '+fmtD(r.data_fim):''}</span>`:''}
+          </div>
+        </div>
+        <div class="plan-item-right">
+          ${r.custo_previsto?`<div class="plan-item-cost">R$ ${Number(r.custo_previsto).toLocaleString('pt-BR')}</div>`:''}
+          <span class="pill ${planStCls(r.status)}" style="color:${sC}">${r.status}</span>
+          <div class="row-actions" style="opacity:1">
+            <div class="act-btn" onclick="event.stopPropagation();planEdit('${r.id}')">✏️</div>
+            <div class="act-btn" onclick="event.stopPropagation();planDelete('${r.id}')">🗑</div>
+          </div>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+  html+=`</div>`;
+  wrap.innerHTML=html;
+  document.getElementById('plan-month-lbl').textContent=new Date(planViewYear,planViewMonth,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}).replace(/^\w/,c=>c.toUpperCase());
+}
+
+function buildCal(recs,feriados){
+  const ano=planViewYear,mes=planViewMonth;
+  const hoje=new Date();hoje.setHours(0,0,0,0);
+  const firstDay=new Date(ano,mes,1).getDay();
+  const daysInMonth=new Date(ano,mes+1,0).getDate();
+  const daysInPrev=new Date(ano,mes,0).getDate();
+  let cells='';
+  let day=1,nextDay=1;
+  const totalCells=Math.ceil((firstDay+daysInMonth)/7)*7;
+  for(let i=0;i<totalCells;i++){
+    let d,isOther=false,isToday=false;
+    if(i<firstDay){d=daysInPrev-firstDay+i+1;isOther=true;}
+    else if(day>daysInMonth){d=nextDay++;isOther=true;}
+    else{d=day++;}
+    const dateStr=`${ano}-${String(mes+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    if(!isOther){const dt=new Date(dateStr+'T00:00:00');isToday=dt.getTime()===hoje.getTime();}
+    const dayRecs=isOther?[]:recs.filter(r=>{
+      if(!r.data_inicio)return false;
+      const s=new Date(r.data_inicio+'T00:00:00');
+      const e=r.data_fim?new Date(r.data_fim+'T00:00:00'):s;
+      const dt=new Date(dateStr+'T00:00:00');
+      return dt>=s&&dt<=e;
+    });
+    const fer=feriados[dateStr];
+    const hasHol=!!fer&&!isOther;
+    cells+=`<div class="cal-cell${isOther?' other-month':''}${isToday?' today':''}${hasHol?' has-holiday':''}" onclick="${isOther?'':'planDayClick(\''+dateStr+'\')'}">
+      <div class="cal-day"><span class="cal-day-num">${d}</span>${isToday?'<span class="cal-today-dot"></span>':''}</div>
+      ${hasHol?`<div class="cal-holiday">🗓 ${fer}</div>`:''}
+      ${dayRecs.slice(0,2).map(r=>{const cor=PLAN_CATS_COLORS[r.categoria]||'#8b949e';return`<div class="cal-event" style="background:${cor}22;color:${cor}" onclick="event.stopPropagation();planOpenDP('${r.id}')">${r.titulo}</div>`;}).join('')}
+      ${dayRecs.length>2?`<div class="cal-more">+${dayRecs.length-2} mais</div>`:''}
+    </div>`;
+  }
+  return cells;
+}
+
+function planPrevMonth(){if(planViewMonth===0){planViewMonth=11;planViewYear--;}else planViewMonth--;planRender();}
+function planNextMonth(){if(planViewMonth===11){planViewMonth=0;planViewYear++;}else planViewMonth++;planRender();}
+function planGoToday(){planViewMonth=new Date().getMonth();planViewYear=new Date().getFullYear();planRender();}
+function planDayClick(dateStr){planOpenModalWithDate(dateStr);}
+
+function planOpenDP(id){
+  const r=DB.atividades.find(x=>x.id===id);if(!r)return;
+  const cor=PLAN_CATS_COLORS[r.categoria]||'#8b949e';
+  const sC=planStCol(r.status);
+  document.getElementById('dp-av').style.cssText=`background:${cor}20;color:${cor}`;
+  document.getElementById('dp-av').textContent='📅';
+  document.getElementById('dp-name').textContent=r.titulo||'—';
+  document.getElementById('dp-sub').innerHTML=`<span class="pill ${planStCls(r.status)}">${r.status}</span>${r.categoria?` &nbsp;<span style="font-size:11px;color:var(--muted)">${r.categoria}</span>`:''}`;
+  document.getElementById('dp-atrib').style.display='none';
+  const statuses=['Planejado','Em Execução','Concluído','Cancelado','Atrasado'];
+  const sa=document.getElementById('dp-sa');
+  sa.style.display='flex';
+  sa.innerHTML='<span style="font-size:11px;color:var(--muted);align-self:center">Status:</span>'+statuses.map(s=>`<button class="s-btn ${r.status===s?'on':''}" onclick="planUpdateStatus('${r.id}','${s}')">${s}</button>`).join('');
+  const skip=['id','tags','historico','created_at','updated_at'];
+  const fields=Object.entries(r).filter(([k])=>!skip.includes(k)&&r[k]!==null&&r[k]!=='');
+  const hist=Array.isArray(r.historico)?r.historico:[];
+  const hc=['#2563eb','#d4a017','#22c55e','#a78bfa'];
+  let b=`<div class="dp-sec"><div class="dp-sec-t">Dados da Atividade</div><div class="dp-grid">`;
+  fields.forEach(([k,v])=>{b+=`<div class="dp-f"><label>${k.replace(/_/g,' ')}</label><span>${(k==='data_inicio'||k==='data_fim')?fmtD(v):k==='custo_previsto'||k==='custo_real'?'R$ '+Number(v).toLocaleString('pt-BR'):v}</span></div>`;});
+  b+=`</div></div>`;
+  if(hist.length){b+=`<div class="dp-sec"><div class="dp-sec-t">Histórico</div>`;hist.forEach((h,i)=>{b+=`<div class="hi"><div class="hdot" style="background:${hc[i%4]}"></div><div><div class="ht">${h.t||h}</div><div class="ht-dt">${h.dt||''}</div></div></div>`;});b+=`</div>`;}
+  document.getElementById('dp-body').innerHTML=b;
+  document.getElementById('ov').classList.add('open');
+  document.getElementById('dp').classList.add('open');
+}
+
+async function planUpdateStatus(id,ns){
+  const ex=DB.atividades.find(x=>x.id===id);
+  const hist=Array.isArray(ex?.historico)?ex.historico:[];
+  const saved=await sbPatch('planejamento_atividades',id,{status:ns,historico:[{t:`Status → "${ns}"`,dt:new Date().toLocaleString('pt-BR')},...hist]});
+  DB.atividades=DB.atividades.map(x=>x.id===id?saved[0]:x);
+  planRender();planOpenDP(id);showToast(`Status → "${ns}"`,'success');
+}
+
+const PLAN_FORM_SECS=[
+  {s:'Identificação',f:[
+    {id:'titulo',l:'Título da Atividade',t:'text',r:true,p:'Ex: Reunião de planejamento Q3',sp:2},
+    {id:'categoria',l:'Categoria',t:'select',r:true,o:['Obra','Administrativo','Comercial','Financeiro','Jurídico','Reunião','Outro']},
+    {id:'prioridade',l:'Prioridade',t:'select',o:['Normal','Alta','Baixa']},
+    {id:'spe_label',l:'SPE Vinculada',t:'select',o:['HQ','SPE 01','SPE 02','SPE 03','SPE 04','Todas']},
+    {id:'responsavel',l:'Responsável',t:'text',p:'Nome do responsável'},
+    {id:'descricao',l:'Descrição',t:'textarea',p:'Detalhes da atividade...',sp:2},
+  ]},
+  {s:'Datas e Custos',f:[
+    {id:'data_inicio',l:'Data de Início',t:'date',r:true},
+    {id:'data_fim',l:'Data de Conclusão',t:'date'},
+    {id:'custo_previsto',l:'Custo Previsto (R$)',t:'number',p:'0'},
+    {id:'custo_real',l:'Custo Real (R$)',t:'number',p:'0'},
+  ]},
+  {s:'Status',f:[
+    {id:'status',l:'Status',t:'select',r:true,o:['Planejado','Em Execução','Concluído','Cancelado']},
+  ]},
+];
+
+function planOpenModal(){
+  planEditId=null;
+  document.getElementById('m-ico').style.cssText='background:rgba(37,99,235,.15);color:var(--pl)';
+  document.getElementById('m-ico').textContent='📅';
+  document.getElementById('m-title').textContent='Nova Atividade';
+  document.getElementById('m-sub').textContent='Preencha os dados da atividade';
+  document.getElementById('save-lbl').textContent='Salvar Atividade';
+  buildForm(PLAN_FORM_SECS,null);
+  document.getElementById('modal-ov').classList.add('open');
+}
+
+function planOpenModalWithDate(dateStr){
+  planOpenModal();
+  setTimeout(()=>{
+    const el=document.getElementById('f_data_inicio');
+    if(el)el.value=dateStr;
+  },50);
+}
+
+function planEdit(id){
+  const r=DB.atividades.find(x=>x.id===id);if(!r)return;
+  planEditId=id;
+  document.getElementById('m-ico').style.cssText='background:rgba(37,99,235,.15);color:var(--pl)';
+  document.getElementById('m-ico').textContent='📅';
+  document.getElementById('m-title').textContent='Editar Atividade';
+  document.getElementById('m-sub').textContent='Atualize os dados';
+  document.getElementById('save-lbl').textContent='Salvar Alterações';
+  buildForm(PLAN_FORM_SECS,r);
+  document.getElementById('modal-ov').classList.add('open');
+}
+
+async function planDelete(id){
+  if(!confirm('Confirma a exclusão desta atividade?'))return;
+  await sbDelete('planejamento_atividades',id);
+  DB.atividades=DB.atividades.filter(x=>x.id!==id);
+  planRender();showToast('Atividade excluída','success');
 }
 
 // DASHBOARD
@@ -380,12 +731,19 @@ function initDash(){
   document.getElementById('d-func').textContent=DB.funcionarios.filter(r=>r.status==='Ativo').length;
   document.getElementById('d-forn').textContent=DB.fornecedores.filter(r=>r.status==='Ativo').length;
   document.getElementById('d-cham').textContent=DB.chamados.filter(r=>r.status==='Aberto').length;
-  document.getElementById('d-spes').textContent=DB.spes.filter(r=>r.status==='Em Obra'||r.status==='Lançamento').length;
+  const mesAtual=new Date().getMonth(),anoAtual=new Date().getFullYear();
+  const atvMes=DB.atividades.filter(r=>{if(!r.data_inicio)return false;const d=new Date(r.data_inicio+'T00:00:00');return d.getMonth()===mesAtual&&d.getFullYear()===anoAtual;});
+  document.getElementById('d-plan').textContent=atvMes.length;
   const colors=['var(--primary)','var(--gold)','var(--green)','var(--purple)'];
   const pcts=[72,58,41,29];
   document.getElementById('dash-spes-bars').innerHTML=DB.spes.length
     ?DB.spes.slice(0,4).map((s,i)=>`<div class="spe-row"><div class="spe-name">${s.codigo||s.nome}</div><div class="bar-track"><div class="bar-fill" style="width:${pcts[i]||30}%;background:${colors[i]}"></div></div><div class="spe-pct">${pcts[i]||30}%</div></div>`).join('')
     :'<div style="color:var(--muted);font-size:13px">Nenhuma SPE cadastrada</div>';
+  const hoje=new Date();hoje.setHours(0,0,0,0);
+  const proximas=DB.atividades.filter(r=>r.status!=='Concluído'&&r.status!=='Cancelado'&&r.data_inicio&&new Date(r.data_inicio+'T00:00:00')>=hoje).slice(0,4);
+  document.getElementById('dash-proximas').innerHTML=proximas.length
+    ?proximas.map(r=>{const cor=PLAN_CATS_COLORS[r.categoria]||'#8b949e';return`<div class="act-item"><div class="act-dot" style="background:${cor}"></div><div><div class="act-text">${r.titulo}</div><div class="act-time">${fmtD(r.data_inicio)}${r.spe_label?' · '+r.spe_label:''}</div></div></div>`;}).join('')
+    :'<div style="color:var(--muted);font-size:13px">Nenhuma atividade futura</div>';
 }
 
 // CADASTRO
@@ -428,9 +786,6 @@ const CAD_FORMS={
     {s:'Status',f:[{id:'status',l:'Status',t:'select',r:true,o:['Ativo','Inativo']}]},
   ]},
 };
-
-const sCol=s=>({'Ativo':'#22c55e','Inativo':'#ef4444','Férias':'#f59e0b','Desligado':'#ef4444','Em Obra':'#f59e0b','Lançamento':'#3b82f6','Planejamento':'#a78bfa','Em Uso':'#22c55e','Disponível':'#22c55e','Estoque OK':'#22c55e','Estoque Baixo':'#ef4444','Sem Estoque':'#ef4444','Em Manutenção':'#f59e0b','Em Montagem':'#f59e0b','Entregue':'#22c55e','Encerrada':'#8b949e','Baixado':'#8b949e','Aberto':'#3b82f6','Em Andamento':'#f59e0b','Concluído':'#22c55e','Cancelado':'#8b949e','Preventiva':'#a78bfa'}[s]||'#8b949e');
-function ini(n){if(!n)return'?';const p=n.trim().split(' ');return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():n.slice(0,2).toUpperCase();}
 function cadUpdateCounts(){Object.keys(TBL).forEach(t=>{const el=document.getElementById('ctc-'+t);if(el)el.textContent=(DB[t]||[]).length;});}
 function cadTab(el){cadTab_=el.dataset.ct;document.querySelectorAll('#cad-tabnav .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('cad-search').value='';cadRender();}
 function cadRender(){
@@ -442,8 +797,7 @@ function cadRender(){
   if(fSt)recs=recs.filter(r=>r.status===fSt);
   if(fSpe)recs=recs.filter(r=>(r.spe_label||r.spes_atendidas||'').toLowerCase().includes(fSpe.toLowerCase())||String(r.spe_label||'').toLowerCase().includes('todas'));
   document.getElementById('cad-results').textContent=`${recs.length} registro${recs.length!==1?'s':''} encontrado${recs.length!==1?'s':''}`;
-  const cols=CAD_COLS[cadTab_]||[];
-  const ac=CAD_ACCENT[cadTab_]||'var(--primary)';
+  const cols=CAD_COLS[cadTab_]||[];const ac=CAD_ACCENT[cadTab_]||'var(--primary)';
   document.getElementById('cad-thead').innerHTML=`<tr>${cols.map(c=>`<th>${c.l}</th>`).join('')}</tr>`;
   const tbody=document.getElementById('cad-tbody');
   if(!recs.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="${cols.length}"><div style="font-size:28px;opacity:.2;margin-bottom:8px">🗂️</div><div>Nenhum registro</div></td></tr>`;return;}
@@ -475,31 +829,26 @@ function cadOpenDP(id){
   b+=`</div></div>`;
   if(hist.length){b+=`<div class="dp-sec"><div class="dp-sec-t">Histórico</div>`;hist.forEach((h,i)=>{b+=`<div class="hi"><div class="hdot" style="background:${hc[i%4]}"></div><div class="ht">${h.t||h}</div></div>`;});b+=`</div>`;}
   document.getElementById('dp-body').innerHTML=b;
-  document.getElementById('ov').classList.add('open');
-  document.getElementById('dp').classList.add('open');
+  document.getElementById('ov').classList.add('open');document.getElementById('dp').classList.add('open');
 }
 function cadOpenModal(){
-  cadEditId=null;
-  const f=CAD_FORMS[cadTab_];
+  cadEditId=null;const f=CAD_FORMS[cadTab_];
   document.getElementById('m-ico').style.cssText=`background:${f.a}20;color:${f.a}`;
   document.getElementById('m-ico').textContent=f.i;
   document.getElementById('m-title').textContent=`Novo ${f.l}`;
   document.getElementById('m-sub').textContent='Preencha os dados abaixo';
   document.getElementById('save-lbl').textContent='Salvar';
-  buildForm(f.secs,null);
-  document.getElementById('modal-ov').classList.add('open');
+  buildForm(f.secs,null);document.getElementById('modal-ov').classList.add('open');
 }
 function cadEdit(id){
   const r=(DB[cadTab_]||[]).find(x=>x.id===id);if(!r)return;
-  cadEditId=id;
-  const f=CAD_FORMS[cadTab_];
+  cadEditId=id;const f=CAD_FORMS[cadTab_];
   document.getElementById('m-ico').style.cssText=`background:${f.a}20;color:${f.a}`;
   document.getElementById('m-ico').textContent=f.i;
   document.getElementById('m-title').textContent=`Editar ${f.l}`;
   document.getElementById('m-sub').textContent='Atualize os dados abaixo';
   document.getElementById('save-lbl').textContent='Salvar Alterações';
-  buildForm(f.secs,r);
-  document.getElementById('modal-ov').classList.add('open');
+  buildForm(f.secs,r);document.getElementById('modal-ov').classList.add('open');
 }
 async function cadDelete(id){
   if(!confirm('Confirma a exclusão?'))return;
@@ -512,64 +861,30 @@ async function cadDelete(id){
 let mantTab_='chamados',mantEditId=null;
 const MANT_COLS_CH=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'Stand/Escritório'},{k:'responsavel_nome',l:'Responsável'},{k:'data_abertura',l:'Abertura',t:'data'},{k:'prioridade',l:'Prioridade',t:'prio'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
 const MANT_COLS_PR=[{k:'codigo',l:'#'},{k:'titulo',l:'Título',main:true},{k:'tipo',l:'Tipo'},{k:'local',l:'Local'},{k:'spe_label',l:'SPE'},{k:'responsavel',l:'Responsável'},{k:'proxima_data',l:'Próxima Data',t:'data'},{k:'frequencia',l:'Frequência'},{k:'status',l:'Status',t:'mstatus'},{k:'_',l:'',t:'actions'}];
-
-function getMantFormCH(){
-  return[
-    {s:'Identificação',f:[
-      {id:'titulo',l:'Título do Chamado',t:'text',r:true,p:'Ex: Ar-condicionado com defeito',sp:2},
-      {id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil / Estrutural','Pintura','Limpeza','Segurança','Equipamento','Outro'],onChange:'mantTipoChange()'},
-      {id:'prioridade',l:'Prioridade',t:'select',r:true,o:['Alta','Média','Baixa']},
-    ]},
-    {s:'Localização',f:[
-      {id:'local',l:'Local Específico',t:'text',r:true,p:'Ex: Sala 2, Recepção'},
-      {id:'spe_label',l:'Stand / Escritório',t:'select',r:true,o:['__DYNAMIC__']},
-    ]},
-    {s:'Detalhes',f:[
-      {id:'descricao',l:'Descrição do Problema',t:'textarea',r:true,p:'Descreva o problema...',sp:2},
-      {id:'responsavel',l:'Responsável (texto)',t:'text',p:'Técnico ou empresa externa'},
-      {id:'data_abertura',l:'Data de Abertura',t:'date'},
-      {id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},
-      {id:'solicitante',l:'Solicitante',t:'text',p:'Quem abriu o chamado'},
-    ]},
-  ];
-}
-
+function getMantFormCH(){return[
+  {s:'Identificação',f:[{id:'titulo',l:'Título do Chamado',t:'text',r:true,p:'Ex: Ar-condicionado com defeito',sp:2},{id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil / Estrutural','Pintura','Limpeza','Segurança','Equipamento','Outro'],onChange:'mantTipoChange()'},{id:'prioridade',l:'Prioridade',t:'select',r:true,o:['Alta','Média','Baixa']}]},
+  {s:'Localização',f:[{id:'local',l:'Local Específico',t:'text',r:true,p:'Ex: Sala 2, Recepção'},{id:'spe_label',l:'Stand / Escritório',t:'select',r:true,o:['__DYNAMIC__']}]},
+  {s:'Detalhes',f:[{id:'descricao',l:'Descrição do Problema',t:'textarea',r:true,p:'Descreva o problema...',sp:2},{id:'responsavel',l:'Responsável (texto)',t:'text',p:'Técnico ou empresa externa'},{id:'data_abertura',l:'Data de Abertura',t:'date'},{id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},{id:'solicitante',l:'Solicitante',t:'text',p:'Quem abriu o chamado'}]},
+];}
 const MANT_FORM_PR=[
-  {s:'Identificação',f:[
-    {id:'titulo',l:'Título',t:'text',r:true,p:'Ex: Revisão Ar-condicionado',sp:2},
-    {id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil','Equipamento','Dedetização','Outro']},
-    {id:'frequencia',l:'Frequência',t:'select',r:true,o:['Semanal','Quinzenal','Mensal','Bimestral','Trimestral','Semestral','Anual']},
-  ]},
-  {s:'Localização',f:[
-    {id:'local',l:'Local',t:'text',r:true,p:'Ex: Escritório HQ'},
-    {id:'spe_label',l:'SPE',t:'select',r:true,o:['HQ','SPE 01','SPE 02','SPE 03','SPE 04']},
-  ]},
-  {s:'Programação',f:[
-    {id:'proxima_data',l:'Próxima Data',t:'date',r:true},
-    {id:'responsavel',l:'Responsável',t:'text',p:'Nome'},
-    {id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},
-    {id:'descricao',l:'Observações',t:'textarea',p:'Detalhes...',sp:2},
-  ]},
+  {s:'Identificação',f:[{id:'titulo',l:'Título',t:'text',r:true,p:'Ex: Revisão Ar-condicionado',sp:2},{id:'tipo',l:'Tipo',t:'select',r:true,o:['Elétrica','Hidráulica','Ar-condicionado','Informática','Civil','Equipamento','Dedetização','Outro']},{id:'frequencia',l:'Frequência',t:'select',r:true,o:['Semanal','Quinzenal','Mensal','Bimestral','Trimestral','Semestral','Anual']}]},
+  {s:'Localização',f:[{id:'local',l:'Local',t:'text',r:true,p:'Ex: Escritório HQ'},{id:'spe_label',l:'SPE',t:'select',r:true,o:['HQ','SPE 01','SPE 02','SPE 03','SPE 04']}]},
+  {s:'Programação',f:[{id:'proxima_data',l:'Próxima Data',t:'date',r:true},{id:'responsavel',l:'Responsável',t:'text',p:'Nome'},{id:'custo_estimado',l:'Custo Estimado (R$)',t:'number',p:'0'},{id:'descricao',l:'Observações',t:'textarea',p:'Detalhes...',sp:2}]},
 ];
-
-function preencherLocaisManut(valorAtual){
+function preencherLocaisManut(v){
   const sel=document.getElementById('f_spe_label');if(!sel)return;
   const standOpts=DB.stands.filter(s=>s.status==='Ativo'||s.status==='Em Montagem').map(s=>s.nome);
   const escritorios=['Escritório HQ','Escritório SPE 01','Escritório SPE 02','Escritório SPE 03','Escritório SPE 04'];
   const todos=[...standOpts,...escritorios,'Outro'];
-  sel.innerHTML=`<option value="">Selecione...</option>`+todos.map(o=>`<option ${valorAtual===o?'selected':''}>${o}</option>`).join('');
+  sel.innerHTML=`<option value="">Selecione...</option>`+todos.map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('');
 }
-
 function mantTipoChange(){
   const tipo=document.getElementById('f_tipo')?.value;
   const lbl=document.getElementById('f_spe_label')?.closest('.f-group')?.querySelector('label');
-  if(lbl) lbl.innerHTML=tipo==='Outro'?'Stand / Escritório':'Stand / Escritório<span class="req">*</span>';
+  if(lbl)lbl.innerHTML=tipo==='Outro'?'Stand / Escritório':'Stand / Escritório<span class="req">*</span>';
 }
-
 const mPrioCls=p=>p==='Alta'?'p-alta':p==='Média'?'p-media':'p-baixa';
 const mStCls=s=>({'Aberto':'p-aberto','Em Andamento':'p-andamento','Concluído':'p-concluido','Cancelado':'p-cancelado','Preventiva':'p-preventiva'}[s]||'p-cancelado');
-function fmtD(d){if(!d)return'—';return new Date(d+'T00:00:00').toLocaleDateString('pt-BR');}
-
 function mantUpdateKPIs(){
   const ch=DB.chamados;
   document.getElementById('mk-ab').textContent=ch.filter(r=>r.status==='Aberto').length;
@@ -578,17 +893,8 @@ function mantUpdateKPIs(){
   document.getElementById('mk-ven').textContent=ch.filter(r=>r.prioridade==='Alta'&&r.status==='Aberto').length;
   document.getElementById('badge-manut').textContent=ch.filter(r=>r.status==='Aberto').length;
 }
-function mantUpdateCounts(){
-  document.getElementById('mtc-chamados').textContent=DB.chamados.length;
-  document.getElementById('mtc-preventiva').textContent=DB.preventiva.length;
-}
-function mantTab(el){
-  mantTab_=el.dataset.mt;
-  document.querySelectorAll('#mod-manutencao .tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('mant-search').value='';
-  mantRender();
-}
+function mantUpdateCounts(){document.getElementById('mtc-chamados').textContent=DB.chamados.length;document.getElementById('mtc-preventiva').textContent=DB.preventiva.length;}
+function mantTab(el){mantTab_=el.dataset.mt;document.querySelectorAll('#mod-manutencao .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('mant-search').value='';mantRender();}
 function mantRender(){
   const q=document.getElementById('mant-search').value.toLowerCase();
   const fSt=document.getElementById('mant-fst').value;
@@ -616,52 +922,25 @@ function mantRender(){
     return`<tr onclick="mantOpenDP('${r.id}')">${cells.join('')}</tr>`;
   }).join('');
 }
-
 function mantOpenDP(id){
   const r=(DB[mantTab_]||[]).find(x=>x.id===id);if(!r)return;
   document.getElementById('dp-av').style.cssText='background:rgba(37,99,235,.15);color:var(--pl)';
   document.getElementById('dp-av').textContent='🔧';
   document.getElementById('dp-name').textContent=r.titulo||'—';
   document.getElementById('dp-sub').innerHTML=`${r.codigo||''} &nbsp;<span class="pill ${mStCls(r.status)}">${r.status}</span>${r.prioridade?` <span class="pill ${mPrioCls(r.prioridade)}">${r.prioridade}</span>`:''}`;
-
-  // ATRIBUIÇÃO DE RESPONSÁVEL (só chamados)
   const atribDiv=document.getElementById('dp-atrib');
   if(mantTab_==='chamados'){
     atribDiv.style.display='block';
     const funcAtivos=DB.funcionarios.filter(f=>f.status==='Ativo');
     if(r.responsavel_nome){
-      atribDiv.innerHTML=`<div class="atrib-box">
-        <div class="atrib-title">👷 Responsável pelo Atendimento</div>
-        <div class="atrib-content">
-          <div class="atrib-assigned">
-            <div class="atrib-av">${ini(r.responsavel_nome)}</div>
-            <div><div class="atrib-name">${r.responsavel_nome}</div><div class="atrib-role">Em Andamento</div></div>
-          </div>
-          <button class="s-btn" onclick="mantAtribuir('${r.id}',null,null)">Remover</button>
-        </div>
-      </div>`;
-    } else {
-      atribDiv.innerHTML=`<div class="atrib-box">
-        <div class="atrib-title">👷 Atribuir Responsável</div>
-        <div class="atrib-content">
-          <select class="atrib-select" id="atrib-sel">
-            <option value="">Selecione um funcionário...</option>
-            ${funcAtivos.map(f=>`<option value="${f.id}|${f.nome}">${f.nome} — ${f.cargo||f.departamento||'Funcionário'}</option>`).join('')}
-          </select>
-          <button class="atrib-btn" onclick="mantAtribuirFromSelect('${r.id}')">✓ Atribuir</button>
-        </div>
-      </div>`;
+      atribDiv.innerHTML=`<div class="atrib-box"><div class="atrib-title">👷 Responsável pelo Atendimento</div><div class="atrib-content"><div class="atrib-assigned"><div class="atrib-av">${ini(r.responsavel_nome)}</div><div><div class="atrib-name">${r.responsavel_nome}</div><div class="atrib-role">Em Andamento</div></div></div><button class="s-btn" onclick="mantAtribuir('${r.id}',null,null)">Remover</button></div></div>`;
+    }else{
+      atribDiv.innerHTML=`<div class="atrib-box"><div class="atrib-title">👷 Atribuir Responsável</div><div class="atrib-content"><select class="atrib-select" id="atrib-sel"><option value="">Selecione um funcionário...</option>${funcAtivos.map(f=>`<option value="${f.id}|${f.nome}">${f.nome} — ${f.cargo||'Funcionário'}</option>`).join('')}</select><button class="atrib-btn" onclick="mantAtribuirFromSelect('${r.id}')">✓ Atribuir</button></div></div>`;
     }
-  } else {
-    atribDiv.style.display='none';
-  }
-
-  // STATUS ACTIONS
+  }else{atribDiv.style.display='none';}
   const statuses=mantTab_==='chamados'?['Aberto','Em Andamento','Concluído','Cancelado']:['Preventiva','Em Andamento','Concluído','Cancelado'];
-  const sa=document.getElementById('dp-sa');
-  sa.style.display='flex';
+  const sa=document.getElementById('dp-sa');sa.style.display='flex';
   sa.innerHTML='<span style="font-size:11px;color:var(--muted);align-self:center">Status:</span>'+statuses.map(s=>`<button class="s-btn ${r.status===s?'on':''}" onclick="mantUpdateStatus('${r.id}','${s}')">${s}</button>`).join('');
-
   const skip=['id','tags','historico','docs','created_at','updated_at','responsavel_id'];
   const fields=Object.entries(r).filter(([k])=>!skip.includes(k)&&r[k]!==null&&r[k]!=='');
   const hist=Array.isArray(r.historico)?r.historico:[];
@@ -671,52 +950,34 @@ function mantOpenDP(id){
   b+=`</div></div>`;
   if(hist.length){b+=`<div class="dp-sec"><div class="dp-sec-t">Histórico</div>`;hist.forEach((h,i)=>{b+=`<div class="hi"><div class="hdot" style="background:${hc[i%4]}"></div><div><div class="ht">${h.t||h}</div><div class="ht-dt">${h.dt||''}</div></div></div>`;});b+=`</div>`;}
   document.getElementById('dp-body').innerHTML=b;
-  document.getElementById('ov').classList.add('open');
-  document.getElementById('dp').classList.add('open');
+  document.getElementById('ov').classList.add('open');document.getElementById('dp').classList.add('open');
 }
-
 function mantAtribuirFromSelect(id){
   const sel=document.getElementById('atrib-sel');
   if(!sel||!sel.value){showToast('Selecione um funcionário','error');return;}
   const[funcId,funcNome]=sel.value.split('|');
   mantAtribuir(id,funcId,funcNome);
 }
-
 async function mantAtribuir(id,funcId,funcNome){
   const ex=(DB.chamados||[]).find(x=>x.id===id);
   const hist=Array.isArray(ex?.historico)?ex.historico:[];
   const novoStatus=funcId?'Em Andamento':ex?.status||'Aberto';
-  const novoHist=funcId
-    ?[{t:`Atribuído para ${funcNome}`,dt:new Date().toLocaleString('pt-BR')},...hist]
-    :[{t:'Responsável removido',dt:new Date().toLocaleString('pt-BR')},...hist];
-  const payload={
-    responsavel_id:funcId||null,
-    responsavel_nome:funcNome||null,
-    status:novoStatus,
-    historico:novoHist
-  };
-  try{
-    const saved=await sbPatch('manutencao_chamados',id,payload);
-    DB.chamados=DB.chamados.map(x=>x.id===id?saved[0]:x);
-    mantUpdateKPIs();mantUpdateCounts();mantRender();
-    mantOpenDP(id);
-    showToast(funcId?`✅ Atribuído para ${funcNome} — Em Andamento`:'Responsável removido','success');
-  }catch(e){showToast(`Erro: ${e.message}`,'error');}
+  const novoHist=funcId?[{t:`Atribuído para ${funcNome}`,dt:new Date().toLocaleString('pt-BR')},...hist]:[{t:'Responsável removido',dt:new Date().toLocaleString('pt-BR')},...hist];
+  const saved=await sbPatch('manutencao_chamados',id,{responsavel_id:funcId||null,responsavel_nome:funcNome||null,status:novoStatus,historico:novoHist});
+  DB.chamados=DB.chamados.map(x=>x.id===id?saved[0]:x);
+  mantUpdateKPIs();mantUpdateCounts();mantRender();mantOpenDP(id);
+  showToast(funcId?`✅ Atribuído para ${funcNome}`:'Responsável removido','success');
 }
-
 async function mantUpdateStatus(id,ns){
   const tbl=mantTab_==='chamados'?'manutencao_chamados':'manutencao_preventiva';
   const ex=(DB[mantTab_]||[]).find(x=>x.id===id);
   const hist=Array.isArray(ex?.historico)?ex.historico:[];
   const saved=await sbPatch(tbl,id,{status:ns,historico:[{t:`Status → "${ns}"`,dt:new Date().toLocaleString('pt-BR')},...hist]});
   DB[mantTab_]=DB[mantTab_].map(x=>x.id===id?saved[0]:x);
-  mantUpdateKPIs();mantUpdateCounts();mantRender();mantOpenDP(id);
-  showToast(`Status → "${ns}"`,'success');
+  mantUpdateKPIs();mantUpdateCounts();mantRender();mantOpenDP(id);showToast(`Status → "${ns}"`,'success');
 }
-
 function mantOpenModal(){
-  mantEditId=null;
-  const isPr=mantTab_==='preventiva';
+  mantEditId=null;const isPr=mantTab_==='preventiva';
   document.getElementById('m-ico').style.cssText='background:rgba(37,99,235,.15);color:var(--pl)';
   document.getElementById('m-ico').textContent=isPr?'📅':'🔧';
   document.getElementById('m-title').textContent=isPr?'Nova Manutenção Preventiva':'Novo Chamado';
@@ -728,8 +989,7 @@ function mantOpenModal(){
 }
 function mantEdit(id){
   const r=(DB[mantTab_]||[]).find(x=>x.id===id);if(!r)return;
-  mantEditId=id;
-  const isPr=mantTab_==='preventiva';
+  mantEditId=id;const isPr=mantTab_==='preventiva';
   document.getElementById('m-ico').textContent=isPr?'📅':'🔧';
   document.getElementById('m-title').textContent='Editar '+(isPr?'Preventiva':'Chamado');
   document.getElementById('m-sub').textContent='Atualize os dados abaixo';
@@ -773,13 +1033,16 @@ function buildForm(secs,data){
 // SAVE
 async function saveRecord(){
   const isMant=currentModule==='manutencao';
+  const isPlan=currentModule==='planejamento';
   const isPr=mantTab_==='preventiva';
-  const secs=isMant?(isPr?MANT_FORM_PR:getMantFormCH()):CAD_FORMS[cadTab_].secs;
+  let secs,table,dbKey,editId;
+  if(isPlan){secs=PLAN_FORM_SECS;table='planejamento_atividades';dbKey='atividades';editId=planEditId;}
+  else if(isMant){secs=isPr?MANT_FORM_PR:getMantFormCH();table=isPr?'manutencao_preventiva':'manutencao_chamados';dbKey=mantTab_;editId=mantEditId;}
+  else{secs=CAD_FORMS[cadTab_].secs;table=TBL[cadTab_];dbKey=cadTab_;editId=cadEditId;}
   const allF=secs.flatMap(s=>s.f);
   let valid=true;
   allF.forEach(fld=>{
-    const el=document.getElementById('f_'+fld.id);if(!el)return;
-    el.classList.remove('err');
+    const el=document.getElementById('f_'+fld.id);if(!el)return;el.classList.remove('err');
     if(fld.id==='spe_label'&&document.getElementById('f_tipo')?.value==='Outro')return;
     if(fld.r&&!el.value.trim()){el.classList.add('err');valid=false;}
   });
@@ -789,9 +1052,6 @@ async function saveRecord(){
   const btn=document.getElementById('btn-save');const sp=document.getElementById('save-spin');
   btn.disabled=true;sp.classList.add('on');
   try{
-    let table,dbKey,editId;
-    if(isMant){table=isPr?'manutencao_preventiva':'manutencao_chamados';dbKey=mantTab_;editId=mantEditId;}
-    else{table=TBL[cadTab_];dbKey=cadTab_;editId=cadEditId;}
     let saved;
     if(editId){
       const ex=(DB[dbKey]||[]).find(x=>x.id===editId);
@@ -801,17 +1061,16 @@ async function saveRecord(){
       saved=r[0];DB[dbKey]=DB[dbKey].map(x=>x.id===editId?saved:x);
       showToast('✅ Atualizado!','success');
     }else{
-      payload.tags=[];payload.docs=[];
-      if(isMant){
-        payload.status=isPr?'Preventiva':'Aberto';
-        payload.codigo=(isPr?'PRV':'CHM')+'-'+String((DB[dbKey]||[]).length+1).padStart(4,'0');
-      }
+      payload.tags=[];
+      if(!isPlan)payload.docs=[];
+      if(isMant){payload.status=isPr?'Preventiva':'Aberto';payload.codigo=(isPr?'PRV':'CHM')+'-'+String((DB[dbKey]||[]).length+1).padStart(4,'0');}
       payload.historico=[{t:`Cadastrado em ${new Date().toLocaleDateString('pt-BR')}`,dt:new Date().toLocaleString('pt-BR')}];
       const r=await sbPost(table,payload);
       saved=r[0];DB[dbKey]=[saved,...(DB[dbKey]||[])];
       showToast('✅ Salvo com sucesso!','success');
     }
-    if(isMant){mantUpdateKPIs();mantUpdateCounts();mantRender();}
+    if(isPlan){planRender();initDash();}
+    else if(isMant){mantUpdateKPIs();mantUpdateCounts();mantRender();}
     else{cadUpdateCounts();cadRender();}
     closeModal();
   }catch(e){showToast(`Erro: ${e.message}`,'error');}
